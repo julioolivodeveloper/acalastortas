@@ -25,7 +25,7 @@ export default function Home() {
       <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 py-24 overflow-hidden">
         {/* Background food photo */}
         <div className="absolute inset-0">
-          <img src="/hero-bg.webp" alt="" className="w-full h-full object-cover" />
+          <img src="/ubicacion.webp" alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(180,0,0,0.75) 60%, rgba(120,0,0,0.9) 100%)' }} />
         </div>
 
