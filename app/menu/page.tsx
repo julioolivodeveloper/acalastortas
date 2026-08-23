@@ -83,7 +83,7 @@ export default function MenuPage() {
                   onClick={() => setActiveCategory('Todos')}
                   className="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-2xl font-black text-sm transition-all duration-200"
                   style={active
-                    ? { backgroundColor: 'white', color: '#C61620', boxShadow: '0 4px 16px rgba(0,0,0,0.25)' }
+                    ? { backgroundColor: '#006B42', color: 'white', boxShadow: '0 4px 16px rgba(0,0,0,0.25)' }
                     : { backgroundColor: 'rgba(255,255,255,0.15)', color: 'white' }}
                 >
                   <div
@@ -106,7 +106,7 @@ export default function MenuPage() {
                   onClick={() => setActiveCategory(cat)}
                   className="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-2xl font-black text-sm transition-all duration-200 whitespace-nowrap"
                   style={active
-                    ? { backgroundColor: 'white', color: '#C61620', boxShadow: '0 4px 16px rgba(0,0,0,0.25)' }
+                    ? { backgroundColor: '#006B42', color: 'white', boxShadow: '0 4px 16px rgba(0,0,0,0.25)' }
                     : { backgroundColor: 'rgba(255,255,255,0.15)', color: 'white' }}
                 >
                   <div className="w-7 h-7 rounded-xl overflow-hidden shrink-0">
