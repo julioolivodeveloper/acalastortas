@@ -53,10 +53,17 @@ export default function MenuPage() {
   return (
     <>
       {/* Header */}
-      <div className="bg-gradient-to-b from-[#004D2E] to-[#006B42] px-4 pt-8 pb-6">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-black text-white tracking-tight">Nuestro Menú</h1>
-          <p className="text-green-200/80 mt-1 text-sm">Pickup en ~15 min · El Paso, TX</p>
+      <div className="relative overflow-hidden px-4 pt-10 pb-8" style={{ backgroundColor: '#004D2E' }}>
+        <img
+          src="/menu/hamburguesa-combo.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-30 scale-105"
+          style={{ filter: 'saturate(1.2)' }}
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(0,50,30,0.85) 40%, rgba(0,80,50,0.3) 100%)' }} />
+        <div className="relative z-10 max-w-6xl mx-auto">
+          <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-lg">Nuestro Menú</h1>
+          <p className="text-green-200/90 mt-1.5 text-sm font-semibold">Pickup en ~15 min · El Paso, TX</p>
         </div>
       </div>
 
