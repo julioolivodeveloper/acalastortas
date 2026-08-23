@@ -170,23 +170,24 @@ export default function Home() {
       <section className="py-0 overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2">
           {/* Content */}
-          <div className="flex flex-col justify-center px-8 py-16 lg:px-16 order-2 lg:order-1" style={{ backgroundColor: '#006B42' }}>
-            <p className="font-black text-sm uppercase tracking-widest mb-3 text-white/60">Comodidad</p>
-            <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-5">
+          <div className="flex flex-col justify-center px-8 py-16 lg:px-16 order-2 lg:order-1" style={{ backgroundColor: '#C61620' }}>
+            <p className="font-black text-sm uppercase tracking-widest mb-3" style={{ color: '#111' }}>Comodidad</p>
+            <h2 className="text-4xl md:text-5xl font-black leading-tight mb-5" style={{ color: '#111' }}>
               Autoservicio<br />y Comedor<br />
-              <span style={{ color: '#C61620' }}>¡Los mejores!</span>
+              <span style={{ color: '#006B42' }}>¡Los mejores!</span>
             </h2>
-            <p className="text-white/80 text-lg leading-relaxed mb-8">
+            <p className="text-white text-lg leading-relaxed mb-8">
               Visítanos en nuestro comedor o usa el drive-thru. Siempre con la misma calidad y sabor que nos caracteriza.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/menu"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-black text-[#006B42] text-base hover:scale-105 transition-transform"
-                style={{ backgroundColor: '#C61620' }}>
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-black text-white text-base hover:scale-105 transition-transform"
+                style={{ backgroundColor: '#006B42' }}>
                 Ver Menú
               </Link>
               <a href={DOORDASH_URL} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-black text-white text-base border-2 border-white/40 hover:border-white hover:bg-white/10 transition">
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-black text-base border-2 hover:bg-black/10 transition"
+                style={{ color: '#111', borderColor: '#111' }}>
                 <ExternalLink className="w-4 h-4" /> DoorDash
               </a>
             </div>
