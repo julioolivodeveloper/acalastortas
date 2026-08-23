@@ -100,7 +100,7 @@ export default function CartDrawer({ open, onClose }: Props) {
             <button
               onClick={() => { onClose(); router.push('/pedido') }}
               className="w-full py-3.5 rounded-2xl font-black text-white text-base hover:opacity-90"
-              style={{ backgroundColor: '#006B42' }}
+              style={{ backgroundColor: '#C61620' }}
             >
               Ordenar — ${total.toFixed(2)}
             </button>
