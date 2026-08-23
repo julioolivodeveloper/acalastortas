@@ -170,19 +170,17 @@ export default function MenuPage() {
 
       <div className="max-w-screen-xl mx-auto px-4 py-8 pb-32 bg-gray-50">
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {Array.from({ length: 9 }).map((_, i) => (
-              <div key={i} className="rounded-2xl border border-gray-200 overflow-hidden animate-pulse bg-white">
-                <div className="h-48 bg-gray-100" />
-                <div className="p-5 space-y-3">
-                  <div className="h-5 bg-gray-200 rounded-lg w-3/4" />
-                  <div className="h-4 bg-gray-100 rounded-lg w-full" />
-                  <div className="h-4 bg-gray-100 rounded-lg w-2/3" />
-                  <div className="flex justify-between pt-2">
-                    <div className="h-7 bg-gray-200 rounded-lg w-16" />
-                    <div className="h-9 bg-gray-200 rounded-xl w-28" />
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="flex items-center rounded-2xl border border-gray-200 bg-white overflow-hidden animate-pulse">
+                <div className="flex-1 p-4 space-y-2">
+                  <div className="h-3 bg-gray-100 rounded w-1/4" />
+                  <div className="h-5 bg-gray-200 rounded w-3/4" />
+                  <div className="h-4 bg-gray-100 rounded w-full" />
+                  <div className="h-4 bg-gray-100 rounded w-2/3" />
+                  <div className="h-6 bg-gray-200 rounded w-16 mt-2" />
                 </div>
+                <div className="w-[120px] h-[120px] shrink-0 m-3 rounded-xl bg-gray-100" />
               </div>
             ))}
           </div>
@@ -210,7 +208,7 @@ export default function MenuPage() {
                     Ver todos <ChevronRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {items.map((item, idx) => (
                     <MenuCard
                       key={item.id}
@@ -233,11 +231,11 @@ export default function MenuPage() {
                 {CATEGORY_IMG[activeCategory] && (
                   <img src={CATEGORY_IMG[activeCategory]} alt="" className="w-9 h-9 rounded-xl object-cover" />
                 )}
-                <h2 className="text-2xl font-black text-white">{activeCategory}</h2>
+                <h2 className="text-2xl font-black text-gray-900">{activeCategory}</h2>
               </div>
               <span className="text-sm text-gray-500 font-medium">({visible.length} platillos)</span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {visible.map((item, idx) => (
                 <MenuCard
                   key={item.id}
@@ -434,52 +432,38 @@ function MenuCard({
 }) {
   return (
     <div
-      className="group rounded-2xl border border-gray-200 overflow-hidden flex flex-col cursor-pointer hover:-translate-y-1 transition-all duration-300 hover:shadow-xl bg-white"
-      style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.06)', animationDelay: `${delay}ms` }}
+      className="flex items-center rounded-2xl border border-gray-200 bg-white cursor-pointer hover:shadow-md active:scale-[0.99] transition-all duration-200"
+      style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.06)', animationDelay: `${delay}ms` }}
       onClick={onOpen}
     >
-      <div className="relative overflow-hidden bg-gray-100 h-48">
-        {item.image ? (
-          <img
-            src={item.image}
-            alt={item.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-5xl opacity-30">🍽️</div>
-        )}
-        <div className="absolute top-3 left-3">
-          <span className="bg-black/50 backdrop-blur-sm text-white text-xs font-bold px-2.5 py-1 rounded-full">
-            {item.category}
-          </span>
+      {/* Texto izquierda */}
+      <div className="flex-1 flex flex-col justify-between self-stretch px-4 py-4 min-w-0">
+        <div>
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{item.category}</p>
+          <h3 className="font-black text-gray-900 text-[15px] leading-snug mb-1.5">{item.name}</h3>
+          <p className="text-gray-500 text-sm leading-snug line-clamp-2">{item.description}</p>
         </div>
-      </div>
-
-      <div className="flex-1 flex flex-col p-5">
-        <h3 className="font-black text-gray-900 text-base leading-tight mb-1.5">{item.name}</h3>
-        <p className="text-gray-500 text-sm leading-relaxed flex-1 mb-4">{item.description}</p>
-
-        <div className="flex items-center justify-between">
-          <span className="text-2xl font-black" style={{ color: '#006B42' }}>
+        <div className="flex items-center justify-between mt-3">
+          <span className="text-xl font-black" style={{ color: '#006B42' }}>
             ${item.price.toFixed(2)}
           </span>
           <button
             onClick={(e) => { e.stopPropagation(); onAdd() }}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-black text-white text-sm transition-all duration-200 ${
-              added ? 'scale-95' : 'hover:scale-105 active:scale-95'
-            }`}
-            style={{
-              backgroundColor: added ? '#16A34A' : '#006B42',
-              boxShadow: added ? '0 2px 12px rgba(22,163,74,0.4)' : '0 2px 12px rgba(0,107,66,0.3)',
-            }}
+            className="w-9 h-9 rounded-full flex items-center justify-center text-white shrink-0 transition-all duration-200 active:scale-95"
+            style={{ backgroundColor: added ? '#16A34A' : '#006B42', boxShadow: '0 2px 8px rgba(0,107,66,0.35)' }}
           >
-            {added ? (
-              <><Check className="w-4 h-4" /> ¡Listo!</>
-            ) : (
-              <><Plus className="w-4 h-4" /> Agregar</>
-            )}
+            {added ? <Check className="w-4 h-4" /> : <Plus className="w-5 h-5" />}
           </button>
         </div>
+      </div>
+
+      {/* Imagen derecha */}
+      <div className="w-[120px] h-[120px] shrink-0 m-3 rounded-xl overflow-hidden bg-gray-100">
+        {item.image ? (
+          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-3xl opacity-30">🍽️</div>
+        )}
       </div>
     </div>
   )
