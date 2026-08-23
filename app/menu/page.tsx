@@ -168,19 +168,19 @@ export default function MenuPage() {
         </div>
       </div>
 
-      <div className="max-w-screen-xl mx-auto px-4 py-8 pb-32" style={{ backgroundColor: '#111' }}>
+      <div className="max-w-screen-xl mx-auto px-4 py-8 pb-32 bg-gray-50">
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {Array.from({ length: 9 }).map((_, i) => (
-              <div key={i} className="rounded-2xl border border-gray-800 overflow-hidden animate-pulse" style={{ backgroundColor: '#1a1a1a' }}>
-                <div className="h-48 bg-gray-800" />
+              <div key={i} className="rounded-2xl border border-gray-200 overflow-hidden animate-pulse bg-white">
+                <div className="h-48 bg-gray-100" />
                 <div className="p-5 space-y-3">
-                  <div className="h-5 bg-gray-700 rounded-lg w-3/4" />
-                  <div className="h-4 bg-gray-800 rounded-lg w-full" />
-                  <div className="h-4 bg-gray-800 rounded-lg w-2/3" />
+                  <div className="h-5 bg-gray-200 rounded-lg w-3/4" />
+                  <div className="h-4 bg-gray-100 rounded-lg w-full" />
+                  <div className="h-4 bg-gray-100 rounded-lg w-2/3" />
                   <div className="flex justify-between pt-2">
-                    <div className="h-7 bg-gray-700 rounded-lg w-16" />
-                    <div className="h-9 bg-gray-700 rounded-xl w-28" />
+                    <div className="h-7 bg-gray-200 rounded-lg w-16" />
+                    <div className="h-9 bg-gray-200 rounded-xl w-28" />
                   </div>
                 </div>
               </div>
@@ -198,14 +198,14 @@ export default function MenuPage() {
                         {CATEGORY_IMG[cat] && (
                           <img src={CATEGORY_IMG[cat]} alt="" className="w-8 h-8 rounded-xl object-cover" />
                         )}
-                        <h2 className="text-2xl font-black text-white">{cat}</h2>
+                        <h2 className="text-2xl font-black text-gray-900">{cat}</h2>
                       </div>
-                      <p className="text-gray-400 text-xs ml-1">{items.length} opciones</p>
+                      <p className="text-gray-500 text-xs ml-1">{items.length} opciones</p>
                     </div>
                   </div>
                   <button
                     onClick={() => setActiveCategory(cat)}
-                    className="flex items-center gap-1 text-xs font-bold text-green-400 hover:underline"
+                    className="flex items-center gap-1 text-xs font-bold text-green-700 hover:underline"
                   >
                     Ver todos <ChevronRight className="w-3.5 h-3.5" />
                   </button>
@@ -255,7 +255,7 @@ export default function MenuPage() {
         {!loading && visible.length === 0 && (
           <div className="text-center py-20 text-gray-500">
             <div className="text-5xl mb-4">🍽️</div>
-            <p className="text-lg font-bold text-gray-400">No hay platillos en esta categoría</p>
+            <p className="text-lg font-bold text-gray-500">No hay platillos en esta categoría</p>
             <p className="text-sm mt-1">Intenta con otra selección</p>
           </div>
         )}
@@ -434,11 +434,11 @@ function MenuCard({
 }) {
   return (
     <div
-      className="group rounded-2xl border overflow-hidden flex flex-col cursor-pointer hover:-translate-y-1 transition-all duration-300 hover:shadow-2xl"
-      style={{ backgroundColor: '#1a1a1a', borderColor: '#2a2a2a', boxShadow: '0 2px 8px rgba(0,0,0,0.4)', animationDelay: `${delay}ms` }}
+      className="group rounded-2xl border border-gray-200 overflow-hidden flex flex-col cursor-pointer hover:-translate-y-1 transition-all duration-300 hover:shadow-xl bg-white"
+      style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.06)', animationDelay: `${delay}ms` }}
       onClick={onOpen}
     >
-      <div className="relative overflow-hidden bg-gray-900 h-48">
+      <div className="relative overflow-hidden bg-gray-100 h-48">
         {item.image ? (
           <img
             src={item.image}
@@ -456,8 +456,8 @@ function MenuCard({
       </div>
 
       <div className="flex-1 flex flex-col p-5">
-        <h3 className="font-black text-white text-base leading-tight mb-1.5">{item.name}</h3>
-        <p className="text-gray-400 text-sm leading-relaxed flex-1 mb-4">{item.description}</p>
+        <h3 className="font-black text-gray-900 text-base leading-tight mb-1.5">{item.name}</h3>
+        <p className="text-gray-500 text-sm leading-relaxed flex-1 mb-4">{item.description}</p>
 
         <div className="flex items-center justify-between">
           <span className="text-2xl font-black" style={{ color: '#006B42' }}>
