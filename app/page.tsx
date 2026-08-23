@@ -6,7 +6,7 @@ import { useCartStore } from '@/store/store'
 import { getMenu } from '@/lib/db'
 import type { DbMenuItem } from '@/lib/supabase'
 
-const POPULAR_IDS = ['t7', 't3', 'b1', 'ta1', 'q1', 't1']
+const POPULAR_IDS = ['t1', 't7', 'ta1', 'b1', 'h1', 't3']
 const DOORDASH_URL = 'https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/'
 const TYPEWRITER_WORDS = ['Tortas', 'Tacos', 'Burritos', 'Hamburguesas', 'Carnitas']
 
@@ -137,22 +137,42 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {popular.map((item) => (
-            <div key={item.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-start gap-3 mb-3">
-                <div>
-                  <h3 className="font-black text-gray-900 text-base leading-tight">{item.name}</h3>
-                  <p className="text-[#006B42] font-black text-xl mt-1">${item.price.toFixed(2)}</p>
+            <div key={item.id} className="group bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
+              {/* Image */}
+              <div className="relative overflow-hidden bg-gray-50 h-48">
+                {item.image ? (
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-5xl opacity-20">🍽️</div>
+                )}
+                <div className="absolute top-3 right-3">
+                  <span className="flex items-center gap-1 bg-yellow-400 text-yellow-900 text-xs font-black px-2.5 py-1 rounded-full shadow">
+                    <Star className="w-3 h-3 fill-yellow-900" /> Popular
+                  </span>
                 </div>
-                <span className="shrink-0 flex items-center gap-0.5 text-yellow-500 text-xs font-bold bg-yellow-50 px-2 py-1 rounded-full">
-                  <Star className="w-3.5 h-3.5 fill-yellow-400" /> Popular
-                </span>
               </div>
-              <p className="text-gray-500 text-sm leading-relaxed mb-4">{item.description}</p>
-              <button onClick={() => handleAdd(item.id, item)}
-                className="w-full py-3 rounded-xl font-black text-sm text-white transition-all"
-                style={{ backgroundColor: added === item.id ? '#16A34A' : '#006B42' }}>
-                {added === item.id ? '¡Agregado!' : 'Agregar al Carrito'}
-              </button>
+              {/* Content */}
+              <div className="flex-1 flex flex-col p-5">
+                <h3 className="font-black text-gray-900 text-base leading-tight mb-1">{item.name}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed flex-1 mb-4">{item.description}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-2xl font-black" style={{ color: '#006B42' }}>${item.price.toFixed(2)}</span>
+                  <button
+                    onClick={() => handleAdd(item.id, item)}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-black text-white text-sm transition-all duration-200 ${added === item.id ? 'scale-95' : 'hover:scale-105 active:scale-95'}`}
+                    style={{
+                      backgroundColor: added === item.id ? '#16A34A' : '#006B42',
+                      boxShadow: added === item.id ? '0 2px 12px rgba(22,163,74,0.4)' : '0 2px 12px rgba(0,107,66,0.3)',
+                    }}
+                  >
+                    {added === item.id ? '✓ ¡Listo!' : '+ Agregar'}
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
