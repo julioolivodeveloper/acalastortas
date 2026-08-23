@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ShoppingBag, User, Menu, X } from 'lucide-react'
+import { ShoppingBag, User, Menu, X, Home } from 'lucide-react'
 import { useAcaTortasStore, cartCount } from '@/store/store'
 import CartDrawer from './CartDrawer'
 
@@ -24,8 +24,8 @@ export default function Header() {
     <>
       <header className="sticky top-0 z-30 shadow-lg" style={{ backgroundColor: '#006B42' }}>
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 shrink-0">
-            <img src="/logo.png" alt="Aca Las Tortas" className="h-10 w-auto" />
+          <Link href="/" className="flex items-center justify-center w-10 h-10 rounded-xl text-white hover:bg-white/20 transition shrink-0" title="Inicio">
+            <Home className="w-6 h-6" />
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">

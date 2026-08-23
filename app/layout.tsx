@@ -5,6 +5,15 @@ import Header from '@/components/Header'
 export const metadata: Metadata = {
   title: '¡Acá Las Tortas! El Paso — Pedidos Online',
   description: 'Las mejores tortas de El Paso. Ordena en línea para pickup o delivery vía DoorDash.',
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
+  openGraph: {
+    title: '¡Acá Las Tortas! El Paso',
+    description: 'Las mejores tortas de El Paso. Ordena en línea para pickup o delivery vía DoorDash.',
+    images: [{ url: '/logo.png' }],
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
