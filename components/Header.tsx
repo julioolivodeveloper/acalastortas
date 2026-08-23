@@ -16,6 +16,7 @@ export default function Header() {
   const navLinks = [
     { href: '/', label: 'Inicio' },
     { href: '/menu', label: 'Menú' },
+    { href: '/sobre-nosotros', label: 'Sobre Nosotros' },
     { href: '/cuenta', label: 'Mi Cuenta' },
   ]
 
