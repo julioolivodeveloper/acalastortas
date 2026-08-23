@@ -61,9 +61,12 @@ export default function MenuPage() {
           style={{ filter: 'saturate(1.2)' }}
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(0,50,30,0.85) 40%, rgba(0,80,50,0.3) 100%)' }} />
-        <div className="relative z-10 max-w-screen-xl mx-auto">
-          <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-lg">Nuestro Menú</h1>
-          <p className="text-green-200/90 mt-1.5 text-sm font-semibold">Pickup en ~15 min · El Paso, TX</p>
+        <div className="relative z-10 max-w-screen-xl mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-lg">Nuestro Menú</h1>
+            <p className="text-green-200/90 mt-1.5 text-sm font-semibold">Pickup en ~15 min · El Paso, TX</p>
+          </div>
+          <img src="/logo.png" alt="Aca Las Tortas" className="h-24 md:h-32 drop-shadow-2xl shrink-0" />
         </div>
       </div>
 
