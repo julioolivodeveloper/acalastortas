@@ -7,7 +7,7 @@ import { findCustomerByPhone, createCustomer, getCustomerOrders } from '@/lib/db
 import type { DbCustomer, DbOrder } from '@/lib/supabase'
 
 const tier = (pts: number) => {
-  if (pts >= 500) return { name: 'VIP Gold', color: '#F5C000', emoji: '🏆' }
+  if (pts >= 500) return { name: 'VIP Gold', color: '#C61620', emoji: '🏆' }
   if (pts >= 200) return { name: 'Silver', color: '#9CA3AF', emoji: '🥈' }
   return { name: 'Bronce', color: '#CD7F32', emoji: '🥉' }
 }
@@ -59,7 +59,7 @@ export default function CuentaPage() {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
           <div className="text-center mb-8">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#FEF3C7' }}>
-              <Star className="w-8 h-8" style={{ color: '#F5C000' }} />
+              <Star className="w-8 h-8" style={{ color: '#C61620' }} />
             </div>
             <h2 className="text-xl font-black text-gray-900 mb-2">Programa de Puntos</h2>
             <p className="text-gray-500 text-sm">Busca tu cuenta con tu número de teléfono</p>
@@ -74,13 +74,13 @@ export default function CuentaPage() {
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                   placeholder="(915) 000-0000"
                   type="tel"
-                  className="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#CC0000]"
+                  className="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#006B42]"
                 />
                 <button
                   onClick={handleSearch}
                   disabled={loading}
                   className="px-5 py-3 rounded-xl font-black text-white text-sm disabled:opacity-50"
-                  style={{ backgroundColor: '#CC0000' }}
+                  style={{ backgroundColor: '#006B42' }}
                 >
                   {loading ? '...' : 'Buscar'}
                 </button>
@@ -127,7 +127,7 @@ export default function CuentaPage() {
                 onChange={(e) => setName(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleRegister()}
                 placeholder="Nombre completo"
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#CC0000]"
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#006B42]"
               />
               {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
             </div>
@@ -135,7 +135,7 @@ export default function CuentaPage() {
               onClick={handleRegister}
               disabled={loading}
               className="w-full py-3.5 rounded-2xl font-black text-white text-sm disabled:opacity-50"
-              style={{ backgroundColor: '#CC0000' }}
+              style={{ backgroundColor: '#006B42' }}
             >
               {loading ? 'Registrando...' : 'Crear Cuenta y Empezar'}
             </button>
@@ -151,8 +151,8 @@ export default function CuentaPage() {
 
       {step === 'profile' && customer && (
         <div className="space-y-5">
-          <div className="rounded-2xl p-6 text-white relative overflow-hidden" style={{ backgroundColor: '#CC0000' }}>
-            <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-10" style={{ backgroundColor: '#F5C000', transform: 'translate(20%, -20%)' }} />
+          <div className="rounded-2xl p-6 text-white relative overflow-hidden" style={{ backgroundColor: '#006B42' }}>
+            <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-10" style={{ backgroundColor: '#C61620', transform: 'translate(20%, -20%)' }} />
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-4">
                 <div>
@@ -181,7 +181,7 @@ export default function CuentaPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <Link href="/menu" className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col items-center text-center hover:shadow-md transition">
-              <ShoppingBag className="w-8 h-8 mb-2" style={{ color: '#CC0000' }} />
+              <ShoppingBag className="w-8 h-8 mb-2" style={{ color: '#006B42' }} />
               <p className="font-black text-gray-900 text-sm">Ordenar Ahora</p>
               <p className="text-gray-400 text-xs">Ver menú completo</p>
             </Link>
@@ -201,7 +201,7 @@ export default function CuentaPage() {
               <div className="text-center py-8 text-gray-400">
                 <ShoppingBag className="w-10 h-10 mx-auto mb-2 opacity-30" />
                 <p className="text-sm font-semibold">Aún no tienes pedidos</p>
-                <Link href="/menu" className="text-[#CC0000] text-sm font-bold hover:underline mt-2 block">Hacer mi primer pedido</Link>
+                <Link href="/menu" className="text-[#006B42] text-sm font-bold hover:underline mt-2 block">Hacer mi primer pedido</Link>
               </div>
             ) : (
               <div className="space-y-3">

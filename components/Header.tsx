@@ -21,7 +21,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-30 shadow-lg" style={{ backgroundColor: '#CC0000' }}>
+      <header className="sticky top-0 z-30 shadow-lg" style={{ backgroundColor: '#006B42' }}>
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 shrink-0">
             <img src="/logo.png" alt="Aca Las Tortas" className="h-10 w-auto" />
@@ -33,7 +33,7 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 className={`px-4 py-2 rounded-xl font-bold text-sm transition ${
-                  pathname === link.href ? 'bg-white text-[#CC0000]' : 'text-white hover:bg-white/20'
+                  pathname === link.href ? 'bg-white text-[#006B42]' : 'text-white hover:bg-white/20'
                 }`}
               >
                 {link.label}
@@ -47,12 +47,12 @@ export default function Header() {
             </Link>
             <button
               onClick={() => setCartOpen(true)}
-              className="relative flex items-center gap-1.5 bg-white text-[#CC0000] px-3 py-2 rounded-xl font-black text-sm hover:bg-yellow-50 transition"
+              className="relative flex items-center gap-1.5 bg-white text-[#006B42] px-3 py-2 rounded-xl font-black text-sm hover:bg-yellow-50 transition"
             >
               <ShoppingBag className="w-4 h-4" />
               <span className="hidden sm:inline">Orden</span>
               {count > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-white text-xs font-black flex items-center justify-center" style={{ backgroundColor: '#F5C000' }}>
+                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-white text-xs font-black flex items-center justify-center" style={{ backgroundColor: '#C61620' }}>
                   {count}
                 </span>
               )}
@@ -71,7 +71,7 @@ export default function Header() {
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
                 className={`block px-4 py-2.5 rounded-xl font-bold text-sm transition ${
-                  pathname === link.href ? 'bg-white text-[#CC0000]' : 'text-white hover:bg-white/20'
+                  pathname === link.href ? 'bg-white text-[#006B42]' : 'text-white hover:bg-white/20'
                 }`}
               >
                 {link.label}

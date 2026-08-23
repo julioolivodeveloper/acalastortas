@@ -30,7 +30,7 @@ function ConfirmacionContent() {
         <p className="text-gray-500">Tu orden ha sido enviada al restaurante</p>
       </div>
 
-      <div className="rounded-2xl p-5 mb-5 text-center" style={{ backgroundColor: '#CC0000' }}>
+      <div className="rounded-2xl p-5 mb-5 text-center" style={{ backgroundColor: '#006B42' }}>
         <p className="text-white/70 text-sm font-semibold mb-1">Número de Orden</p>
         <p className="text-white font-black text-5xl">#{orderNum}</p>
         <p className="text-white/70 text-xs mt-2">Muestra este número al recoger</p>
@@ -38,12 +38,12 @@ function ConfirmacionContent() {
 
       <div className="grid grid-cols-2 gap-3 mb-5">
         <div className="bg-white rounded-xl border border-gray-100 p-4 text-center">
-          <Clock className="w-5 h-5 mx-auto mb-2 text-[#CC0000]" />
+          <Clock className="w-5 h-5 mx-auto mb-2 text-[#006B42]" />
           <p className="text-xs text-gray-500 font-semibold">Tiempo estimado</p>
           <p className="font-black text-gray-900">15–25 min</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-100 p-4 text-center">
-          <MapPin className="w-5 h-5 mx-auto mb-2 text-[#CC0000]" />
+          <MapPin className="w-5 h-5 mx-auto mb-2 text-[#006B42]" />
           <p className="text-xs text-gray-500 font-semibold">Recoge en</p>
           <p className="font-black text-gray-900 text-xs">N Loop Dr, Socorro</p>
         </div>
@@ -84,7 +84,7 @@ function ConfirmacionContent() {
       )}
 
       <div className="space-y-3">
-        <Link href="/cuenta" className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-black text-white text-sm" style={{ backgroundColor: '#CC0000' }}>
+        <Link href="/cuenta" className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-black text-white text-sm" style={{ backgroundColor: '#006B42' }}>
           Ver mis puntos y pedidos <ChevronRight className="w-4 h-4" />
         </Link>
         <Link href="/menu" className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-gray-700 text-sm bg-gray-100 hover:bg-gray-200 transition">

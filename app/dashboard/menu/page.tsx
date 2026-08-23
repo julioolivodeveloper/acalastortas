@@ -67,7 +67,7 @@ export default function MenuEditorPage() {
         <button
           onClick={() => setShowAdd(true)}
           className="flex items-center gap-2 px-4 py-2 rounded-xl font-black text-white text-sm"
-          style={{ backgroundColor: '#CC0000' }}
+          style={{ backgroundColor: '#006B42' }}
         >
           <Plus className="w-4 h-4" /> Agregar
         </button>
@@ -79,7 +79,7 @@ export default function MenuEditorPage() {
             key={cat}
             onClick={() => setFilterCat(cat)}
             className="shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition"
-            style={filterCat === cat ? { backgroundColor: '#CC0000', color: 'white' } : { backgroundColor: '#1F2937', color: '#9CA3AF' }}
+            style={filterCat === cat ? { backgroundColor: '#006B42', color: 'white' } : { backgroundColor: '#1F2937', color: '#9CA3AF' }}
           >
             {cat}
           </button>
@@ -94,7 +94,7 @@ export default function MenuEditorPage() {
               placeholder="Nombre *"
               value={newItem.name || ''}
               onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-              className="bg-gray-800 border border-gray-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#CC0000]"
+              className="bg-gray-800 border border-gray-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#006B42]"
             />
             <input
               placeholder="Precio *"
@@ -102,7 +102,7 @@ export default function MenuEditorPage() {
               step="0.01"
               value={newItem.price || ''}
               onChange={(e) => setNewItem({ ...newItem, price: parseFloat(e.target.value) })}
-              className="bg-gray-800 border border-gray-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#CC0000]"
+              className="bg-gray-800 border border-gray-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#006B42]"
             />
             <select
               value={newItem.category}

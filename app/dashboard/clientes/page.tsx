@@ -6,7 +6,7 @@ import { getCustomers, getCustomerOrders, updateCustomerPoints } from '@/lib/db'
 import type { DbCustomer, DbOrder } from '@/lib/supabase'
 
 const tier = (pts: number) => {
-  if (pts >= 500) return { label: 'VIP Gold', color: '#F5C000' }
+  if (pts >= 500) return { label: 'VIP Gold', color: '#C61620' }
   if (pts >= 200) return { label: 'Silver', color: '#9CA3AF' }
   return { label: 'Bronce', color: '#CD7F32' }
 }
@@ -61,7 +61,7 @@ export default function ClientesPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar por nombre o teléfono..."
-              className="w-full bg-gray-900 border border-gray-800 text-white rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#CC0000]"
+              className="w-full bg-gray-900 border border-gray-800 text-white rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#006B42]"
             />
           </div>
           {loading ? (
@@ -77,7 +77,7 @@ export default function ClientesPage() {
                     key={c.id}
                     onClick={() => selectCustomer(c)}
                     className={`w-full text-left bg-gray-900 rounded-xl border p-4 transition ${
-                      selected?.id === c.id ? 'border-[#CC0000] bg-[#CC0000]/5' : 'border-gray-800 hover:border-gray-600'
+                      selected?.id === c.id ? 'border-[#006B42] bg-[#006B42]/5' : 'border-gray-800 hover:border-gray-600'
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -148,7 +148,7 @@ export default function ClientesPage() {
                       value={pointsInput}
                       onChange={(e) => setPointsInput(e.target.value)}
                       placeholder="Cantidad de puntos"
-                      className="flex-1 bg-gray-800 border border-gray-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#CC0000]"
+                      className="flex-1 bg-gray-800 border border-gray-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#006B42]"
                     />
                     <button
                       onClick={() => handlePoints(true)}

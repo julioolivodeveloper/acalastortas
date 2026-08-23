@@ -47,21 +47,21 @@ export default function MenuPage() {
           {['Todos', ...CATEGORIES].map((cat) => (
             <button key={cat} onClick={() => setActiveCategory(cat)}
               className="shrink-0 px-4 py-2 rounded-full font-bold text-sm transition-all"
-              style={activeCategory === cat ? { backgroundColor: '#CC0000', color: 'white' } : { backgroundColor: '#F3F4F6', color: '#374151' }}>
+              style={activeCategory === cat ? { backgroundColor: '#006B42', color: 'white' } : { backgroundColor: '#F3F4F6', color: '#374151' }}>
               {cat}
             </button>
           ))}
         </div>
         {loading ? (
           <div className="flex justify-center py-20">
-            <div className="w-10 h-10 border-4 border-[#CC0000] border-t-transparent rounded-full animate-spin" />
+            <div className="w-10 h-10 border-4 border-[#006B42] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : activeCategory === 'Todos' ? (
           <div className="space-y-12">
             {Object.entries(byCategory).map(([cat, items]) => (
               <div key={cat}>
                 <div className="flex items-center gap-3 mb-5">
-                  <div className="w-1 h-8 rounded-full" style={{ backgroundColor: '#CC0000' }} />
+                  <div className="w-1 h-8 rounded-full" style={{ backgroundColor: '#006B42' }} />
                   <h2 className="text-2xl font-black text-gray-900">{cat}</h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -89,7 +89,7 @@ export default function MenuPage() {
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-20">
           <button onClick={() => setCartOpen(true)}
             className="flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl font-black text-white text-base hover:scale-105 transition-transform"
-            style={{ backgroundColor: '#CC0000' }}>
+            style={{ backgroundColor: '#006B42' }}>
             <ShoppingBag className="w-5 h-5" />
             Ver orden ({count} {count === 1 ? 'item' : 'items'})
           </button>
@@ -109,10 +109,10 @@ function MenuCard({ item, added, onAdd }: { item: DbMenuItem; added: boolean; on
         <p className="text-gray-500 text-sm leading-relaxed mb-3">{item.description}</p>
       </div>
       <div className="flex items-center justify-between mt-2">
-        <span className="text-[#CC0000] font-black text-xl">${item.price.toFixed(2)}</span>
+        <span className="text-[#006B42] font-black text-xl">${item.price.toFixed(2)}</span>
         <button onClick={onAdd}
           className="flex items-center gap-1.5 px-4 py-2 rounded-xl font-black text-white text-sm hover:opacity-90"
-          style={{ backgroundColor: added ? '#16A34A' : '#CC0000' }}>
+          style={{ backgroundColor: added ? '#16A34A' : '#006B42' }}>
           {added ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           {added ? '¡Listo!' : 'Agregar'}
         </button>

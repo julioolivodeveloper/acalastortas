@@ -52,7 +52,7 @@ export default function CheckoutPage() {
       <div className="max-w-md mx-auto px-4 py-24 text-center">
         <ShoppingBag className="w-16 h-16 mx-auto mb-4 text-gray-300" />
         <h2 className="text-2xl font-black text-gray-900 mb-2">Tu carrito está vacío</h2>
-        <Link href="/menu" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl font-black text-white text-base" style={{ backgroundColor: '#CC0000' }}>
+        <Link href="/menu" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl font-black text-white text-base" style={{ backgroundColor: '#006B42' }}>
           <ChevronLeft className="w-5 h-5" /> Ver Menú
         </Link>
       </div>
@@ -61,7 +61,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
-      <Link href="/menu" className="inline-flex items-center gap-1 text-[#CC0000] font-bold text-sm mb-6 hover:underline">
+      <Link href="/menu" className="inline-flex items-center gap-1 text-[#006B42] font-bold text-sm mb-6 hover:underline">
         <ChevronLeft className="w-4 h-4" /> Regresar al menú
       </Link>
       <h1 className="text-3xl font-black text-gray-900 mb-8">Confirmar Orden</h1>
@@ -74,14 +74,14 @@ export default function CheckoutPage() {
                 <div key={ci.item.id} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-gray-900 text-sm">{ci.item.name}</p>
-                    <p className="text-[#CC0000] font-black text-sm">${(ci.item.price * ci.quantity).toFixed(2)}</p>
+                    <p className="text-[#006B42] font-black text-sm">${(ci.item.price * ci.quantity).toFixed(2)}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <button onClick={() => updateQty(ci.item.id, ci.quantity - 1)} className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
                       {ci.quantity === 1 ? <Trash2 className="w-3.5 h-3.5 text-red-500" /> : <Minus className="w-3.5 h-3.5 text-gray-600" />}
                     </button>
                     <span className="w-5 text-center font-black text-sm">{ci.quantity}</span>
-                    <button onClick={() => updateQty(ci.item.id, ci.quantity + 1)} className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: '#CC0000' }}>
+                    <button onClick={() => updateQty(ci.item.id, ci.quantity + 1)} className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: '#006B42' }}>
                       <Plus className="w-3.5 h-3.5 text-white" />
                     </button>
                   </div>
@@ -95,19 +95,19 @@ export default function CheckoutPage() {
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">Nombre <span className="text-red-500">*</span></label>
                 <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Tu nombre completo"
-                  className={`w-full border rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#CC0000] ${errors.name ? 'border-red-400' : 'border-gray-200'}`} />
+                  className={`w-full border rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#006B42] ${errors.name ? 'border-red-400' : 'border-gray-200'}`} />
                 {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">Teléfono <span className="text-red-500">*</span></label>
                 <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(915) 000-0000" type="tel"
-                  className={`w-full border rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#CC0000] ${errors.phone ? 'border-red-400' : 'border-gray-200'}`} />
+                  className={`w-full border rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#006B42] ${errors.phone ? 'border-red-400' : 'border-gray-200'}`} />
                 {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">Notas especiales (opcional)</label>
                 <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Sin cebolla, extra salsa, etc." rows={3}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#CC0000] resize-none" />
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#006B42] resize-none" />
               </div>
             </div>
           </div>
@@ -139,7 +139,7 @@ export default function CheckoutPage() {
             </div>
             <button onClick={handleOrder} disabled={loading}
               className="w-full py-4 rounded-2xl font-black text-white text-base hover:opacity-90 disabled:opacity-60"
-              style={{ backgroundColor: '#CC0000' }}>
+              style={{ backgroundColor: '#006B42' }}>
               {loading ? 'Enviando...' : `Confirmar Orden — $${total.toFixed(2)}`}
             </button>
             <div className="flex items-center gap-3 my-4">

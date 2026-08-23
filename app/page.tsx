@@ -35,22 +35,22 @@ export default function Home() {
         {/* Background food photo */}
         <div className="absolute inset-0">
           <img src="/ubicacion.webp" alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(180,0,0,0.75) 60%, rgba(120,0,0,0.9) 100%)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,107,66,0.80) 60%, rgba(0,70,40,0.92) 100%)' }} />
         </div>
 
         <div className="relative z-10 max-w-3xl">
           <img src="/logo.png" alt="Aca Las Tortas" className="h-36 md:h-44 mx-auto mb-6 drop-shadow-2xl" />
           <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-2 drop-shadow-lg">
             Las Mejores<br />
-            <span style={{ color: '#F5C000' }}>Tortas de El Paso</span>
+            <span style={{ color: '#C61620' }}>Tortas de El Paso</span>
           </h1>
           <p className="text-white/90 text-lg md:text-xl mb-10 max-w-lg mx-auto font-semibold">
             Ordena en línea y recoge en ventanilla.<br />¡Sin esperas, sin complicaciones!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/menu"
-              className="inline-flex items-center justify-center gap-2 px-10 py-5 rounded-2xl font-black text-[#111] text-xl shadow-2xl hover:scale-105 transition-transform"
-              style={{ backgroundColor: '#F5C000' }}>
+              className="inline-flex items-center justify-center gap-2 px-10 py-5 rounded-2xl font-black text-white text-xl shadow-2xl hover:scale-105 transition-transform"
+              style={{ backgroundColor: '#C61620' }}>
               <ShoppingBag className="w-6 h-6" /> Ordenar Ahora — Pickup
             </Link>
             <a href={DOORDASH_URL} target="_blank" rel="noopener noreferrer"
@@ -77,7 +77,7 @@ export default function Home() {
             { icon: Phone, label: 'Teléfono', value: '(915) 858-8226' },
           ].map(({ icon: Icon, label, value }) => (
             <div key={label} className="flex items-center gap-3 py-3 sm:py-0 sm:px-6 first:sm:pl-0">
-              <Icon className="w-5 h-5 shrink-0" style={{ color: '#F5C000' }} />
+              <Icon className="w-5 h-5 shrink-0" style={{ color: '#C61620' }} />
               <div>
                 <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">{label}</p>
                 <p className="text-sm font-bold">{value}</p>
@@ -91,10 +91,10 @@ export default function Home() {
       <section className="py-16 px-4 max-w-6xl mx-auto">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <p className="text-[#CC0000] font-black text-sm uppercase tracking-widest mb-1">Más Pedidos</p>
+            <p className="text-[#006B42] font-black text-sm uppercase tracking-widest mb-1">Más Pedidos</p>
             <h2 className="text-3xl md:text-4xl font-black text-gray-900">Lo Más Popular</h2>
           </div>
-          <Link href="/menu" className="flex items-center gap-1 text-[#CC0000] font-bold text-sm hover:underline">
+          <Link href="/menu" className="flex items-center gap-1 text-[#006B42] font-bold text-sm hover:underline">
             Ver todo <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
@@ -104,7 +104,7 @@ export default function Home() {
               <div className="flex justify-between items-start gap-3 mb-3">
                 <div>
                   <h3 className="font-black text-gray-900 text-base leading-tight">{item.name}</h3>
-                  <p className="text-[#CC0000] font-black text-xl mt-1">${item.price.toFixed(2)}</p>
+                  <p className="text-[#006B42] font-black text-xl mt-1">${item.price.toFixed(2)}</p>
                 </div>
                 <span className="shrink-0 flex items-center gap-0.5 text-yellow-500 text-xs font-bold bg-yellow-50 px-2 py-1 rounded-full">
                   <Star className="w-3.5 h-3.5 fill-yellow-400" /> Popular
@@ -113,14 +113,14 @@ export default function Home() {
               <p className="text-gray-500 text-sm leading-relaxed mb-4">{item.description}</p>
               <button onClick={() => handleAdd(item.id, item)}
                 className="w-full py-3 rounded-xl font-black text-sm text-white transition-all"
-                style={{ backgroundColor: added === item.id ? '#16A34A' : '#CC0000' }}>
+                style={{ backgroundColor: added === item.id ? '#16A34A' : '#006B42' }}>
                 {added === item.id ? '¡Agregado!' : 'Agregar al Carrito'}
               </button>
             </div>
           ))}
         </div>
         <div className="text-center mt-10">
-          <Link href="/menu" className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-black text-white text-base shadow-lg hover:scale-105 transition-transform" style={{ backgroundColor: '#CC0000' }}>
+          <Link href="/menu" className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-black text-white text-base shadow-lg hover:scale-105 transition-transform" style={{ backgroundColor: '#006B42' }}>
             Ver Menú Completo <ChevronRight className="w-5 h-5" />
           </Link>
         </div>
@@ -135,10 +135,10 @@ export default function Home() {
           </div>
           {/* Content */}
           <div className="flex flex-col justify-center px-8 py-16 lg:px-16" style={{ backgroundColor: '#111' }}>
-            <p className="font-black text-sm uppercase tracking-widest mb-3" style={{ color: '#F5C000' }}>Pickup</p>
+            <p className="font-black text-sm uppercase tracking-widest mb-3" style={{ color: '#C61620' }}>Pickup</p>
             <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-5">
               Ordena Online<br />y Recoge<br />
-              <span style={{ color: '#F5C000' }}>Sin Esperar</span>
+              <span style={{ color: '#C61620' }}>Sin Esperar</span>
             </h2>
             <p className="text-gray-400 text-lg leading-relaxed mb-8">
               Haz tu pedido desde el celular, llega al restaurante y paga en ventanilla. Rápido, fácil y sin filas.
@@ -150,7 +150,7 @@ export default function Home() {
                 { num: '3', text: 'Llega y paga en ventanilla — ¡listo!' },
               ].map((s) => (
                 <div key={s.num} className="flex items-center gap-4">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm shrink-0" style={{ backgroundColor: '#CC0000', color: 'white' }}>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm shrink-0" style={{ backgroundColor: '#006B42', color: 'white' }}>
                     {s.num}
                   </div>
                   <p className="text-gray-300 text-base">{s.text}</p>
@@ -158,8 +158,8 @@ export default function Home() {
               ))}
             </div>
             <Link href="/menu"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-black text-[#111] text-base self-start hover:scale-105 transition-transform"
-              style={{ backgroundColor: '#F5C000' }}>
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-black text-white text-base self-start hover:scale-105 transition-transform"
+              style={{ backgroundColor: '#C61620' }}>
               <ShoppingBag className="w-5 h-5" /> Ordenar Ahora
             </Link>
           </div>
@@ -170,19 +170,19 @@ export default function Home() {
       <section className="py-0 overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2">
           {/* Content */}
-          <div className="flex flex-col justify-center px-8 py-16 lg:px-16 order-2 lg:order-1" style={{ backgroundColor: '#CC0000' }}>
+          <div className="flex flex-col justify-center px-8 py-16 lg:px-16 order-2 lg:order-1" style={{ backgroundColor: '#006B42' }}>
             <p className="font-black text-sm uppercase tracking-widest mb-3 text-white/60">Comodidad</p>
             <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-5">
               Autoservicio<br />y Comedor<br />
-              <span style={{ color: '#F5C000' }}>¡Los mejores!</span>
+              <span style={{ color: '#C61620' }}>¡Los mejores!</span>
             </h2>
             <p className="text-white/80 text-lg leading-relaxed mb-8">
               Visítanos en nuestro comedor o usa el drive-thru. Siempre con la misma calidad y sabor que nos caracteriza.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/menu"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-black text-[#CC0000] text-base hover:scale-105 transition-transform"
-                style={{ backgroundColor: '#F5C000' }}>
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-black text-[#006B42] text-base hover:scale-105 transition-transform"
+                style={{ backgroundColor: '#C61620' }}>
                 Ver Menú
               </Link>
               <a href={DOORDASH_URL} target="_blank" rel="noopener noreferrer"
@@ -213,7 +213,7 @@ export default function Home() {
       <section className="py-16 px-4" style={{ backgroundColor: '#FFF9F0' }}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-[#CC0000] font-black text-sm uppercase tracking-widest mb-2">Nuestra Familia</p>
+            <p className="text-[#006B42] font-black text-sm uppercase tracking-widest mb-2">Nuestra Familia</p>
             <h2 className="text-3xl md:text-4xl font-black text-gray-900">Clientes Felices</h2>
             <p className="text-gray-500 mt-2">La vida es muy corta como para quedarse con las ganas</p>
           </div>
@@ -244,10 +244,10 @@ export default function Home() {
             <img src="/ubicacion.webp" alt="Aca Las Tortas El Paso" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col justify-center px-8 py-16 lg:px-16 bg-white">
-            <p className="text-[#CC0000] font-black text-sm uppercase tracking-widest mb-3">Encuéntranos</p>
+            <p className="text-[#006B42] font-black text-sm uppercase tracking-widest mb-3">Encuéntranos</p>
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6">
               ¡Visítanos en<br />
-              <span style={{ color: '#CC0000' }}>El Paso, TX!</span>
+              <span style={{ color: '#006B42' }}>El Paso, TX!</span>
             </h2>
             <div className="space-y-4 mb-8">
               {[
@@ -256,8 +256,8 @@ export default function Home() {
                 { icon: Phone, title: 'Teléfono', value: '(915) 858-8226' },
               ].map(({ icon: Icon, title, value }) => (
                 <div key={title} className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#CC000015' }}>
-                    <Icon className="w-5 h-5" style={{ color: '#CC0000' }} />
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#006B4215' }}>
+                    <Icon className="w-5 h-5" style={{ color: '#006B42' }} />
                   </div>
                   <div>
                     <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">{title}</p>
@@ -269,7 +269,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/menu"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-black text-white text-base hover:scale-105 transition-transform"
-                style={{ backgroundColor: '#CC0000' }}>
+                style={{ backgroundColor: '#006B42' }}>
                 <ShoppingBag className="w-5 h-5" /> Ordenar Pickup
               </Link>
               <a href="https://maps.google.com/?q=10076+N+Loop+Dr+Socorro+TX" target="_blank" rel="noopener noreferrer"
@@ -303,7 +303,7 @@ export default function Home() {
             <p className="text-gray-400 text-sm">Las mejores tortas de El Paso, TX</p>
           </div>
           <div>
-            <h4 className="font-black text-sm uppercase tracking-wider mb-4" style={{ color: '#F5C000' }}>Navegación</h4>
+            <h4 className="font-black text-sm uppercase tracking-wider mb-4" style={{ color: '#C61620' }}>Navegación</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li><Link href="/" className="hover:text-white transition">Inicio</Link></li>
               <li><Link href="/menu" className="hover:text-white transition">Menú</Link></li>
@@ -312,11 +312,11 @@ export default function Home() {
             </ul>
           </div>
           <div>
-            <h4 className="font-black text-sm uppercase tracking-wider mb-4" style={{ color: '#F5C000' }}>Contacto</h4>
+            <h4 className="font-black text-sm uppercase tracking-wider mb-4" style={{ color: '#C61620' }}>Contacto</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#F5C000' }} /> 10076 N Loop Dr, Socorro, TX</li>
-              <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" style={{ color: '#F5C000' }} /> (915) 858-8226</li>
-              <li className="flex items-center gap-2"><Clock className="w-4 h-4 shrink-0" style={{ color: '#F5C000' }} /> Lun–Sáb: 8am – 9pm</li>
+              <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#C61620' }} /> 10076 N Loop Dr, Socorro, TX</li>
+              <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" style={{ color: '#C61620' }} /> (915) 858-8226</li>
+              <li className="flex items-center gap-2"><Clock className="w-4 h-4 shrink-0" style={{ color: '#C61620' }} /> Lun–Sáb: 8am – 9pm</li>
             </ul>
           </div>
         </div>

@@ -65,7 +65,7 @@ export default function PedidosPage() {
               key={f}
               onClick={() => setFilter(f)}
               className={`px-4 py-1.5 rounded-lg text-xs font-black capitalize transition ${
-                filter === f ? 'bg-[#CC0000] text-white' : 'text-gray-400 hover:text-white'
+                filter === f ? 'bg-[#006B42] text-white' : 'text-gray-400 hover:text-white'
               }`}
             >
               {f}

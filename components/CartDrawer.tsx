@@ -32,12 +32,12 @@ export default function CartDrawer({ open, onClose }: Props) {
         className="fixed top-0 right-0 z-50 h-full w-full max-w-sm bg-white shadow-2xl flex flex-col transition-transform duration-300"
         style={{ transform: open ? 'translateX(0)' : 'translateX(100%)' }}
       >
-        <div className="flex items-center justify-between px-5 py-4 border-b" style={{ backgroundColor: '#CC0000' }}>
+        <div className="flex items-center justify-between px-5 py-4 border-b" style={{ backgroundColor: '#006B42' }}>
           <div className="flex items-center gap-2 text-white">
             <ShoppingBag className="w-5 h-5" />
             <span className="font-black text-lg">Tu Orden</span>
             {count > 0 && (
-              <span className="bg-white text-[#CC0000] text-xs font-black w-5 h-5 rounded-full flex items-center justify-center">
+              <span className="bg-white text-[#006B42] text-xs font-black w-5 h-5 rounded-full flex items-center justify-center">
                 {count}
               </span>
             )}
@@ -52,7 +52,7 @@ export default function CartDrawer({ open, onClose }: Props) {
             <div className="flex flex-col items-center justify-center h-full gap-3 text-gray-400">
               <ShoppingBag className="w-12 h-12 opacity-30" />
               <p className="font-semibold">Tu carrito está vacío</p>
-              <button onClick={onClose} className="text-sm text-[#CC0000] font-bold hover:underline">
+              <button onClick={onClose} className="text-sm text-[#006B42] font-bold hover:underline">
                 Ver el menú
               </button>
             </div>
@@ -62,7 +62,7 @@ export default function CartDrawer({ open, onClose }: Props) {
                 <div key={ci.item.id} className="flex gap-3 bg-gray-50 rounded-xl p-3">
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-gray-900 text-sm leading-tight truncate">{ci.item.name}</p>
-                    <p className="text-[#CC0000] font-black text-sm mt-0.5">
+                    <p className="text-[#006B42] font-black text-sm mt-0.5">
                       ${(ci.item.price * ci.quantity).toFixed(2)}
                     </p>
                   </div>
@@ -79,7 +79,7 @@ export default function CartDrawer({ open, onClose }: Props) {
                     <button
                       onClick={() => updateQty(ci.item.id, ci.quantity + 1)}
                       className="w-7 h-7 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: '#CC0000' }}
+                      style={{ backgroundColor: '#006B42' }}
                     >
                       <Plus className="w-3.5 h-3.5 text-white" />
                     </button>
@@ -100,7 +100,7 @@ export default function CartDrawer({ open, onClose }: Props) {
             <button
               onClick={() => { onClose(); router.push('/pedido') }}
               className="w-full py-3.5 rounded-2xl font-black text-white text-base hover:opacity-90"
-              style={{ backgroundColor: '#CC0000' }}
+              style={{ backgroundColor: '#006B42' }}
             >
               Ordenar — ${total.toFixed(2)}
             </button>

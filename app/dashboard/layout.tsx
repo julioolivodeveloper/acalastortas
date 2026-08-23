@@ -45,7 +45,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
         <div className="bg-gray-900 rounded-3xl border border-gray-800 p-10 w-full max-w-sm text-center">
-          <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5" style={{ backgroundColor: '#CC0000' }}>
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5" style={{ backgroundColor: '#006B42' }}>
             <Lock className="w-7 h-7 text-white" />
           </div>
           <img src="/logo.png" alt="Aca Las Tortas" className="h-14 mx-auto mb-4" />
@@ -60,13 +60,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               onKeyDown={(e) => e.key === 'Enter' && login()}
               placeholder="PIN de acceso"
               maxLength={6}
-              className="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 text-center text-xl font-black tracking-widest focus:outline-none focus:ring-2 focus:ring-[#CC0000] placeholder:text-gray-600"
+              className="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 text-center text-xl font-black tracking-widest focus:outline-none focus:ring-2 focus:ring-[#006B42] placeholder:text-gray-600"
             />
             {error && <p className="text-red-400 text-sm">{error}</p>}
             <button
               onClick={login}
               className="w-full py-3.5 rounded-xl font-black text-white text-base"
-              style={{ backgroundColor: '#CC0000' }}
+              style={{ backgroundColor: '#006B42' }}
             >
               Entrar
             </button>
@@ -93,7 +93,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 key={href}
                 href={href}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition ${
-                  active ? 'bg-[#CC0000] text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                  active ? 'bg-[#006B42] text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'
                 }`}
               >
                 <Icon className="w-4 h-4 shrink-0" />
@@ -124,7 +124,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               key={href}
               href={href}
               className={`flex-1 flex flex-col items-center gap-0.5 py-2.5 text-xs font-bold transition ${
-                active ? 'text-[#CC0000]' : 'text-gray-500'
+                active ? 'text-[#006B42]' : 'text-gray-500'
               }`}
             >
               <Icon className="w-5 h-5" />

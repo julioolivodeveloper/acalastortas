@@ -24,7 +24,7 @@ export default function DashboardHome() {
   }, [])
 
   const statCards = [
-    { label: 'Órdenes Hoy', value: stats.ordersToday.toString(), icon: ShoppingBag, color: '#CC0000' },
+    { label: 'Órdenes Hoy', value: stats.ordersToday.toString(), icon: ShoppingBag, color: '#006B42' },
     { label: 'Ventas Hoy', value: `$${stats.todayRevenue.toFixed(2)}`, icon: DollarSign, color: '#16A34A' },
     { label: 'Pendientes', value: stats.pending.toString(), icon: Clock, color: '#F59E0B' },
     { label: 'Clientes', value: stats.totalCustomers.toString(), icon: Users, color: '#6366F1' },
@@ -71,7 +71,7 @@ export default function DashboardHome() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         {[
-          { href: '/dashboard/pedidos', icon: ShoppingBag, title: 'Gestionar Pedidos', desc: 'Ver y actualizar órdenes en tiempo real', color: '#CC0000' },
+          { href: '/dashboard/pedidos', icon: ShoppingBag, title: 'Gestionar Pedidos', desc: 'Ver y actualizar órdenes en tiempo real', color: '#006B42' },
           { href: '/dashboard/menu', icon: UtensilsCrossed, title: 'Editar Menú', desc: 'Precios, disponibilidad e ingredientes', color: '#6366F1' },
           { href: '/dashboard/clientes', icon: Users, title: 'Clientes', desc: 'Puntos y historial de clientes', color: '#14B8A6' },
         ].map((item) => (
@@ -88,7 +88,7 @@ export default function DashboardHome() {
       <div className="bg-gray-900 rounded-2xl border border-gray-800 p-5">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-white font-black text-base">Órdenes Recientes</h2>
-          <Link href="/dashboard/pedidos" className="text-[#CC0000] text-xs font-bold hover:underline">Ver todas</Link>
+          <Link href="/dashboard/pedidos" className="text-[#006B42] text-xs font-bold hover:underline">Ver todas</Link>
         </div>
         {loading ? (
           <p className="text-gray-500 text-sm text-center py-6">Cargando...</p>
