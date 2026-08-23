@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { MapPin, Phone, Clock, ShoppingBag, MessageCircle, ChevronRight, Star, Users, Heart } from 'lucide-react'
 
-const WHATSAPP = 'https://wa.me/19158001234?text=Hola%2C%20quiero%20ordenar'
+const WHATSAPP = 'https://wa.me/19158588226?text=Hola%2C%20quiero%20ordenar'
 const DOORDASH = 'https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/'
 const MAPS = 'https://maps.google.com/?q=10076+N+Loop+Dr,+Socorro,+TX+79927'
 
@@ -221,7 +221,7 @@ export default function SobreNosotrosPage() {
                 </div>
                 <div>
                   <p className="font-black text-gray-900 text-sm">Teléfono</p>
-                  <p className="text-gray-600 text-sm mt-0.5">(915) 800-1234</p>
+                  <p className="text-gray-600 text-sm mt-0.5">(915) 858-8226</p>
                 </div>
               </a>
             </div>

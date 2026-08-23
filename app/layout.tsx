@@ -3,6 +3,7 @@ import './globals.css'
 import ConditionalHeader from '@/components/ConditionalHeader'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://acalastortas-lake.vercel.app'),
   title: '¡Acá Las Tortas! El Paso — Pedidos Online',
   description: 'Las mejores tortas de El Paso. Ordena en línea para pickup o delivery vía DoorDash.',
   icons: {

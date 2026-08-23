@@ -71,5 +71,3 @@ export const NEXT_STATUS: Partial<Record<string, string>> = {
   preparando: 'listo',
   listo: 'entregado',
 }
-
-export const ADMIN_PIN = '1234'
