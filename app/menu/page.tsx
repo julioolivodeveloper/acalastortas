@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { ShoppingBag, Plus, Check, ChevronRight } from 'lucide-react'
+import { ShoppingBag, Plus, Check, ChevronRight, X } from 'lucide-react'
 import { useCartStore, cartCount } from '@/store/store'
 import { getMenu } from '@/lib/db'
 import type { DbMenuItem } from '@/lib/supabase'
@@ -27,6 +27,7 @@ export default function MenuPage() {
   const [cartOpen, setCartOpen] = useState(false)
   const [added, setAdded] = useState<string | null>(null)
   const [cartBounce, setCartBounce] = useState(false)
+  const [selected, setSelected] = useState<DbMenuItem | null>(null)
   const count = cartCount(cart)
 
   useEffect(() => {
@@ -174,6 +175,7 @@ export default function MenuPage() {
                       item={item}
                       added={added === item.id}
                       onAdd={() => handleAdd(item)}
+                      onOpen={() => setSelected(item)}
                       delay={idx * 40}
                     />
                   ))}
@@ -200,6 +202,7 @@ export default function MenuPage() {
                   item={item}
                   added={added === item.id}
                   onAdd={() => handleAdd(item)}
+                  onOpen={() => setSelected(item)}
                   delay={idx * 40}
                 />
               ))}
@@ -241,6 +244,76 @@ export default function MenuPage() {
       )}
 
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+
+      {/* Item detail modal */}
+      {selected && (
+        <div
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+          style={{ backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
+          onClick={() => setSelected(null)}
+        >
+          <div
+            className="bg-white w-full sm:max-w-lg sm:rounded-3xl rounded-t-3xl overflow-hidden shadow-2xl"
+            style={{ maxHeight: '92vh' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Image */}
+            <div className="relative h-64 sm:h-72 bg-gray-100">
+              {selected.image ? (
+                <img src={selected.image} alt={selected.name} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-7xl opacity-20">🍽️</div>
+              )}
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%)' }} />
+              <button
+                onClick={() => setSelected(null)}
+                className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <span className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                {selected.category}
+              </span>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(92vh - 288px)' }}>
+              <h2 className="text-2xl font-black text-gray-900 mb-2">{selected.name}</h2>
+              {selected.description && (
+                <p className="text-gray-500 text-sm leading-relaxed mb-4">{selected.description}</p>
+              )}
+
+              {selected.ingredients && selected.ingredients.length > 0 && (
+                <div className="mb-5">
+                  <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">Ingredientes</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selected.ingredients.map((ing) => (
+                      <span key={ing} className="bg-green-50 border border-green-100 text-green-700 text-xs font-semibold px-2.5 py-1 rounded-full">
+                        {ing}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                <span className="text-3xl font-black" style={{ color: '#006B42' }}>
+                  ${selected.price.toFixed(2)}
+                </span>
+                <button
+                  onClick={() => { handleAdd(selected); setSelected(null) }}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-black text-white text-base transition-all ${
+                    added === selected.id ? 'scale-95' : 'hover:scale-105 active:scale-95'
+                  }`}
+                  style={{ backgroundColor: added === selected.id ? '#16A34A' : '#C61620', boxShadow: '0 4px 20px rgba(198,22,32,0.35)' }}
+                >
+                  {added === selected.id ? <><Check className="w-5 h-5" /> ¡Agregado!</> : <><Plus className="w-5 h-5" /> Agregar al carrito</>}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
@@ -249,17 +322,20 @@ function MenuCard({
   item,
   added,
   onAdd,
+  onOpen,
   delay = 0,
 }: {
   item: DbMenuItem
   added: boolean
   onAdd: () => void
+  onOpen: () => void
   delay?: number
 }) {
   return (
     <div
       className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col cursor-pointer"
       style={{ animationDelay: `${delay}ms` }}
+      onClick={onOpen}
     >
       {/* Image */}
       <div className="relative overflow-hidden bg-gray-50 h-48">
@@ -292,7 +368,7 @@ function MenuCard({
             </span>
           </div>
           <button
-            onClick={onAdd}
+            onClick={(e) => { e.stopPropagation(); onAdd() }}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-black text-white text-sm transition-all duration-200 ${
               added ? 'scale-95' : 'hover:scale-105 active:scale-95'
             }`}
