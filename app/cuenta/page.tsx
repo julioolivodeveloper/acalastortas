@@ -67,8 +67,8 @@ export default function CuentaPage() {
         {step === 'landing' && (
           <div>
             <div className="text-center mb-10">
-              <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg" style={{ backgroundColor: '#006B42' }}>
-                <Star className="w-10 h-10 text-white fill-white" />
+              <div className="mx-auto mb-5">
+                <img src="/logo.png" alt="Acá Las Tortas" className="h-24 mx-auto drop-shadow-xl" />
               </div>
               <h1 className="text-3xl font-black text-gray-900 mb-2">Mi Cuenta</h1>
               <p className="text-gray-500">Gana puntos con cada pedido y canjéalos por descuentos</p>
@@ -91,15 +91,15 @@ export default function CuentaPage() {
 
               <button
                 onClick={() => { reset(); setStep('register') }}
-                className="w-full flex items-center gap-4 p-5 rounded-2xl font-black text-base border-2 hover:bg-gray-50 transition"
-                style={{ borderColor: '#006B42', color: '#006B42' }}
+                className="w-full flex items-center gap-4 p-5 rounded-2xl font-black text-base text-white hover:opacity-90 transition shadow-lg"
+                style={{ backgroundColor: '#C61620' }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#006B42' + '15' }}>
+                <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0">
                   <UserPlus className="w-5 h-5" />
                 </div>
                 <div className="text-left">
                   <p className="text-base font-black">Crear Cuenta</p>
-                  <p className="text-gray-400 text-xs font-normal">Soy nuevo, quiero registrarme</p>
+                  <p className="text-white/70 text-xs font-normal">Soy nuevo, quiero registrarme</p>
                 </div>
               </button>
             </div>
