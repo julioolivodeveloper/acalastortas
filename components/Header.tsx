@@ -48,12 +48,13 @@ export default function Header() {
             </Link>
             <button
               onClick={() => setCartOpen(true)}
-              className="relative flex items-center gap-1.5 bg-white text-[#006B42] px-3 py-2 rounded-xl font-black text-sm hover:bg-yellow-50 transition"
+              className="relative flex items-center gap-1.5 px-3 py-2 rounded-xl font-black text-sm text-white transition hover:opacity-90"
+              style={{ backgroundColor: '#C61620' }}
             >
               <ShoppingBag className="w-4 h-4" />
               <span className="hidden sm:inline">Orden</span>
               {count > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-white text-xs font-black flex items-center justify-center" style={{ backgroundColor: '#C61620' }}>
+                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-[#C61620] bg-white text-xs font-black flex items-center justify-center">
                   {count}
                 </span>
               )}
