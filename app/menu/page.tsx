@@ -20,6 +20,28 @@ const CATEGORY_IMG: Record<string, string> = {
   Bebidas: '/menu/bebida-aguas-frescas.jpg',
 }
 
+const CATEGORY_COLOR: Record<string, string> = {
+  Tortas: '#C61620',
+  Hamburguesas: '#D97706',
+  Burritos: '#7B3F00',
+  Tacos: '#B45309',
+  Quesadillas: '#92400E',
+  'Flautas y Pollo': '#15803D',
+  'Menú Kids': '#7C3AED',
+  Bebidas: '#0369A1',
+}
+
+const CATEGORY_EMOJI: Record<string, string> = {
+  Tortas: '🥖',
+  Hamburguesas: '🍔',
+  Burritos: '🌯',
+  Tacos: '🌮',
+  Quesadillas: '🫓',
+  'Flautas y Pollo': '🍗',
+  'Menú Kids': '⭐',
+  Bebidas: '🥤',
+}
+
 const EXTRAS = [
   { id: 'papitas', name: 'Papitas', price: 3.99, image: '/menu/kids-papitas.jpg' },
   { id: 'papitas-queso', name: 'Papitas c/Queso', price: 4.99, image: '/menu/kids-papitas-queso.jpg' },
@@ -188,22 +210,26 @@ export default function MenuPage() {
           <div className="space-y-12">
             {Object.entries(byCategory).map(([cat, items]) => (
               <section key={cat}>
-                <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-8 rounded-full" style={{ backgroundColor: '#C61620' }} />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        {CATEGORY_IMG[cat] && (
-                          <img src={CATEGORY_IMG[cat]} alt="" className="w-8 h-8 rounded-xl object-cover" />
-                        )}
-                        <h2 className="text-2xl font-black text-gray-900">{cat}</h2>
+                    <div className="w-1 h-9 rounded-full" style={{ backgroundColor: CATEGORY_COLOR[cat] || '#C61620' }} />
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-2xl">{CATEGORY_EMOJI[cat]}</span>
+                      <div>
+                        <h2 className="text-xl font-black text-gray-900 leading-tight">{cat}</h2>
+                        <span
+                          className="text-[10px] font-black px-2 py-0.5 rounded-full text-white"
+                          style={{ backgroundColor: CATEGORY_COLOR[cat] || '#006B42' }}
+                        >
+                          {items.length} opciones
+                        </span>
                       </div>
-                      <p className="text-gray-500 text-xs ml-1">{items.length} opciones</p>
                     </div>
                   </div>
                   <button
                     onClick={() => setActiveCategory(cat)}
-                    className="flex items-center gap-1 text-xs font-bold text-green-700 hover:underline"
+                    className="flex items-center gap-1 text-xs font-black hover:underline px-3 py-1.5 rounded-xl transition"
+                    style={{ color: CATEGORY_COLOR[cat] || '#006B42', backgroundColor: `${CATEGORY_COLOR[cat] || '#006B42'}15` }}
                   >
                     Ver todos <ChevronRight className="w-3.5 h-3.5" />
                   </button>
@@ -225,15 +251,18 @@ export default function MenuPage() {
           </div>
         ) : (
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-1.5 h-8 rounded-full" style={{ backgroundColor: '#C61620' }} />
-              <div className="flex items-center gap-2">
-                {CATEGORY_IMG[activeCategory] && (
-                  <img src={CATEGORY_IMG[activeCategory]} alt="" className="w-9 h-9 rounded-xl object-cover" />
-                )}
-                <h2 className="text-2xl font-black text-gray-900">{activeCategory}</h2>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-1 h-9 rounded-full" style={{ backgroundColor: CATEGORY_COLOR[activeCategory] || '#C61620' }} />
+              <span className="text-3xl">{CATEGORY_EMOJI[activeCategory]}</span>
+              <div>
+                <h2 className="text-xl font-black text-gray-900 leading-tight">{activeCategory}</h2>
+                <span
+                  className="text-[10px] font-black px-2 py-0.5 rounded-full text-white"
+                  style={{ backgroundColor: CATEGORY_COLOR[activeCategory] || '#006B42' }}
+                >
+                  {visible.length} platillos
+                </span>
               </div>
-              <span className="text-sm text-gray-500 font-medium">({visible.length} platillos)</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {visible.map((item, idx) => (
@@ -430,27 +459,55 @@ function MenuCard({
   onOpen: () => void
   delay?: number
 }) {
+  const catColor = CATEGORY_COLOR[item.category] || '#006B42'
+  const hasIngredients = item.ingredients && item.ingredients.length > 0
+
   return (
     <div
-      className="flex items-center rounded-2xl border border-gray-200 bg-white cursor-pointer hover:shadow-md active:scale-[0.99] transition-all duration-200"
-      style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.06)', animationDelay: `${delay}ms` }}
+      className="flex items-stretch rounded-2xl bg-white cursor-pointer transition-all duration-200 active:scale-[0.99] overflow-hidden"
+      style={{
+        border: `1.5px solid #e5e7eb`,
+        boxShadow: '0 1px 6px rgba(0,0,0,0.07)',
+        animationDelay: `${delay}ms`,
+      }}
       onClick={onOpen}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = catColor; (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px rgba(0,0,0,0.1)` }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = '#e5e7eb'; (e.currentTarget as HTMLElement).style.boxShadow = '0 1px 6px rgba(0,0,0,0.07)' }}
     >
-      {/* Texto izquierda */}
-      <div className="flex-1 flex flex-col justify-between self-stretch px-4 py-4 min-w-0">
+      {/* Franja de color izquierda */}
+      <div className="w-1 shrink-0 self-stretch" style={{ backgroundColor: catColor }} />
+
+      {/* Texto */}
+      <div className="flex-1 flex flex-col justify-between px-3.5 py-3.5 min-w-0">
         <div>
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{item.category}</p>
+          <p
+            className="text-[10px] font-black uppercase tracking-widest mb-1"
+            style={{ color: catColor }}
+          >
+            {item.category}
+          </p>
           <h3 className="font-black text-gray-900 text-[15px] leading-snug mb-1.5">{item.name}</h3>
-          <p className="text-gray-500 text-sm leading-snug line-clamp-2">{item.description}</p>
+          <p className="text-gray-400 text-xs leading-relaxed line-clamp-2">{item.description}</p>
+          {hasIngredients && (
+            <p className="text-[10px] text-gray-400 mt-1.5 font-semibold">
+              🌿 {item.ingredients!.length} ingredientes · personalizable
+            </p>
+          )}
         </div>
         <div className="flex items-center justify-between mt-3">
-          <span className="text-xl font-black" style={{ color: '#006B42' }}>
+          <span
+            className="font-black text-sm px-3 py-1 rounded-full text-white"
+            style={{ backgroundColor: '#006B42' }}
+          >
             ${item.price.toFixed(2)}
           </span>
           <button
             onClick={(e) => { e.stopPropagation(); onAdd() }}
             className="w-9 h-9 rounded-full flex items-center justify-center text-white shrink-0 transition-all duration-200 active:scale-95"
-            style={{ backgroundColor: added ? '#16A34A' : '#006B42', boxShadow: '0 2px 8px rgba(0,107,66,0.35)' }}
+            style={{
+              backgroundColor: added ? '#16A34A' : catColor,
+              boxShadow: `0 3px 10px ${catColor}55`,
+            }}
           >
             {added ? <Check className="w-4 h-4" /> : <Plus className="w-5 h-5" />}
           </button>
@@ -458,11 +515,18 @@ function MenuCard({
       </div>
 
       {/* Imagen derecha */}
-      <div className="w-[120px] h-[120px] shrink-0 m-3 rounded-xl overflow-hidden bg-gray-100">
+      <div className="w-[130px] h-[130px] shrink-0 m-2.5 rounded-xl overflow-hidden bg-gray-100 relative">
         {item.image ? (
           <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-3xl opacity-30">🍽️</div>
+          <div className="w-full h-full flex items-center justify-center text-3xl opacity-20">🍽️</div>
+        )}
+        {hasIngredients && (
+          <div className="absolute top-1.5 left-1.5">
+            <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full text-white bg-black/50 backdrop-blur-sm">
+              ✏️ editar
+            </span>
+          </div>
         )}
       </div>
     </div>
