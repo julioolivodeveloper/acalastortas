@@ -61,7 +61,7 @@ export default function MenuPage() {
           style={{ filter: 'saturate(1.2)' }}
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(0,50,30,0.85) 40%, rgba(0,80,50,0.3) 100%)' }} />
-        <div className="relative z-10 max-w-6xl mx-auto">
+        <div className="relative z-10 max-w-screen-xl mx-auto">
           <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-lg">Nuestro Menú</h1>
           <p className="text-green-200/90 mt-1.5 text-sm font-semibold">Pickup en ~15 min · El Paso, TX</p>
         </div>
@@ -69,7 +69,7 @@ export default function MenuPage() {
 
       {/* Category tabs */}
       <div className="sticky top-16 z-10 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-md">
-        <div className="max-w-6xl mx-auto px-3">
+        <div className="max-w-screen-xl mx-auto px-3">
           <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar md:justify-center">
             {/* Todos pill */}
             {(['Todos'] as const).map(() => {
@@ -122,7 +122,7 @@ export default function MenuPage() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8 pb-32">
+      <div className="max-w-screen-xl mx-auto px-4 py-8 pb-32">
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {Array.from({ length: 9 }).map((_, i) => (
