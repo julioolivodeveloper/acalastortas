@@ -131,7 +131,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-2">
           {/* Image */}
           <div className="relative h-80 lg:h-auto">
-            <img src="/ordena-recoge.webp" alt="Ordena y Recoge" className="w-full h-full object-cover" />
+            <img src="/ordena-recoge.png" alt="Ordena y Recoge" className="w-full h-full object-cover" />
           </div>
           {/* Content */}
           <div className="flex flex-col justify-center px-8 py-16 lg:px-16" style={{ backgroundColor: '#111' }}>
