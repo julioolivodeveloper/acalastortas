@@ -35,7 +35,7 @@ export default function Home() {
         {/* Background food photo */}
         <div className="absolute inset-0">
           <img src="/ubicacion.webp" alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,107,66,0.80) 60%, rgba(0,70,40,0.92) 100%)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,107,66,0.50) 55%, rgba(0,70,40,0.75) 100%)' }} />
         </div>
 
         <div className="relative z-10 max-w-3xl">
