@@ -1,18 +1,20 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ShoppingBag, Minus, Plus, Trash2, ExternalLink, ChevronLeft } from 'lucide-react'
+import { ShoppingBag, Minus, Plus, Trash2, ExternalLink, ChevronLeft, User } from 'lucide-react'
 import { useCartStore, cartTotal, cartItemPrice } from '@/store/store'
 import type { CartItem } from '@/store/store'
+import { useCustomerStore } from '@/store/customer-store'
+import { placeOrder } from '@/lib/db'
 
 const ck = (ci: CartItem) => ci.cartKey ?? ci.item.id
-import { placeOrder } from '@/lib/db'
 
 const DOORDASH_URL = 'https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/'
 
 export default function CheckoutPage() {
   const { cart, updateQty, clearCart } = useCartStore()
+  const { customer } = useCustomerStore()
   const router = useRouter()
   const total = cartTotal(cart)
   const [name, setName] = useState('')
@@ -20,6 +22,14 @@ export default function CheckoutPage() {
   const [notes, setNotes] = useState('')
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  // Pre-fill from logged-in customer
+  useEffect(() => {
+    if (customer) {
+      setName(customer.name)
+      setPhone(customer.phone)
+    }
+  }, [customer])
 
   const validate = () => {
     const e: Record<string, string> = {}
@@ -70,6 +80,8 @@ export default function CheckoutPage() {
       <h1 className="text-3xl font-black text-gray-900 mb-8">Confirmar Orden</h1>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3 space-y-6">
+
+          {/* Orden */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <h2 className="font-black text-gray-900 text-lg mb-4">Tu Orden</h2>
             <div className="space-y-3">
@@ -107,8 +119,23 @@ export default function CheckoutPage() {
               })}
             </div>
           </div>
+
+          {/* Datos del cliente */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-            <h2 className="font-black text-gray-900 text-lg mb-4">Tus Datos</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-black text-gray-900 text-lg">Tus Datos</h2>
+              {customer && (
+                <div className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full" style={{ backgroundColor: '#f0fdf4', color: '#006B42' }}>
+                  <User className="w-3.5 h-3.5" /> {customer.name}
+                </div>
+              )}
+            </div>
+            {!customer && (
+              <div className="mb-4 p-3 rounded-xl border border-green-100 bg-green-50 flex items-center justify-between">
+                <p className="text-xs text-green-800 font-semibold">¿Tienes cuenta? Inicia sesión para auto-rellenar</p>
+                <Link href="/cuenta" className="text-xs font-black underline" style={{ color: '#006B42' }}>Iniciar sesión</Link>
+              </div>
+            )}
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">Nombre <span className="text-red-500">*</span></label>
@@ -130,6 +157,7 @@ export default function CheckoutPage() {
             </div>
           </div>
         </div>
+
         <div className="lg:col-span-2">
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sticky top-24">
             <h2 className="font-black text-gray-900 text-lg mb-4">Resumen</h2>

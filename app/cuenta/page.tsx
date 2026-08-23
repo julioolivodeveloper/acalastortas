@@ -1,8 +1,9 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Star, ShoppingBag, Phone, User, Gift, LogIn, UserPlus, ChevronLeft } from 'lucide-react'
+import { Eye, EyeOff, ShoppingBag, Phone, User, Gift, LogIn, UserPlus, ChevronLeft } from 'lucide-react'
 import { STATUS_LABELS, STATUS_COLORS } from '@/store/store'
+import { useCustomerStore } from '@/store/customer-store'
 import { findCustomerByPhone, createCustomer, getCustomerOrders } from '@/lib/db'
 import type { DbCustomer, DbOrder } from '@/lib/supabase'
 
@@ -12,52 +13,104 @@ const tier = (pts: number) => {
   return { name: 'Bronce', color: '#CD7F32', emoji: '🥉' }
 }
 
-type Step = 'landing' | 'login' | 'register' | 'profile'
+type Step = 'landing' | 'login' | 'register' | 'profile' | 'set-password'
 
 export default function CuentaPage() {
+  const { customer: storedCustomer, setCustomer, savePassword, checkPassword, hasPassword, clearCustomer } = useCustomerStore()
+
   const [phone, setPhone] = useState('')
   const [name, setName] = useState('')
-  const [step, setStep] = useState<Step>('landing')
-  const [customer, setCustomer] = useState<DbCustomer | null>(null)
+  const [password, setPassword] = useState('')
+  const [showPw, setShowPw] = useState(false)
+  const [step, setStep] = useState<Step>(storedCustomer ? 'profile' : 'landing')
+  const [customer, setLocalCustomer] = useState<DbCustomer | null>(storedCustomer)
   const [customerOrders, setCustomerOrders] = useState<DbOrder[]>([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const reset = () => { setPhone(''); setName(''); setError('') }
+  const reset = () => { setPhone(''); setName(''); setPassword(''); setError('') }
 
-  const handleLogin = async () => {
+  const login = async () => {
     const digits = phone.replace(/\D/g, '')
     if (digits.length < 10) { setError('Ingresa un número válido de 10 dígitos'); return }
+    if (!password) { setError('Ingresa tu contraseña'); return }
     setError(''); setLoading(true)
     try {
       const found = await findCustomerByPhone(digits)
-      if (found) {
-        const orders = await getCustomerOrders(found.id)
-        setCustomer(found); setCustomerOrders(orders); setStep('profile')
-      } else {
-        setError('No encontramos una cuenta con ese número. ¿Quieres crear una?')
+      if (!found) {
+        setError('No encontramos una cuenta con ese número')
+        return
       }
+      // Si tiene contraseña guardada, verificar
+      if (hasPassword(digits)) {
+        if (!checkPassword(digits, password)) {
+          setError('Contraseña incorrecta')
+          return
+        }
+      } else {
+        // Cuenta antigua sin contraseña — guardar la que ingresó
+        savePassword(digits, password)
+      }
+      const orders = await getCustomerOrders(found.id)
+      setCustomer(found)
+      setLocalCustomer(found)
+      setCustomerOrders(orders)
+      setStep('profile')
     } catch { setError('Error al buscar. Intenta de nuevo.') }
     finally { setLoading(false) }
   }
 
-  const handleRegister = async () => {
+  const register = async () => {
     if (!name.trim()) { setError('Ingresa tu nombre'); return }
     const digits = phone.replace(/\D/g, '')
     if (digits.length < 10) { setError('Ingresa un número válido de 10 dígitos'); return }
+    if (password.length < 4) { setError('La contraseña debe tener al menos 4 caracteres'); return }
     setError(''); setLoading(true)
     try {
       const existing = await findCustomerByPhone(digits)
       if (existing) {
-        const orders = await getCustomerOrders(existing.id)
-        setCustomer(existing); setCustomerOrders(orders); setStep('profile')
+        setError('Ya existe una cuenta con ese número. Inicia sesión.')
         return
       }
       const newCustomer = await createCustomer(name.trim(), digits)
-      setCustomer(newCustomer); setCustomerOrders([]); setStep('profile')
+      savePassword(digits, password)
+      setCustomer(newCustomer)
+      setLocalCustomer(newCustomer)
+      setCustomerOrders([])
+      setStep('profile')
     } catch { setError('Error al registrar. Intenta de nuevo.') }
     finally { setLoading(false) }
   }
+
+  const logout = () => {
+    clearCustomer()
+    setLocalCustomer(null)
+    setCustomerOrders([])
+    reset()
+    setStep('landing')
+  }
+
+  const PasswordField = ({ placeholder = 'Contraseña', value, onChange, onEnter }: {
+    placeholder?: string; value: string; onChange: (v: string) => void; onEnter?: () => void
+  }) => (
+    <div className="relative">
+      <input
+        type={showPw ? 'text' : 'password'}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && onEnter?.()}
+        placeholder={placeholder}
+        className="w-full border border-gray-200 rounded-xl px-4 py-3 pr-12 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#006B42]"
+      />
+      <button
+        type="button"
+        onClick={() => setShowPw(!showPw)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+      >
+        {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+      </button>
+    </div>
+  )
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -67,9 +120,7 @@ export default function CuentaPage() {
         {step === 'landing' && (
           <div>
             <div className="text-center mb-10">
-              <div className="mx-auto mb-5">
-                <img src="/logo.png" alt="Acá Las Tortas" className="h-24 mx-auto drop-shadow-xl" />
-              </div>
+              <img src="/logo.png" alt="Acá Las Tortas" className="h-24 mx-auto drop-shadow-xl mb-5" />
               <h1 className="text-3xl font-black text-gray-900 mb-2">Mi Cuenta</h1>
               <p className="text-gray-500">Gana puntos con cada pedido y canjéalos por descuentos</p>
             </div>
@@ -104,7 +155,6 @@ export default function CuentaPage() {
               </button>
             </div>
 
-            {/* Beneficios */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
               <h3 className="font-black text-gray-900 text-sm mb-4 text-center">Beneficios del programa</h3>
               <div className="grid grid-cols-3 gap-3 text-center mb-4">
@@ -137,34 +187,37 @@ export default function CuentaPage() {
                   <LogIn className="w-7 h-7 text-white" />
                 </div>
                 <h2 className="text-2xl font-black text-gray-900 mb-1">Iniciar Sesión</h2>
-                <p className="text-gray-500 text-sm">Ingresa tu número de teléfono registrado</p>
+                <p className="text-gray-500 text-sm">Ingresa tu número y contraseña</p>
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Número de Teléfono</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
+                    <Phone className="w-3.5 h-3.5 inline mr-1" />Número de Celular
+                  </label>
                   <input
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
                     placeholder="(915) 000-0000"
                     type="tel"
                     className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#006B42]"
                   />
-                  {error && (
-                    <p className="text-red-500 text-xs mt-1">{error}</p>
-                  )}
                 </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Contraseña</label>
+                  <PasswordField value={password} onChange={setPassword} onEnter={login} />
+                </div>
+                {error && <p className="text-red-500 text-xs">{error}</p>}
                 <button
-                  onClick={handleLogin}
+                  onClick={login}
                   disabled={loading}
                   className="w-full py-3.5 rounded-2xl font-black text-white text-sm disabled:opacity-50 hover:opacity-90 transition"
                   style={{ backgroundColor: '#006B42' }}
                 >
-                  {loading ? 'Buscando...' : 'Entrar'}
+                  {loading ? 'Verificando...' : 'Entrar'}
                 </button>
                 <p className="text-center text-sm text-gray-400">
                   ¿No tienes cuenta?{' '}
-                  <button onClick={() => { reset(); setStep('register') }} className="font-black hover:underline" style={{ color: '#006B42' }}>
+                  <button onClick={() => { reset(); setStep('register') }} className="font-black hover:underline" style={{ color: '#C61620' }}>
                     Crear una
                   </button>
                 </p>
@@ -189,7 +242,9 @@ export default function CuentaPage() {
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Tu Nombre</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
+                    <User className="w-3.5 h-3.5 inline mr-1" />Tu Nombre
+                  </label>
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -198,19 +253,30 @@ export default function CuentaPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Número de Teléfono</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
+                    <Phone className="w-3.5 h-3.5 inline mr-1" />Número de Celular
+                  </label>
                   <input
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleRegister()}
                     placeholder="(915) 000-0000"
                     type="tel"
                     className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#006B42]"
                   />
-                  {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
                 </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Contraseña</label>
+                  <PasswordField
+                    placeholder="Mínimo 4 caracteres"
+                    value={password}
+                    onChange={setPassword}
+                    onEnter={register}
+                  />
+                  <p className="text-xs text-gray-400 mt-1">Guarda tu contraseña, la necesitarás para iniciar sesión</p>
+                </div>
+                {error && <p className="text-red-500 text-xs">{error}</p>}
                 <button
-                  onClick={handleRegister}
+                  onClick={register}
                   disabled={loading}
                   className="w-full py-3.5 rounded-2xl font-black text-white text-sm disabled:opacity-50 hover:opacity-90 transition"
                   style={{ backgroundColor: '#C61620' }}
@@ -266,10 +332,10 @@ export default function CuentaPage() {
                 <p className="text-gray-400 text-xs">Ver menú completo</p>
               </Link>
               <button
-                onClick={() => { setStep('landing'); setCustomer(null); setPhone('') }}
+                onClick={logout}
                 className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col items-center text-center hover:shadow-md transition"
               >
-                <User className="w-8 h-8 mb-2 text-gray-400" />
+                <LogIn className="w-8 h-8 mb-2 text-gray-400" style={{ transform: 'scaleX(-1)' }} />
                 <p className="font-black text-gray-900 text-sm">Cerrar Sesión</p>
                 <p className="text-gray-400 text-xs">Cambiar cuenta</p>
               </button>
