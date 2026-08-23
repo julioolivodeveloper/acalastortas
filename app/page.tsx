@@ -8,6 +8,43 @@ import type { DbMenuItem } from '@/lib/supabase'
 
 const POPULAR_IDS = ['t7', 't3', 'b1', 'ta1', 'q1', 't1']
 const DOORDASH_URL = 'https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/'
+const TYPEWRITER_WORDS = ['Tortas', 'Tacos', 'Burritos', 'Hamburguesas', 'Carnitas']
+
+function TypewriterSpan() {
+  const [text, setText] = useState(TYPEWRITER_WORDS[0])
+  const [deleting, setDeleting] = useState(false)
+  const [idx, setIdx] = useState(0)
+
+  useEffect(() => {
+    const word = TYPEWRITER_WORDS[idx]
+    let timer: ReturnType<typeof setTimeout>
+
+    if (!deleting && text === word) {
+      timer = setTimeout(() => setDeleting(true), 2000)
+    } else if (deleting && text === '') {
+      const next = (idx + 1) % TYPEWRITER_WORDS.length
+      setIdx(next)
+      setDeleting(false)
+    } else if (deleting) {
+      timer = setTimeout(() => setText(text.slice(0, -1)), 70)
+    } else {
+      timer = setTimeout(() => setText(word.slice(0, text.length + 1)), 110)
+    }
+
+    return () => clearTimeout(timer)
+  }, [text, deleting, idx])
+
+  return (
+    <span style={{ color: '#C61620' }}>
+      {text}
+      <span
+        className="inline-block align-middle ml-1 w-[3px] rounded-full animate-pulse"
+        style={{ backgroundColor: '#C61620', height: '0.8em' }}
+      />
+      {' '}de El Paso
+    </span>
+  )
+}
 
 export default function Home() {
   const { addToCart } = useCartStore()
@@ -35,14 +72,14 @@ export default function Home() {
         {/* Background food photo */}
         <div className="absolute inset-0">
           <img src="/ubicacion.webp" alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,107,66,0.50) 55%, rgba(0,70,40,0.75) 100%)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.38) 50%, rgba(0,0,0,0.68) 100%)' }} />
         </div>
 
         <div className="relative z-10 max-w-3xl">
           <img src="/logo.png" alt="Aca Las Tortas" className="h-36 md:h-44 mx-auto mb-6 drop-shadow-2xl" />
           <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-2 drop-shadow-lg">
             Las Mejores<br />
-            <span style={{ color: '#C61620' }}>Tortas de El Paso</span>
+            <TypewriterSpan />
           </h1>
           <p className="text-white/90 text-lg md:text-xl mb-10 max-w-lg mx-auto font-semibold">
             Ordena en línea y recoge en ventanilla.<br />¡Sin esperas, sin complicaciones!
