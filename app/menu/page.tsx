@@ -68,7 +68,7 @@ export default function MenuPage() {
       </div>
 
       {/* Category tabs */}
-      <div className="sticky top-16 z-10 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-md">
+      <div className="sticky top-16 z-10 border-b border-red-900 shadow-md" style={{ backgroundColor: '#C61620' }}>
         <div className="max-w-screen-xl mx-auto px-3">
           <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar md:justify-center">
             {/* Todos pill */}
@@ -80,12 +80,12 @@ export default function MenuPage() {
                   onClick={() => setActiveCategory('Todos')}
                   className="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-2xl font-black text-sm transition-all duration-200"
                   style={active
-                    ? { backgroundColor: '#006B42', color: 'white', boxShadow: '0 4px 16px rgba(0,107,66,0.35)' }
-                    : { backgroundColor: '#F3F4F6', color: '#6B7280' }}
+                    ? { backgroundColor: 'white', color: '#C61620', boxShadow: '0 4px 16px rgba(0,0,0,0.25)' }
+                    : { backgroundColor: 'rgba(255,255,255,0.15)', color: 'white' }}
                 >
                   <div
                     className="w-7 h-7 rounded-xl flex items-center justify-center text-base shrink-0"
-                    style={{ backgroundColor: active ? 'rgba(255,255,255,0.2)' : '#E5E7EB' }}
+                    style={{ backgroundColor: active ? 'rgba(198,22,32,0.08)' : 'rgba(255,255,255,0.15)' }}
                   >
                     🍽️
                   </div>
@@ -103,8 +103,8 @@ export default function MenuPage() {
                   onClick={() => setActiveCategory(cat)}
                   className="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-2xl font-black text-sm transition-all duration-200 whitespace-nowrap"
                   style={active
-                    ? { backgroundColor: '#006B42', color: 'white', boxShadow: '0 4px 16px rgba(0,107,66,0.35)' }
-                    : { backgroundColor: '#F3F4F6', color: '#6B7280' }}
+                    ? { backgroundColor: 'white', color: '#C61620', boxShadow: '0 4px 16px rgba(0,0,0,0.25)' }
+                    : { backgroundColor: 'rgba(255,255,255,0.15)', color: 'white' }}
                 >
                   <div className="w-7 h-7 rounded-xl overflow-hidden shrink-0">
                     <img
