@@ -4,7 +4,7 @@ import { Plus, Pencil, Trash2, Check, X, ToggleLeft, ToggleRight } from 'lucide-
 import { getMenu, updateMenuItem, addMenuItem, deleteMenuItem } from '@/lib/db'
 import type { DbMenuItem } from '@/lib/supabase'
 
-const CATEGORIES = ['Tortas', 'Burritos', 'Quesadillas', 'Tacos', 'Enchiladas', 'Gorditas', 'Bebidas', 'Extras']
+const CATEGORIES = ['Tortas', 'Hamburguesas', 'Burritos', 'Tacos', 'Menú Kids', 'Bebidas']
 
 export default function MenuEditorPage() {
   const [menu, setMenu] = useState<DbMenuItem[]>([])
