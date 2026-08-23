@@ -18,6 +18,7 @@ export async function updateMenuItem(id: string, updates: Record<string, unknown
 export async function addMenuItem(item: {
   id: string; name: string; description: string
   price: number; category: string; available: boolean
+  image?: string | null; ingredients?: string[]
 }) {
   const { error } = await supabase.from('menu_items').insert(item)
   if (error) throw error

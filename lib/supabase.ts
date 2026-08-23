@@ -15,6 +15,7 @@ export type DbMenuItem = {
   category: string
   available: boolean
   image: string | null
+  ingredients: string[]
   created_at: string
 }
 
