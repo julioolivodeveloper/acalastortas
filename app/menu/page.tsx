@@ -6,13 +6,15 @@ import { getMenu } from '@/lib/db'
 import type { DbMenuItem } from '@/lib/supabase'
 import CartDrawer from '@/components/CartDrawer'
 
-const CATEGORIES = ['Tortas', 'Hamburguesas', 'Burritos', 'Tacos', 'Menú Kids', 'Bebidas']
+const CATEGORIES = ['Tortas', 'Hamburguesas', 'Burritos', 'Tacos', 'Quesadillas', 'Flautas y Pollo', 'Menú Kids', 'Bebidas']
 
 const CATEGORY_EMOJI: Record<string, string> = {
   Tortas: '🥖',
   Hamburguesas: '🍔',
   Burritos: '🌯',
   Tacos: '🌮',
+  Quesadillas: '🫓',
+  'Flautas y Pollo': '🍗',
   'Menú Kids': '⭐',
   Bebidas: '🥤',
 }
