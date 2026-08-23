@@ -1,18 +1,25 @@
 'use client'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { DbMenuItem } from '@/lib/supabase'
+import type { DbMenuItem, CartItemExtra } from '@/lib/supabase'
+
+export type { CartItemExtra }
 
 export type CartItem = {
+  cartKey?: string
   item: DbMenuItem
   quantity: number
+  removedIngredients?: string[]
+  extras?: CartItemExtra[]
 }
+
+const ck = (ci: CartItem) => ci.cartKey ?? ci.item.id
 
 type CartStore = {
   cart: CartItem[]
-  addToCart: (item: DbMenuItem) => void
-  removeFromCart: (id: string) => void
-  updateQty: (id: string, qty: number) => void
+  addToCart: (item: DbMenuItem, options?: { removedIngredients?: string[]; extras?: CartItemExtra[] }) => void
+  removeFromCart: (cartKey: string) => void
+  updateQty: (cartKey: string, qty: number) => void
   clearCart: () => void
 }
 
@@ -20,20 +27,27 @@ export const useCartStore = create<CartStore>()(
   persist(
     (set) => ({
       cart: [],
-      addToCart: (item) =>
+      addToCart: (item, options) =>
         set((s) => {
-          const existing = s.cart.find((c) => c.item.id === item.id)
-          if (existing) {
-            return { cart: s.cart.map((c) => c.item.id === item.id ? { ...c, quantity: c.quantity + 1 } : c) }
+          const hasCustom = (options?.removedIngredients?.length ?? 0) > 0 || (options?.extras?.length ?? 0) > 0
+          if (hasCustom) {
+            const cartKey = `${item.id}-${Date.now()}`
+            return {
+              cart: [...s.cart, { cartKey, item, quantity: 1, removedIngredients: options?.removedIngredients, extras: options?.extras }],
+            }
           }
-          return { cart: [...s.cart, { item, quantity: 1 }] }
+          const existing = s.cart.find((c) => ck(c) === item.id && !c.removedIngredients?.length && !c.extras?.length)
+          if (existing) {
+            return { cart: s.cart.map((c) => ck(c) === ck(existing) ? { ...c, quantity: c.quantity + 1 } : c) }
+          }
+          return { cart: [...s.cart, { cartKey: item.id, item, quantity: 1 }] }
         }),
-      removeFromCart: (id) => set((s) => ({ cart: s.cart.filter((c) => c.item.id !== id) })),
-      updateQty: (id, qty) =>
+      removeFromCart: (cartKey) => set((s) => ({ cart: s.cart.filter((c) => ck(c) !== cartKey) })),
+      updateQty: (cartKey, qty) =>
         set((s) => ({
           cart: qty <= 0
-            ? s.cart.filter((c) => c.item.id !== id)
-            : s.cart.map((c) => c.item.id === id ? { ...c, quantity: qty } : c),
+            ? s.cart.filter((c) => ck(c) !== cartKey)
+            : s.cart.map((c) => ck(c) === cartKey ? { ...c, quantity: qty } : c),
         })),
       clearCart: () => set({ cart: [] }),
     }),
@@ -41,13 +55,15 @@ export const useCartStore = create<CartStore>()(
   )
 )
 
+export const cartItemPrice = (ci: CartItem) =>
+  ci.item.price + (ci.extras ?? []).reduce((s, e) => s + e.price, 0)
+
 export const cartTotal = (cart: CartItem[]) =>
-  cart.reduce((sum, c) => sum + c.item.price * c.quantity, 0)
+  cart.reduce((sum, c) => sum + cartItemPrice(c) * c.quantity, 0)
 
 export const cartCount = (cart: CartItem[]) =>
   cart.reduce((sum, c) => sum + c.quantity, 0)
 
-// Alias para compatibilidad con Header y CartDrawer
 export const useAcaTortasStore = useCartStore
 
 export const STATUS_LABELS = {

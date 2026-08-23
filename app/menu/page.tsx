@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { ShoppingBag, Plus, Check, ChevronRight, X } from 'lucide-react'
-import { useCartStore, cartCount } from '@/store/store'
+import { useCartStore, cartCount, cartItemPrice } from '@/store/store'
+import type { CartItemExtra } from '@/store/store'
 import { getMenu } from '@/lib/db'
 import type { DbMenuItem } from '@/lib/supabase'
 import CartDrawer from '@/components/CartDrawer'
@@ -19,6 +20,13 @@ const CATEGORY_IMG: Record<string, string> = {
   Bebidas: '/menu/bebida-aguas-frescas.jpg',
 }
 
+const EXTRAS = [
+  { id: 'papitas', name: 'Papitas', price: 3.99, image: '/menu/kids-papitas.jpg' },
+  { id: 'papitas-queso', name: 'Papitas c/Queso', price: 4.99, image: '/menu/kids-papitas-queso.jpg' },
+  { id: 'refresco', name: 'Refresco', price: 2.99, image: '/menu/bebida-refresco-lata.jpg' },
+  { id: 'agua-fresca', name: 'Agua Fresca', price: 2.99, image: '/menu/bebida-aguas-frescas.jpg' },
+]
+
 export default function MenuPage() {
   const { cart, addToCart } = useCartStore()
   const [menu, setMenu] = useState<DbMenuItem[]>([])
@@ -28,11 +36,19 @@ export default function MenuPage() {
   const [added, setAdded] = useState<string | null>(null)
   const [cartBounce, setCartBounce] = useState(false)
   const [selected, setSelected] = useState<DbMenuItem | null>(null)
+  const [removedIngredients, setRemovedIngredients] = useState<Set<string>>(new Set())
+  const [selectedExtras, setSelectedExtras] = useState<Record<string, boolean>>({})
   const count = cartCount(cart)
 
   useEffect(() => {
     getMenu().then(setMenu).finally(() => setLoading(false))
   }, [])
+
+  const openItem = (item: DbMenuItem) => {
+    setSelected(item)
+    setRemovedIngredients(new Set())
+    setSelectedExtras({})
+  }
 
   const visible = (activeCategory === 'Todos' ? menu : menu.filter((m) => m.category === activeCategory))
     .filter((m) => m.available)
@@ -50,6 +66,34 @@ export default function MenuPage() {
     setTimeout(() => setAdded(null), 1400)
     setTimeout(() => setCartBounce(false), 600)
   }
+
+  const handleAddFromPopup = () => {
+    if (!selected) return
+    const removed = Array.from(removedIngredients)
+    const extras: CartItemExtra[] = EXTRAS.filter((e) => selectedExtras[e.id]).map((e) => ({ name: e.name, price: e.price }))
+    addToCart(selected, { removedIngredients: removed, extras })
+    setAdded(selected.id)
+    setCartBounce(true)
+    setTimeout(() => setAdded(null), 1400)
+    setTimeout(() => setCartBounce(false), 600)
+    setSelected(null)
+  }
+
+  const toggleIngredient = (ing: string) => {
+    setRemovedIngredients((prev) => {
+      const next = new Set(prev)
+      if (next.has(ing)) next.delete(ing)
+      else next.add(ing)
+      return next
+    })
+  }
+
+  const toggleExtra = (id: string) => {
+    setSelectedExtras((prev) => ({ ...prev, [id]: !prev[id] }))
+  }
+
+  const extrasTotal = EXTRAS.filter((e) => selectedExtras[e.id]).reduce((s, e) => s + e.price, 0)
+  const popupPrice = selected ? selected.price + extrasTotal : 0
 
   return (
     <>
@@ -75,7 +119,6 @@ export default function MenuPage() {
       <div className="sticky top-16 z-10 border-b border-red-900 shadow-md" style={{ backgroundColor: '#C61620' }}>
         <div className="max-w-screen-xl mx-auto px-3">
           <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar md:justify-center">
-            {/* Todos pill */}
             {(['Todos'] as const).map(() => {
               const active = activeCategory === 'Todos'
               return (
@@ -100,7 +143,6 @@ export default function MenuPage() {
 
             {CATEGORIES.map((cat) => {
               const active = activeCategory === cat
-              const label = cat === 'Flautas y Pollo' ? 'Flautas y Pollo' : cat
               return (
                 <button
                   key={cat}
@@ -118,7 +160,7 @@ export default function MenuPage() {
                       style={{ filter: active ? 'brightness(1.1)' : 'none' }}
                     />
                   </div>
-                  {label}
+                  {cat}
                 </button>
               )
             })}
@@ -175,7 +217,7 @@ export default function MenuPage() {
                       item={item}
                       added={added === item.id}
                       onAdd={() => handleAdd(item)}
-                      onOpen={() => setSelected(item)}
+                      onOpen={() => openItem(item)}
                       delay={idx * 40}
                     />
                   ))}
@@ -191,7 +233,7 @@ export default function MenuPage() {
                 {CATEGORY_IMG[activeCategory] && (
                   <img src={CATEGORY_IMG[activeCategory]} alt="" className="w-9 h-9 rounded-xl object-cover" />
                 )}
-                <h2 className="text-2xl font-black text-gray-900">{activeCategory}</h2>
+                <h2 className="text-2xl font-black text-white">{activeCategory}</h2>
               </div>
               <span className="text-sm text-gray-500 font-medium">({visible.length} platillos)</span>
             </div>
@@ -202,7 +244,7 @@ export default function MenuPage() {
                   item={item}
                   added={added === item.id}
                   onAdd={() => handleAdd(item)}
-                  onOpen={() => setSelected(item)}
+                  onOpen={() => openItem(item)}
                   delay={idx * 40}
                 />
               ))}
@@ -227,10 +269,7 @@ export default function MenuPage() {
             className={`flex items-center gap-3 px-7 py-4 rounded-2xl font-black text-white text-base transition-all duration-200 ${
               cartBounce ? 'scale-110' : 'scale-100 hover:scale-105'
             }`}
-            style={{
-              backgroundColor: '#C61620',
-              boxShadow: '0 8px 30px rgba(198,22,32,0.45)',
-            }}
+            style={{ backgroundColor: '#C61620', boxShadow: '0 8px 30px rgba(198,22,32,0.45)' }}
           >
             <div className="relative">
               <ShoppingBag className="w-5 h-5" />
@@ -249,16 +288,16 @@ export default function MenuPage() {
       {selected && (
         <div
           className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
-          style={{ backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
+          style={{ backgroundColor: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)' }}
           onClick={() => setSelected(null)}
         >
           <div
-            className="bg-white w-full sm:max-w-lg sm:rounded-3xl rounded-t-3xl overflow-hidden shadow-2xl"
-            style={{ maxHeight: '92vh' }}
+            className="bg-white w-full sm:max-w-lg sm:rounded-3xl rounded-t-3xl overflow-hidden shadow-2xl flex flex-col"
+            style={{ maxHeight: '94vh' }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Image */}
-            <div className="relative h-64 sm:h-72 bg-gray-100">
+            <div className="relative h-56 sm:h-64 bg-gray-100 shrink-0">
               {selected.image ? (
                 <img src={selected.image} alt={selected.name} className="w-full h-full object-cover" />
               ) : (
@@ -276,38 +315,100 @@ export default function MenuPage() {
               </span>
             </div>
 
-            {/* Content */}
-            <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(92vh - 288px)' }}>
-              <h2 className="text-2xl font-black text-gray-900 mb-2">{selected.name}</h2>
+            {/* Scrollable content */}
+            <div className="overflow-y-auto flex-1 px-5 pt-5 pb-0">
+              <h2 className="text-2xl font-black text-gray-900 mb-1.5">{selected.name}</h2>
               {selected.description && (
                 <p className="text-gray-500 text-sm leading-relaxed mb-4">{selected.description}</p>
               )}
 
+              {/* Ingredient toggles */}
               {selected.ingredients && selected.ingredients.length > 0 && (
                 <div className="mb-5">
-                  <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">Ingredientes</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {selected.ingredients.map((ing) => (
-                      <span key={ing} className="bg-green-50 border border-green-100 text-green-700 text-xs font-semibold px-2.5 py-1 rounded-full">
-                        {ing}
-                      </span>
-                    ))}
+                  <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-2.5">
+                    Ingredientes <span className="font-normal normal-case text-gray-400">— toca para quitar</span>
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {selected.ingredients.map((ing) => {
+                      const removed = removedIngredients.has(ing)
+                      return (
+                        <button
+                          key={ing}
+                          onClick={() => toggleIngredient(ing)}
+                          className="text-xs font-semibold px-3 py-1.5 rounded-full border transition-all duration-150"
+                          style={removed
+                            ? { backgroundColor: '#f5f5f5', borderColor: '#ddd', color: '#aaa', textDecoration: 'line-through' }
+                            : { backgroundColor: '#f0fdf4', borderColor: '#bbf7d0', color: '#15803d' }}
+                        >
+                          {removed ? '✕ ' : '✓ '}{ing}
+                        </button>
+                      )
+                    })}
                   </div>
+                  {removedIngredients.size > 0 && (
+                    <p className="text-xs font-bold text-orange-500 mt-2.5 flex items-center gap-1">
+                      <span>⚠️</span> Sin: {Array.from(removedIngredients).join(', ')}
+                    </p>
+                  )}
                 </div>
               )}
 
-              <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-                <span className="text-3xl font-black" style={{ color: '#006B42' }}>
-                  ${selected.price.toFixed(2)}
-                </span>
+              {/* Extras */}
+              {selected.category !== 'Bebidas' && (
+                <div className="mb-5">
+                  <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-3">¿Le agrego algo más?</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {EXTRAS.map((extra) => {
+                      const active = !!selectedExtras[extra.id]
+                      return (
+                        <button
+                          key={extra.id}
+                          onClick={() => toggleExtra(extra.id)}
+                          className="flex items-center gap-2.5 p-2.5 rounded-xl border text-left transition-all duration-150"
+                          style={active
+                            ? { borderColor: '#006B42', backgroundColor: '#f0fdf4' }
+                            : { borderColor: '#e5e7eb', backgroundColor: '#f9fafb' }}
+                        >
+                          <img src={extra.image} alt={extra.name} className="w-10 h-10 rounded-lg object-cover shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-xs text-gray-900 leading-tight">{extra.name}</p>
+                            <p className="font-black text-sm" style={{ color: '#006B42' }}>+${extra.price.toFixed(2)}</p>
+                          </div>
+                          <div
+                            className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all"
+                            style={active
+                              ? { backgroundColor: '#006B42', borderColor: '#006B42' }
+                              : { borderColor: '#d1d5db', backgroundColor: 'white' }}
+                          >
+                            {active && <Check className="w-3 h-3 text-white" />}
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Price + Add button — fixed at bottom */}
+            <div className="px-5 py-4 border-t border-gray-100 bg-white shrink-0">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-3xl font-black" style={{ color: '#006B42' }}>
+                    ${popupPrice.toFixed(2)}
+                  </span>
+                  {extrasTotal > 0 && (
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      ${selected.price.toFixed(2)} + ${extrasTotal.toFixed(2)} extras
+                    </p>
+                  )}
+                </div>
                 <button
-                  onClick={() => { handleAdd(selected); setSelected(null) }}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-black text-white text-base transition-all ${
-                    added === selected.id ? 'scale-95' : 'hover:scale-105 active:scale-95'
-                  }`}
-                  style={{ backgroundColor: added === selected.id ? '#16A34A' : '#C61620', boxShadow: '0 4px 20px rgba(198,22,32,0.35)' }}
+                  onClick={handleAddFromPopup}
+                  className="flex items-center gap-2 px-6 py-3 rounded-2xl font-black text-white text-base transition-all hover:scale-105 active:scale-95"
+                  style={{ backgroundColor: '#C61620', boxShadow: '0 4px 20px rgba(198,22,32,0.35)' }}
                 >
-                  {added === selected.id ? <><Check className="w-5 h-5" /> ¡Agregado!</> : <><Plus className="w-5 h-5" /> Agregar al carrito</>}
+                  <Plus className="w-5 h-5" /> Agregar
                 </button>
               </div>
             </div>
@@ -337,7 +438,6 @@ function MenuCard({
       style={{ backgroundColor: '#1a1a1a', borderColor: '#2a2a2a', boxShadow: '0 2px 8px rgba(0,0,0,0.4)', animationDelay: `${delay}ms` }}
       onClick={onOpen}
     >
-      {/* Image */}
       <div className="relative overflow-hidden bg-gray-900 h-48">
         {item.image ? (
           <img
@@ -348,7 +448,6 @@ function MenuCard({
         ) : (
           <div className="w-full h-full flex items-center justify-center text-5xl opacity-30">🍽️</div>
         )}
-        {/* Category badge */}
         <div className="absolute top-3 left-3">
           <span className="bg-black/50 backdrop-blur-sm text-white text-xs font-bold px-2.5 py-1 rounded-full">
             {item.category}
@@ -356,17 +455,14 @@ function MenuCard({
         </div>
       </div>
 
-      {/* Content */}
       <div className="flex-1 flex flex-col p-5">
         <h3 className="font-black text-white text-base leading-tight mb-1.5">{item.name}</h3>
         <p className="text-gray-400 text-sm leading-relaxed flex-1 mb-4">{item.description}</p>
 
         <div className="flex items-center justify-between">
-          <div>
-            <span className="text-2xl font-black" style={{ color: '#006B42' }}>
-              ${item.price.toFixed(2)}
-            </span>
-          </div>
+          <span className="text-2xl font-black" style={{ color: '#006B42' }}>
+            ${item.price.toFixed(2)}
+          </span>
           <button
             onClick={(e) => { e.stopPropagation(); onAdd() }}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-black text-white text-sm transition-all duration-200 ${
@@ -378,15 +474,9 @@ function MenuCard({
             }}
           >
             {added ? (
-              <>
-                <Check className="w-4 h-4" />
-                ¡Listo!
-              </>
+              <><Check className="w-4 h-4" /> ¡Listo!</>
             ) : (
-              <>
-                <Plus className="w-4 h-4" />
-                Agregar
-              </>
+              <><Plus className="w-4 h-4" /> Agregar</>
             )}
           </button>
         </div>

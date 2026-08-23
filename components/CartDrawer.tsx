@@ -2,7 +2,10 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { X, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
-import { useAcaTortasStore, cartTotal, cartCount } from '@/store/store'
+import { useAcaTortasStore, cartTotal, cartCount, cartItemPrice } from '@/store/store'
+import type { CartItem } from '@/store/store'
+
+const ck = (ci: CartItem) => ci.cartKey ?? ci.item.id
 
 type Props = { open: boolean; onClose: () => void }
 
@@ -58,34 +61,54 @@ export default function CartDrawer({ open, onClose }: Props) {
             </div>
           ) : (
             <div className="p-4 space-y-3">
-              {cart.map((ci) => (
-                <div key={ci.item.id} className="flex gap-3 bg-gray-50 rounded-xl p-3">
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-gray-900 text-sm leading-tight truncate">{ci.item.name}</p>
-                    <p className="text-[#006B42] font-black text-sm mt-0.5">
-                      ${(ci.item.price * ci.quantity).toFixed(2)}
-                    </p>
+              {cart.map((ci) => {
+                const unitPrice = cartItemPrice(ci)
+                return (
+                  <div key={ck(ci)} className="bg-gray-50 rounded-xl p-3">
+                    <div className="flex gap-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-gray-900 text-sm leading-tight truncate">{ci.item.name}</p>
+                        <p className="font-black text-sm mt-0.5" style={{ color: '#006B42' }}>
+                          ${(unitPrice * ci.quantity).toFixed(2)}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button
+                          onClick={() => updateQty(ck(ci), ci.quantity - 1)}
+                          className="w-7 h-7 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition"
+                        >
+                          {ci.quantity === 1
+                            ? <Trash2 className="w-3.5 h-3.5 text-red-500" />
+                            : <Minus className="w-3.5 h-3.5" />}
+                        </button>
+                        <span className="w-5 text-center font-black text-sm">{ci.quantity}</span>
+                        <button
+                          onClick={() => updateQty(ck(ci), ci.quantity + 1)}
+                          className="w-7 h-7 rounded-full flex items-center justify-center"
+                          style={{ backgroundColor: '#006B42' }}
+                        >
+                          <Plus className="w-3.5 h-3.5 text-white" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {((ci.removedIngredients?.length ?? 0) > 0 || (ci.extras?.length ?? 0) > 0) && (
+                      <div className="mt-2 pt-2 border-t border-gray-200 space-y-1">
+                        {ci.removedIngredients && ci.removedIngredients.length > 0 && (
+                          <p className="text-xs text-orange-600 font-semibold">
+                            Sin: {ci.removedIngredients.join(', ')}
+                          </p>
+                        )}
+                        {ci.extras && ci.extras.map((ex) => (
+                          <p key={ex.name} className="text-xs text-green-700 font-semibold">
+                            + {ex.name} <span className="text-gray-400">(${ex.price.toFixed(2)})</span>
+                          </p>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <button
-                      onClick={() => updateQty(ci.item.id, ci.quantity - 1)}
-                      className="w-7 h-7 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition"
-                    >
-                      {ci.quantity === 1
-                        ? <Trash2 className="w-3.5 h-3.5 text-red-500" />
-                        : <Minus className="w-3.5 h-3.5" />}
-                    </button>
-                    <span className="w-5 text-center font-black text-sm">{ci.quantity}</span>
-                    <button
-                      onClick={() => updateQty(ci.item.id, ci.quantity + 1)}
-                      className="w-7 h-7 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: '#006B42' }}
-                    >
-                      <Plus className="w-3.5 h-3.5 text-white" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>

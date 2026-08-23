@@ -3,7 +3,10 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ShoppingBag, Minus, Plus, Trash2, ExternalLink, ChevronLeft } from 'lucide-react'
-import { useCartStore, cartTotal } from '@/store/store'
+import { useCartStore, cartTotal, cartItemPrice } from '@/store/store'
+import type { CartItem } from '@/store/store'
+
+const ck = (ci: CartItem) => ci.cartKey ?? ci.item.id
 import { placeOrder } from '@/lib/db'
 
 const DOORDASH_URL = 'https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/'
@@ -70,23 +73,38 @@ export default function CheckoutPage() {
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <h2 className="font-black text-gray-900 text-lg mb-4">Tu Orden</h2>
             <div className="space-y-3">
-              {cart.map((ci) => (
-                <div key={ci.item.id} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-gray-900 text-sm">{ci.item.name}</p>
-                    <p className="text-[#006B42] font-black text-sm">${(ci.item.price * ci.quantity).toFixed(2)}</p>
+              {cart.map((ci) => {
+                const unitPrice = cartItemPrice(ci)
+                return (
+                  <div key={ck(ci)} className="py-2 border-b border-gray-50 last:border-0">
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-gray-900 text-sm">{ci.item.name}</p>
+                        <p className="text-[#006B42] font-black text-sm">${(unitPrice * ci.quantity).toFixed(2)}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => updateQty(ck(ci), ci.quantity - 1)} className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+                          {ci.quantity === 1 ? <Trash2 className="w-3.5 h-3.5 text-red-500" /> : <Minus className="w-3.5 h-3.5 text-gray-600" />}
+                        </button>
+                        <span className="w-5 text-center font-black text-sm">{ci.quantity}</span>
+                        <button onClick={() => updateQty(ck(ci), ci.quantity + 1)} className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: '#006B42' }}>
+                          <Plus className="w-3.5 h-3.5 text-white" />
+                        </button>
+                      </div>
+                    </div>
+                    {((ci.removedIngredients?.length ?? 0) > 0 || (ci.extras?.length ?? 0) > 0) && (
+                      <div className="mt-1.5 space-y-0.5 pl-1">
+                        {ci.removedIngredients && ci.removedIngredients.length > 0 && (
+                          <p className="text-xs text-orange-600 font-semibold">Sin: {ci.removedIngredients.join(', ')}</p>
+                        )}
+                        {ci.extras?.map((ex) => (
+                          <p key={ex.name} className="text-xs text-green-700 font-semibold">+ {ex.name} (${ex.price.toFixed(2)})</p>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button onClick={() => updateQty(ci.item.id, ci.quantity - 1)} className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
-                      {ci.quantity === 1 ? <Trash2 className="w-3.5 h-3.5 text-red-500" /> : <Minus className="w-3.5 h-3.5 text-gray-600" />}
-                    </button>
-                    <span className="w-5 text-center font-black text-sm">{ci.quantity}</span>
-                    <button onClick={() => updateQty(ci.item.id, ci.quantity + 1)} className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: '#006B42' }}>
-                      <Plus className="w-3.5 h-3.5 text-white" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
@@ -117,9 +135,9 @@ export default function CheckoutPage() {
             <h2 className="font-black text-gray-900 text-lg mb-4">Resumen</h2>
             <div className="space-y-2 text-sm text-gray-600 mb-4">
               {cart.map((ci) => (
-                <div key={ci.item.id} className="flex justify-between">
-                  <span>{ci.item.name} × {ci.quantity}</span>
-                  <span className="font-semibold">${(ci.item.price * ci.quantity).toFixed(2)}</span>
+                <div key={ck(ci)} className="flex justify-between">
+                  <span>{ci.item.name} × {ci.quantity}{ci.extras?.length ? ` + extras` : ''}</span>
+                  <span className="font-semibold">${(cartItemPrice(ci) * ci.quantity).toFixed(2)}</span>
                 </div>
               ))}
             </div>

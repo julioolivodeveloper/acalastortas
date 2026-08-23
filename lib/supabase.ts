@@ -19,9 +19,14 @@ export type DbMenuItem = {
   created_at: string
 }
 
+export type CartItemExtra = { name: string; price: number }
+
 export type CartItem = {
+  cartKey?: string
   item: DbMenuItem
   quantity: number
+  removedIngredients?: string[]
+  extras?: CartItemExtra[]
 }
 
 export type DbOrder = {
