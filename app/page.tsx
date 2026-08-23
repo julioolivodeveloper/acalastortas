@@ -35,13 +35,19 @@ function TypewriterSpan() {
   }, [text, deleting, idx])
 
   return (
-    <span style={{ color: '#C61620' }}>
+    <span
+      className="relative"
+      style={{
+        color: '#C61620',
+        textShadow: '0 0 40px rgba(198,22,32,0.5), 0 2px 12px rgba(0,0,0,0.8)',
+        WebkitTextStroke: '1px rgba(255,80,80,0.2)',
+      }}
+    >
       {text}
       <span
         className="inline-block align-middle ml-1 w-[3px] rounded-full animate-pulse"
-        style={{ backgroundColor: '#C61620', height: '0.8em' }}
+        style={{ backgroundColor: '#ff4444', height: '0.8em', boxShadow: '0 0 8px #ff4444' }}
       />
-      {' '}de El Paso
     </span>
   )
 }
