@@ -70,7 +70,7 @@ export default function MenuPage() {
       {/* Category tabs */}
       <div className="sticky top-16 z-10 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-md">
         <div className="max-w-6xl mx-auto px-3">
-          <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar">
+          <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar md:justify-center">
             {/* Todos pill */}
             {(['Todos'] as const).map(() => {
               const active = activeCategory === 'Todos'
