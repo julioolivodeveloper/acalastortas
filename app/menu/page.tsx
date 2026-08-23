@@ -68,56 +68,53 @@ export default function MenuPage() {
       </div>
 
       {/* Category tabs */}
-      <div className="sticky top-16 z-10 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4">
+      <div className="sticky top-16 z-10 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-md">
+        <div className="max-w-6xl mx-auto px-3">
           <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar">
-            {/* "Todos" pill */}
-            <button
-              onClick={() => setActiveCategory('Todos')}
-              className="shrink-0 flex flex-col items-center gap-1.5 group"
-            >
-              <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-200 border-2"
-                style={activeCategory === 'Todos'
-                  ? { backgroundColor: '#006B42', borderColor: '#006B42', boxShadow: '0 4px 14px rgba(0,107,66,0.35)' }
-                  : { backgroundColor: '#F3F4F6', borderColor: 'transparent' }}
-              >
-                🍽️
-              </div>
-              <span
-                className="text-[11px] font-black leading-none"
-                style={{ color: activeCategory === 'Todos' ? '#006B42' : '#9CA3AF' }}
-              >
-                Todos
-              </span>
-            </button>
+            {/* Todos pill */}
+            {(['Todos'] as const).map(() => {
+              const active = activeCategory === 'Todos'
+              return (
+                <button
+                  key="Todos"
+                  onClick={() => setActiveCategory('Todos')}
+                  className="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-2xl font-black text-sm transition-all duration-200"
+                  style={active
+                    ? { backgroundColor: '#006B42', color: 'white', boxShadow: '0 4px 16px rgba(0,107,66,0.35)' }
+                    : { backgroundColor: '#F3F4F6', color: '#6B7280' }}
+                >
+                  <div
+                    className="w-7 h-7 rounded-xl flex items-center justify-center text-base shrink-0"
+                    style={{ backgroundColor: active ? 'rgba(255,255,255,0.2)' : '#E5E7EB' }}
+                  >
+                    🍽️
+                  </div>
+                  Todos
+                </button>
+              )
+            })}
 
             {CATEGORIES.map((cat) => {
               const active = activeCategory === cat
+              const label = cat === 'Flautas y Pollo' ? 'Flautas y Pollo' : cat
               return (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className="shrink-0 flex flex-col items-center gap-1.5 group"
+                  className="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-2xl font-black text-sm transition-all duration-200 whitespace-nowrap"
+                  style={active
+                    ? { backgroundColor: '#006B42', color: 'white', boxShadow: '0 4px 16px rgba(0,107,66,0.35)' }
+                    : { backgroundColor: '#F3F4F6', color: '#6B7280' }}
                 >
-                  <div
-                    className="w-14 h-14 rounded-2xl overflow-hidden border-2 transition-all duration-200"
-                    style={active
-                      ? { borderColor: '#006B42', boxShadow: '0 4px 14px rgba(0,107,66,0.35)' }
-                      : { borderColor: 'transparent' }}
-                  >
+                  <div className="w-7 h-7 rounded-xl overflow-hidden shrink-0">
                     <img
                       src={CATEGORY_IMG[cat]}
                       alt={cat}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      className="w-full h-full object-cover"
+                      style={{ filter: active ? 'brightness(1.1)' : 'none' }}
                     />
                   </div>
-                  <span
-                    className="text-[11px] font-black leading-none max-w-[56px] text-center"
-                    style={{ color: active ? '#006B42' : '#9CA3AF' }}
-                  >
-                    {cat === 'Flautas y Pollo' ? 'Flautas' : cat === 'Menú Kids' ? 'Kids' : cat}
-                  </span>
+                  {label}
                 </button>
               )
             })}
