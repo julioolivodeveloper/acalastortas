@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import ConditionalHeader from '@/components/ConditionalHeader'
+import ConditionalFooter from '@/components/ConditionalFooter'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://acalastortas-lake.vercel.app'),
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen bg-gray-50">
         <ConditionalHeader />
         {children}
+        <ConditionalFooter />
       </body>
     </html>
   )

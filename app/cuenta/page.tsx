@@ -1,11 +1,13 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Eye, EyeOff, ShoppingBag, Phone, User, Gift, LogIn, UserPlus, ChevronLeft } from 'lucide-react'
+import { Eye, EyeOff, ShoppingBag, Phone, User, Gift, LogIn, UserPlus, ChevronLeft, ExternalLink } from 'lucide-react'
 import { STATUS_LABELS, STATUS_COLORS } from '@/store/store'
 import { useCustomerStore } from '@/store/customer-store'
 import { findCustomerByPhone, createCustomer, getCustomerOrders } from '@/lib/db'
 import type { DbCustomer, DbOrder } from '@/lib/supabase'
+
+const DOORDASH_URL = 'https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/'
 
 const tier = (pts: number) => {
   if (pts >= 500) return { name: 'VIP Gold', color: '#C61620', emoji: '🏆' }
@@ -380,6 +382,74 @@ export default function CuentaPage() {
           </div>
         )}
       </div>
-    </div>
-  )
+
+    {/* ── ORDENA Y RECOGE ── */}
+    <section className="py-0 overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="relative h-80 lg:h-auto">
+          <img src="/ordena-recoge.png" alt="Ordena y Recoge" className="w-full h-full object-cover" />
+        </div>
+        <div className="flex flex-col justify-center px-8 py-16 lg:px-16" style={{ backgroundColor: '#111' }}>
+          <p className="font-black text-sm uppercase tracking-widest mb-3" style={{ color: '#C61620' }}>Pickup</p>
+          <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-5">
+            Ordena Online<br />y Recoge<br />
+            <span style={{ color: '#C61620' }}>Sin Esperar</span>
+          </h2>
+          <p className="text-gray-400 text-lg leading-relaxed mb-8">
+            Haz tu pedido desde el celular, llega al restaurante y paga en ventanilla. Rápido, fácil y sin filas.
+          </p>
+          <div className="space-y-3 mb-8">
+            {[
+              { num: '1', text: 'Elige tus platillos favoritos en el menú' },
+              { num: '2', text: 'Confirma tu orden con tu nombre y teléfono' },
+              { num: '3', text: 'Llega y paga en ventanilla — ¡listo!' },
+            ].map((s) => (
+              <div key={s.num} className="flex items-center gap-4">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm shrink-0" style={{ backgroundColor: '#006B42', color: 'white' }}>
+                  {s.num}
+                </div>
+                <p className="text-gray-300 text-base">{s.text}</p>
+              </div>
+            ))}
+          </div>
+          <Link href="/menu"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-black text-white text-base self-start hover:scale-105 transition-transform"
+            style={{ backgroundColor: '#C61620' }}>
+            <ShoppingBag className="w-5 h-5" /> Ordenar Ahora
+          </Link>
+        </div>
+      </div>
+    </section>
+
+    {/* ── AUTOSERVICIO ── */}
+    <section className="py-0 overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="flex flex-col justify-center px-8 py-16 lg:px-16 order-2 lg:order-1 bg-black">
+          <p className="font-black text-sm uppercase tracking-widest mb-3" style={{ color: '#C61620' }}>Comodidad</p>
+          <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-5">
+            Autoservicio<br />y Comedor<br />
+            <span style={{ color: '#006B42' }}>¡Los mejores!</span>
+          </h2>
+          <p className="text-gray-400 text-lg leading-relaxed mb-8">
+            Visítanos en nuestro comedor o usa el drive-thru. Siempre con la misma calidad y sabor que nos caracteriza.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link href="/menu"
+              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-black text-white text-base hover:scale-105 transition-transform"
+              style={{ backgroundColor: '#C61620' }}>
+              Ver Menú
+            </Link>
+            <a href={DOORDASH_URL} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-black text-white text-base border-2 border-white/30 hover:border-white hover:bg-white/10 transition">
+              <ExternalLink className="w-4 h-4" /> DoorDash
+            </a>
+          </div>
+        </div>
+        <div className="relative h-80 lg:h-auto order-1 lg:order-2">
+          <img src="/imgcel.webp" alt="Autoservicio y Comedor" className="w-full h-full object-cover" />
+        </div>
+      </div>
+    </section>
+  </div>
+)
 }
