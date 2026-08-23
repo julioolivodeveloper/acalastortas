@@ -194,7 +194,7 @@ export default function MenuPage() {
                 {count}
               </span>
             </div>
-            Ver mi orden · {count} {count === 1 ? 'platillo' : 'platillos'}
+            Ver mi orden
           </button>
         </div>
       )}
