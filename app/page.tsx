@@ -1,18 +1,27 @@
 'use client'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MapPin, Clock, Phone, ExternalLink, Star, ChevronRight, ShoppingBag, ThumbsUp } from 'lucide-react'
-import { useAcaTortasStore } from '@/store/store'
+import { useCartStore } from '@/store/store'
+import { getMenu } from '@/lib/db'
+import type { DbMenuItem } from '@/lib/supabase'
 
 const POPULAR_IDS = ['t7', 't3', 'b1', 'ta1', 'q1', 't1']
 const DOORDASH_URL = 'https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/'
 
 export default function Home() {
-  const { menu, addToCart } = useAcaTortasStore()
+  const { addToCart } = useCartStore()
+  const [popular, setPopular] = useState<DbMenuItem[]>([])
   const [added, setAdded] = useState<string | null>(null)
-  const popular = menu.filter((m) => POPULAR_IDS.includes(m.id) && m.available)
 
-  const handleAdd = (id: string, item: (typeof menu)[0]) => {
+  useEffect(() => {
+    getMenu().then((data) => {
+      const items = (data as DbMenuItem[]).filter((m) => POPULAR_IDS.includes(m.id) && m.available)
+      setPopular(items)
+    })
+  }, [])
+
+  const handleAdd = (id: string, item: DbMenuItem) => {
     addToCart(item)
     setAdded(id)
     setTimeout(() => setAdded(null), 1200)
