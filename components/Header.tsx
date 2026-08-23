@@ -24,7 +24,7 @@ export default function Header() {
     <>
       <header className="sticky top-0 z-30 shadow-lg" style={{ backgroundColor: '#006B42' }}>
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center justify-center w-10 h-10 rounded-xl text-white hover:bg-white/20 transition shrink-0" title="Inicio">
+          <Link href="/" className="flex items-center justify-center w-10 h-10 rounded-xl text-white transition hover:opacity-90 shrink-0" title="Inicio" style={{ backgroundColor: '#C61620' }}>
             <Home className="w-6 h-6" />
           </Link>
 
@@ -67,15 +67,14 @@ export default function Header() {
         </div>
 
         {menuOpen && (
-          <div className="md:hidden border-t border-white/20 bg-[#AA0000] px-4 py-3 space-y-1">
+          <div className="md:hidden border-t border-white/20 px-4 py-3 space-y-1" style={{ backgroundColor: '#006B42' }}>
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`block px-4 py-2.5 rounded-xl font-bold text-sm transition ${
-                  pathname === link.href ? 'bg-white text-[#006B42]' : 'text-white hover:bg-white/20'
-                }`}
+                className="block px-4 py-2.5 rounded-xl font-bold text-sm transition text-white"
+                style={pathname === link.href ? { backgroundColor: '#C61620' } : {}}
               >
                 {link.label}
               </Link>
