@@ -1,6 +1,6 @@
 'use client'
-import { useEffect, useState } from 'react'
-import { Phone, Clock, ChevronDown, ChevronUp, X } from 'lucide-react'
+import { useEffect, useState, useRef, useCallback } from 'react'
+import { Phone, Clock, ChevronDown, ChevronUp, X, Bell, BellOff } from 'lucide-react'
 import { STATUS_LABELS, STATUS_COLORS, NEXT_STATUS } from '@/store/store'
 import { getOrders, updateOrderStatus } from '@/lib/db'
 import { supabase } from '@/lib/supabase'
@@ -8,27 +8,81 @@ import type { DbOrder, OrderStatus } from '@/lib/supabase'
 
 const STATUS_ORDER: OrderStatus[] = ['nuevo', 'preparando', 'listo', 'entregado', 'cancelado']
 
+function playBeep() {
+  try {
+    const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)()
+    const times = [0, 0.18, 0.36]
+    times.forEach((t) => {
+      const osc = ctx.createOscillator()
+      const gain = ctx.createGain()
+      osc.connect(gain)
+      gain.connect(ctx.destination)
+      osc.frequency.value = 880
+      osc.type = 'sine'
+      gain.gain.setValueAtTime(0.5, ctx.currentTime + t)
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.15)
+      osc.start(ctx.currentTime + t)
+      osc.stop(ctx.currentTime + t + 0.15)
+    })
+  } catch {}
+}
+
 export default function PedidosPage() {
   const [orders, setOrders] = useState<DbOrder[]>([])
   const [filter, setFilter] = useState<'activos' | 'todos'>('activos')
   const [expanded, setExpanded] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [newAlert, setNewAlert] = useState<DbOrder | null>(null)
+  const [notifAllowed, setNotifAllowed] = useState(false)
+  const prevCountRef = useRef<number | null>(null)
+  const originalTitle = useRef('Panel Admin — Pedidos')
 
-  const load = async () => {
+  useEffect(() => {
+    document.title = originalTitle.current
+    if ('Notification' in window && Notification.permission === 'granted') {
+      setNotifAllowed(true)
+    }
+  }, [])
+
+  const requestNotifPermission = async () => {
+    if (!('Notification' in window)) return
+    const result = await Notification.requestPermission()
+    setNotifAllowed(result === 'granted')
+  }
+
+  const load = useCallback(async () => {
     const data = await getOrders(filter)
     setOrders(data as DbOrder[])
     setLoading(false)
-  }
+  }, [filter])
 
   useEffect(() => {
     load()
-    // Realtime subscription
     const channel = supabase
       .channel('orders-realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => load())
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, (payload) => {
+        const newOrder = payload.new as DbOrder
+        // Sound
+        playBeep()
+        // Visual alert
+        setNewAlert(newOrder)
+        setTimeout(() => setNewAlert(null), 8000)
+        // Tab title
+        document.title = `🔔 ¡Nueva Orden! — Panel Admin`
+        setTimeout(() => { document.title = originalTitle.current }, 10000)
+        // Browser notification
+        if (Notification.permission === 'granted') {
+          new Notification('🛒 ¡Nueva Orden!', {
+            body: `${newOrder.customer_name} — $${Number(newOrder.total).toFixed(2)}`,
+            icon: '/logo.png',
+          })
+        }
+        load()
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders' }, () => load())
       .subscribe()
     return () => { supabase.removeChannel(channel) }
-  }, [filter]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [filter, load])
 
   const visible = filter === 'activos'
     ? orders.filter((o) => o.status !== 'entregado' && o.status !== 'cancelado')
@@ -54,23 +108,50 @@ export default function PedidosPage() {
 
   return (
     <div className="p-6">
+      {/* New order alert banner */}
+      {newAlert && (
+        <div
+          className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl animate-bounce"
+          style={{ backgroundColor: '#C61620', minWidth: 280 }}
+        >
+          <Bell className="w-5 h-5 text-white shrink-0" />
+          <div>
+            <p className="text-white font-black text-sm">¡Nueva Orden!</p>
+            <p className="text-white/80 text-xs">{newAlert.customer_name} — ${Number(newAlert.total).toFixed(2)}</p>
+          </div>
+          <button onClick={() => setNewAlert(null)} className="ml-auto text-white/60 hover:text-white">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-white font-black text-2xl">Pedidos</h1>
           <p className="text-gray-400 text-sm mt-0.5">Tiempo real — Supabase Realtime</p>
         </div>
-        <div className="flex gap-1 bg-gray-900 rounded-xl border border-gray-800 p-1">
-          {(['activos', 'todos'] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-4 py-1.5 rounded-lg text-xs font-black capitalize transition ${
-                filter === f ? 'bg-[#006B42] text-white' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              {f}
-            </button>
-          ))}
+        <div className="flex items-center gap-2">
+          {/* Notification permission button */}
+          <button
+            onClick={requestNotifPermission}
+            title={notifAllowed ? 'Notificaciones activadas' : 'Activar notificaciones del navegador'}
+            className={`p-2 rounded-xl transition ${notifAllowed ? 'text-green-400 bg-green-500/10' : 'text-gray-500 bg-gray-800 hover:text-white'}`}
+          >
+            {notifAllowed ? <Bell className="w-5 h-5" /> : <BellOff className="w-5 h-5" />}
+          </button>
+          <div className="flex gap-1 bg-gray-900 rounded-xl border border-gray-800 p-1">
+            {(['activos', 'todos'] as const).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-4 py-1.5 rounded-lg text-xs font-black capitalize transition ${
+                  filter === f ? 'bg-[#006B42] text-white' : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -79,9 +160,19 @@ export default function PedidosPage() {
           <p className="text-lg font-semibold">Cargando pedidos...</p>
         </div>
       ) : visible.length === 0 ? (
-        <div className="text-center py-20 text-gray-500">
-          <p className="text-lg font-semibold">No hay pedidos{filter === 'activos' ? ' activos' : ''}</p>
-          <p className="text-sm mt-1">Las órdenes aparecen aquí cuando los clientes ordenan</p>
+        <div className="text-center py-20 text-gray-600">
+          <Bell className="w-12 h-12 mx-auto mb-4 opacity-30" />
+          <p className="text-lg font-semibold text-gray-400">No hay pedidos{filter === 'activos' ? ' activos' : ''}</p>
+          <p className="text-sm mt-1">Las órdenes aparecen aquí automáticamente</p>
+          {!notifAllowed && (
+            <button
+              onClick={requestNotifPermission}
+              className="mt-6 px-5 py-2.5 rounded-xl font-black text-white text-sm hover:opacity-90"
+              style={{ backgroundColor: '#006B42' }}
+            >
+              🔔 Activar notificaciones del navegador
+            </button>
+          )}
         </div>
       ) : (
         <div className="space-y-8">
@@ -123,18 +214,22 @@ function OrderCard({ order, expanded, onToggle, onAdvance, onCancel }: {
 }) {
   const age = Math.floor((Date.now() - new Date(order.created_at).getTime()) / 60000)
   const nextStatus = NEXT_STATUS[order.status]
+  const isNew = order.status === 'nuevo' && age < 5
 
   return (
-    <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
+    <div
+      className="bg-gray-900 rounded-2xl border overflow-hidden transition-all"
+      style={{ borderColor: isNew ? '#C61620' : '#1F2937' }}
+    >
       <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-800/50 transition" onClick={onToggle}>
         <div className="flex items-center gap-3">
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <p className="text-white font-black text-base">#{order.order_number}</p>
               <span className="text-xs font-bold px-2 py-0.5 rounded-full text-white" style={{ backgroundColor: STATUS_COLORS[order.status] }}>
                 {STATUS_LABELS[order.status]}
               </span>
-              {order.status === 'nuevo' && age < 3 && (
+              {isNew && (
                 <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full font-bold animate-pulse">¡NUEVO!</span>
               )}
             </div>
