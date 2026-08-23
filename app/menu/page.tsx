@@ -8,15 +8,15 @@ import CartDrawer from '@/components/CartDrawer'
 
 const CATEGORIES = ['Tortas', 'Hamburguesas', 'Burritos', 'Tacos', 'Quesadillas', 'Flautas y Pollo', 'Menú Kids', 'Bebidas']
 
-const CATEGORY_EMOJI: Record<string, string> = {
-  Tortas: '🥖',
-  Hamburguesas: '🍔',
-  Burritos: '🌯',
-  Tacos: '🌮',
-  Quesadillas: '🫓',
-  'Flautas y Pollo': '🍗',
-  'Menú Kids': '⭐',
-  Bebidas: '🥤',
+const CATEGORY_IMG: Record<string, string> = {
+  Tortas: '/menu/torta-bistec.jpg',
+  Hamburguesas: '/menu/hamburguesa-doble.jpg',
+  Burritos: '/menu/burrito-verde.jpg',
+  Tacos: '/menu/tacos-carnitas.jpg',
+  Quesadillas: '/menu/quesadilla-1.jpg',
+  'Flautas y Pollo': '/menu/flauta-pechuga.jpg',
+  'Menú Kids': '/menu/kids-nuggets.jpg',
+  Bebidas: '/menu/bebida-aguas-frescas.jpg',
 }
 
 export default function MenuPage() {
@@ -61,26 +61,56 @@ export default function MenuPage() {
       </div>
 
       {/* Category tabs */}
-      <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+      <div className="sticky top-16 z-10 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex gap-1.5 overflow-x-auto py-3 no-scrollbar">
-            {['Todos', ...CATEGORIES].map((cat) => {
+          <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar">
+            {/* "Todos" pill */}
+            <button
+              onClick={() => setActiveCategory('Todos')}
+              className="shrink-0 flex flex-col items-center gap-1.5 group"
+            >
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-200 border-2"
+                style={activeCategory === 'Todos'
+                  ? { backgroundColor: '#006B42', borderColor: '#006B42', boxShadow: '0 4px 14px rgba(0,107,66,0.35)' }
+                  : { backgroundColor: '#F3F4F6', borderColor: 'transparent' }}
+              >
+                🍽️
+              </div>
+              <span
+                className="text-[11px] font-black leading-none"
+                style={{ color: activeCategory === 'Todos' ? '#006B42' : '#9CA3AF' }}
+              >
+                Todos
+              </span>
+            </button>
+
+            {CATEGORIES.map((cat) => {
               const active = activeCategory === cat
               return (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className="shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full font-bold text-sm transition-all duration-200"
-                  style={
-                    active
-                      ? { backgroundColor: '#006B42', color: 'white', boxShadow: '0 2px 8px rgba(0,107,66,0.35)' }
-                      : { backgroundColor: '#F3F4F6', color: '#6B7280' }
-                  }
+                  className="shrink-0 flex flex-col items-center gap-1.5 group"
                 >
-                  {cat !== 'Todos' && CATEGORY_EMOJI[cat] && (
-                    <span className="text-xs">{CATEGORY_EMOJI[cat]}</span>
-                  )}
-                  {cat}
+                  <div
+                    className="w-14 h-14 rounded-2xl overflow-hidden border-2 transition-all duration-200"
+                    style={active
+                      ? { borderColor: '#006B42', boxShadow: '0 4px 14px rgba(0,107,66,0.35)' }
+                      : { borderColor: 'transparent' }}
+                  >
+                    <img
+                      src={CATEGORY_IMG[cat]}
+                      alt={cat}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  <span
+                    className="text-[11px] font-black leading-none max-w-[56px] text-center"
+                    style={{ color: active ? '#006B42' : '#9CA3AF' }}
+                  >
+                    {cat === 'Flautas y Pollo' ? 'Flautas' : cat === 'Menú Kids' ? 'Kids' : cat}
+                  </span>
                 </button>
               )
             })}
@@ -115,7 +145,9 @@ export default function MenuPage() {
                     <div className="w-1.5 h-8 rounded-full" style={{ backgroundColor: '#C61620' }} />
                     <div>
                       <div className="flex items-center gap-2">
-                        {CATEGORY_EMOJI[cat] && <span className="text-xl">{CATEGORY_EMOJI[cat]}</span>}
+                        {CATEGORY_IMG[cat] && (
+                          <img src={CATEGORY_IMG[cat]} alt="" className="w-8 h-8 rounded-xl object-cover" />
+                        )}
                         <h2 className="text-2xl font-black text-gray-900">{cat}</h2>
                       </div>
                       <p className="text-gray-400 text-xs ml-1">{items.length} opciones</p>
@@ -147,7 +179,9 @@ export default function MenuPage() {
             <div className="flex items-center gap-3 mb-6">
               <div className="w-1.5 h-8 rounded-full" style={{ backgroundColor: '#C61620' }} />
               <div className="flex items-center gap-2">
-                {CATEGORY_EMOJI[activeCategory] && <span className="text-2xl">{CATEGORY_EMOJI[activeCategory]}</span>}
+                {CATEGORY_IMG[activeCategory] && (
+                  <img src={CATEGORY_IMG[activeCategory]} alt="" className="w-9 h-9 rounded-xl object-cover" />
+                )}
                 <h2 className="text-2xl font-black text-gray-900">{activeCategory}</h2>
               </div>
               <span className="text-sm text-gray-400 font-medium">({visible.length} platillos)</span>
