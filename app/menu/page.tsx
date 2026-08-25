@@ -122,12 +122,12 @@ export default function MenuPage() {
       {/* Header */}
       <div className="relative overflow-hidden px-4 pt-10 pb-8" style={{ backgroundColor: '#004D2E' }}>
         <img
-          src="/menu/hamburguesa-combo.jpg"
+          src="/menu/hamburguesa-combo.webp"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-30 scale-105"
-          style={{ filter: 'saturate(1.2)' }}
+          className="absolute inset-0 w-full h-full object-cover object-center scale-105"
+          style={{ filter: 'saturate(1.3) brightness(0.75)' }}
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(0,50,30,0.85) 40%, rgba(0,80,50,0.3) 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(0,40,20,0.82) 35%, rgba(0,60,35,0.25) 100%)' }} />
         <div className="relative z-10 max-w-screen-xl mx-auto flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-lg">Nuestro Menú</h1>
