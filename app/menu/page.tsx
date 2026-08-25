@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { ShoppingBag, Plus, Check, ChevronRight, X } from 'lucide-react'
+import { ShoppingBag, Plus, Check, ChevronRight, X, Store, Truck } from 'lucide-react'
 import { useCartStore, cartCount, cartItemPrice } from '@/store/store'
 import type { CartItemExtra } from '@/store/store'
 import { getMenu } from '@/lib/db'
@@ -196,22 +196,22 @@ export default function MenuPage() {
           </div>
 
           {/* Center: CTA buttons */}
-          <div className="flex flex-col items-center gap-3 absolute left-1/2 -translate-x-1/2">
+          <div className="flex flex-row items-center gap-3 absolute left-1/2 -translate-x-1/2">
             <button
               onClick={() => document.getElementById('menu-items')?.scrollIntoView({ behavior: 'smooth' })}
-              className="flex items-center gap-2.5 px-7 py-3 rounded-2xl font-black text-base text-white transition-all hover:scale-105 active:scale-95 shadow-xl whitespace-nowrap"
+              className="flex items-center gap-2 px-6 py-3 rounded-2xl font-black text-base text-white transition-all hover:scale-105 active:scale-95 shadow-xl whitespace-nowrap"
               style={{ backgroundColor: '#006B42', boxShadow: '0 6px 24px rgba(0,0,0,0.35)' }}
             >
-              🛍️ Pickup
+              <Store className="w-5 h-5" /> Pickup
             </button>
             <a
               href="https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2.5 px-7 py-3 rounded-2xl font-black text-base text-white transition-all hover:scale-105 active:scale-95 shadow-xl whitespace-nowrap"
+              className="flex items-center gap-2 px-6 py-3 rounded-2xl font-black text-base text-white transition-all hover:scale-105 active:scale-95 shadow-xl whitespace-nowrap"
               style={{ backgroundColor: '#FF3008', boxShadow: '0 6px 24px rgba(255,48,8,0.45)' }}
             >
-              🚗 Delivery
+              <Truck className="w-5 h-5" /> Delivery
             </a>
           </div>
 
