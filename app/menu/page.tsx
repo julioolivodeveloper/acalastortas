@@ -176,7 +176,8 @@ export default function MenuPage() {
           style={{ filter: 'saturate(1.3) brightness(0.75)' }}
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(0,40,20,0.82) 35%, rgba(0,60,35,0.25) 100%)' }} />
-        <div className="relative z-10 max-w-screen-xl mx-auto flex items-center justify-between">
+        <div className="relative z-10 max-w-screen-xl mx-auto flex items-center justify-between gap-4">
+          {/* Left: title + promo */}
           <div>
             <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-lg">Nuestro Menú</h1>
             <p className="text-green-200/90 mt-1.5 text-sm font-semibold">Pickup en ~15 min · El Paso, TX</p>
@@ -193,6 +194,27 @@ export default function MenuPage() {
               )}
             </button>
           </div>
+
+          {/* Center: CTA buttons */}
+          <div className="flex flex-col items-center gap-3 absolute left-1/2 -translate-x-1/2">
+            <button
+              onClick={() => document.getElementById('menu-items')?.scrollIntoView({ behavior: 'smooth' })}
+              className="flex items-center gap-2.5 px-7 py-3 rounded-2xl font-black text-base text-white transition-all hover:scale-105 active:scale-95 shadow-xl whitespace-nowrap"
+              style={{ backgroundColor: '#006B42', boxShadow: '0 6px 24px rgba(0,0,0,0.35)' }}
+            >
+              🛍️ Pickup
+            </button>
+            <a
+              href="https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2.5 px-7 py-3 rounded-2xl font-black text-base text-white transition-all hover:scale-105 active:scale-95 shadow-xl whitespace-nowrap"
+              style={{ backgroundColor: '#FF3008', boxShadow: '0 6px 24px rgba(255,48,8,0.45)' }}
+            >
+              🚗 Delivery
+            </a>
+          </div>
+
           <img src="/logo.png" alt="Aca Las Tortas" className="h-24 md:h-32 drop-shadow-2xl shrink-0" />
         </div>
       </div>
@@ -392,7 +414,7 @@ export default function MenuPage() {
         </div>
       )}
 
-      <div className="max-w-screen-xl mx-auto px-4 py-8 pb-32 bg-gray-50">
+      <div id="menu-items" className="max-w-screen-xl mx-auto px-4 py-8 pb-32 bg-gray-50">
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {Array.from({ length: 8 }).map((_, i) => (
