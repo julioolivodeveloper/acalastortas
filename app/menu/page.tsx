@@ -73,9 +73,44 @@ export default function MenuPage() {
 
   useEffect(() => {
     getMenu().then(setMenu).finally(() => setLoading(false))
-    supabase.from('promotions').select('id,title,description,type,discount_percent,emoji,badge_color')
-      .eq('active', true).order('created_at', { ascending: false })
-      .then(({ data }) => { if (data) setPromos(data) })
+
+    const loadPromos = () =>
+      supabase.from('promotions').select('id,title,description,type,discount_percent,emoji,badge_color')
+        .eq('active', true).order('created_at', { ascending: false })
+        .then(({ data }) => { if (data) setPromos(data) })
+
+    loadPromos()
+
+    const menuChannel = supabase
+      .channel('menu-public-items')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'menu_items' },
+        (payload) => {
+          if (payload.eventType === 'INSERT') {
+            setMenu((prev) => [...prev, payload.new as DbMenuItem].sort((a, b) => a.category.localeCompare(b.category)))
+          } else if (payload.eventType === 'UPDATE') {
+            setMenu((prev) => prev.map((m) => m.id === (payload.new as DbMenuItem).id ? payload.new as DbMenuItem : m))
+          } else if (payload.eventType === 'DELETE') {
+            setMenu((prev) => prev.filter((m) => m.id !== (payload.old as { id: string }).id))
+          }
+        }
+      )
+      .subscribe()
+
+    const promoChannel = supabase
+      .channel('menu-public-promos')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'promotions' },
+        () => loadPromos()
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(menuChannel)
+      supabase.removeChannel(promoChannel)
+    }
   }, [])
 
   const openItem = (item: DbMenuItem) => {

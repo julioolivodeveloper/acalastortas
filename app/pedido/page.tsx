@@ -140,7 +140,7 @@ export default function CheckoutPage() {
       total,
     })
     clearCart()
-    router.push(`/pedido/confirmacion?id=${order.id}&num=${order.order_number}`)
+    router.push(`/pedido/confirmacion?id=${order.id}&num=${order.order_number}&pm=${paymentMethod}`)
   }
 
   const handleCashOrder = async () => {

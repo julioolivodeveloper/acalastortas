@@ -74,7 +74,7 @@ export default function SobreNosotrosPage() {
               Nuestro objetivo es crear un ambiente acogedor donde cada cliente se sienta como en casa. A través de la dedicación a nuestro oficio y nuestra comunidad, nos esforzamos por ofrecer una experiencia gastronómica que haga que nuestros clientes regresen por más.
             </p>
             <a
-              href={`tel:+19158001234`}
+              href={`tel:+19158588226`}
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl font-black text-white text-base hover:opacity-90 transition"
               style={{ backgroundColor: '#006B42' }}
             >
@@ -215,7 +215,7 @@ export default function SobreNosotrosPage() {
                   <p className="text-gray-600 text-sm">Dom: 9:00 AM – 7:00 PM</p>
                 </div>
               </div>
-              <a href="tel:+19158001234" className="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-green-50 transition group">
+              <a href="tel:+19158588226" className="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-green-50 transition group">
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition" style={{ backgroundColor: '#006B42' }}>
                   <Phone className="w-5 h-5 text-white" />
                 </div>

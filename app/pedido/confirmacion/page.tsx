@@ -36,6 +36,7 @@ function TrackingContent() {
   const params = useSearchParams()
   const orderId = params.get('id')
   const orderNum = params.get('num')
+  const pm = params.get('pm') ?? 'cash'
   const [order, setOrder] = useState<DbOrder | null>(null)
   const [visible, setVisible] = useState(false)
   const [pulse, setPulse] = useState(false)
@@ -213,7 +214,7 @@ function TrackingContent() {
             </div>
             <div className="flex justify-between text-sm text-gray-500">
               <span>Forma de pago</span>
-              <span>Ventanilla al recoger</span>
+              <span>{pm === 'card' ? '💳 Tarjeta' : '🏪 Ventanilla al recoger'}</span>
             </div>
             <div className="flex justify-between font-black text-lg text-gray-900 pt-1 border-t border-gray-100">
               <span>Total</span>
