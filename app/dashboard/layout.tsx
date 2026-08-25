@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, ShoppingBag, UtensilsCrossed, Users, LogOut, Lock, BarChart3, Eye, EyeOff } from 'lucide-react'
+import { LayoutDashboard, ShoppingBag, UtensilsCrossed, Users, LogOut, Lock, BarChart3, Eye, EyeOff, Monitor } from 'lucide-react'
 import { adminSignIn, adminSignOut, getAdminSession } from '@/lib/auth'
 import { supabase } from '@/lib/supabase'
 
@@ -12,6 +12,7 @@ const NAV = [
   { href: '/dashboard/menu', label: 'Menú', icon: UtensilsCrossed },
   { href: '/dashboard/clientes', label: 'Clientes', icon: Users },
   { href: '/dashboard/analiticas', label: 'Analíticas', icon: BarChart3 },
+  { href: '/dashboard/pantalla',   label: 'Pantalla TV', icon: Monitor },
 ]
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

@@ -5,5 +5,6 @@ import SiteFooter from './SiteFooter'
 export default function ConditionalFooter() {
   const pathname = usePathname()
   if (pathname.startsWith('/dashboard')) return null
+  if (pathname.startsWith('/pantalla')) return null
   return <SiteFooter />
 }
