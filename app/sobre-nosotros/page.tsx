@@ -7,12 +7,12 @@ const DOORDASH = 'https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-
 const MAPS = 'https://maps.google.com/?q=10076+N+Loop+Dr,+Socorro,+TX+79927'
 
 const FOOD_GALLERY = [
-  '/menu/torta-bistec.jpg',
+  '/menu/torta-bistec.webp',
   '/menu/burrito-verde.jpg',
-  '/menu/tacos-carnitas.jpg',
-  '/menu/quesadilla-1.jpg',
-  '/menu/torta-pastor.jpg',
-  '/menu/hamburguesa-doble.jpg',
+  '/menu/tacos-carnitas.webp',
+  '/menu/quesadilla-sencilla.webp',
+  '/menu/torta-pastor.webp',
+  '/menu/hamburguesa-doble.webp',
 ]
 
 export default function SobreNosotrosPage() {
