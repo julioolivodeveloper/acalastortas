@@ -193,10 +193,30 @@ export default function MenuPage() {
                 </span>
               )}
             </button>
+
+            {/* Mobile: buttons below promo */}
+            <div className="flex gap-2 mt-3 md:hidden">
+              <button
+                onClick={() => document.getElementById('menu-items')?.scrollIntoView({ behavior: 'smooth' })}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl font-black text-sm text-white transition-all active:scale-95 shadow-lg whitespace-nowrap"
+                style={{ backgroundColor: '#006B42' }}
+              >
+                <Store className="w-4 h-4" /> Pickup
+              </button>
+              <a
+                href="https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl font-black text-sm text-white transition-all active:scale-95 shadow-lg whitespace-nowrap"
+                style={{ backgroundColor: '#FF3008' }}
+              >
+                <Truck className="w-4 h-4" /> Delivery
+              </a>
+            </div>
           </div>
 
-          {/* Center: CTA buttons */}
-          <div className="flex flex-row items-center gap-3 absolute left-1/2 -translate-x-1/2">
+          {/* Center: CTA buttons — desktop only, centered absolute */}
+          <div className="hidden md:flex flex-row items-center gap-3 absolute left-1/2 -translate-x-1/2">
             <button
               onClick={() => document.getElementById('menu-items')?.scrollIntoView({ behavior: 'smooth' })}
               className="flex items-center gap-2 px-6 py-3 rounded-2xl font-black text-base text-white transition-all hover:scale-105 active:scale-95 shadow-xl whitespace-nowrap"
