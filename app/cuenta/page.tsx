@@ -387,7 +387,7 @@ export default function CuentaPage() {
     <section className="py-0 overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="relative h-80 lg:h-auto">
-          <img src="/ordena-recoge.png" alt="Ordena y Recoge" className="w-full h-full object-cover" />
+          <img src="/ordena-recoge.png" alt="Ordena y Recoge" loading="lazy" decoding="async" className="w-full h-full object-cover" />
         </div>
         <div className="flex flex-col justify-center px-8 py-16 lg:px-16" style={{ backgroundColor: '#111' }}>
           <p className="font-black text-sm uppercase tracking-widest mb-3" style={{ color: '#C61620' }}>Pickup</p>
@@ -446,7 +446,7 @@ export default function CuentaPage() {
           </div>
         </div>
         <div className="relative h-80 lg:h-auto order-1 lg:order-2">
-          <img src="/imgcel.webp" alt="Autoservicio y Comedor" className="w-full h-full object-cover" />
+          <img src="/imgcel.webp" alt="Autoservicio y Comedor" loading="lazy" decoding="async" className="w-full h-full object-cover" />
         </div>
       </div>
     </section>

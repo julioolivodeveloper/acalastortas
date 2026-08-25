@@ -135,7 +135,7 @@ export default function SobreNosotrosPage() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
             {FOOD_GALLERY.map((src, i) => (
               <div key={i} className="aspect-square rounded-2xl overflow-hidden shadow-lg">
-                <img src={src} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                <img src={src} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
               </div>
             ))}
           </div>
@@ -154,7 +154,7 @@ export default function SobreNosotrosPage() {
       {/* ── ORDENA FÁCIL ── */}
       <section className="py-20 px-4 relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/sobre-recurso3.jpg" alt="" className="w-full h-full object-cover" />
+          <img src="/sobre-recurso3.jpg" alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.72)' }} />
         </div>
         <div className="relative z-10 max-w-3xl mx-auto text-center">

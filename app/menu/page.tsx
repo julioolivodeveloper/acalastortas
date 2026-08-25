@@ -517,7 +517,7 @@ function MenuCard({
       {/* Imagen derecha */}
       <div className="w-[130px] h-[130px] shrink-0 m-2.5 rounded-xl overflow-hidden bg-gray-100 relative">
         {item.image ? (
-          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+          <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-3xl opacity-20">🍽️</div>
         )}

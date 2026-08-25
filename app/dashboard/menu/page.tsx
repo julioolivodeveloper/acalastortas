@@ -344,7 +344,7 @@ export default function MenuEditorPage() {
               ) : (
                 <div className="flex items-center gap-3 p-3">
                   {item.image && (
-                    <img src={item.image} alt={item.name} className="w-14 h-14 rounded-xl object-cover shrink-0" />
+                    <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-14 h-14 rounded-xl object-cover shrink-0" />
                   )}
                   {!item.image && (
                     <div className="w-14 h-14 rounded-xl bg-gray-800 flex items-center justify-center shrink-0">

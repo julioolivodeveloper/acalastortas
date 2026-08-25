@@ -194,7 +194,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-2">
           {/* Image */}
           <div className="relative h-80 lg:h-auto">
-            <img src="/ordena-recoge.png" alt="Ordena y Recoge" className="w-full h-full object-cover" />
+            <img src="/ordena-recoge.png" alt="Ordena y Recoge" loading="lazy" decoding="async" className="w-full h-full object-cover" />
           </div>
           {/* Content */}
           <div className="flex flex-col justify-center px-8 py-16 lg:px-16" style={{ backgroundColor: '#111' }}>
@@ -256,14 +256,14 @@ export default function Home() {
           </div>
           {/* Image */}
           <div className="relative h-80 lg:h-auto order-1 lg:order-2">
-            <img src="/imgcel.webp" alt="Autoservicio y Comedor" className="w-full h-full object-cover" />
+            <img src="/imgcel.webp" alt="Autoservicio y Comedor" loading="lazy" decoding="async" className="w-full h-full object-cover" />
           </div>
         </div>
       </section>
 
       {/* ── INTERIOR ── */}
       <section className="relative h-72 md:h-96 overflow-hidden">
-        <img src="/interior.webp" alt="Interior del restaurante" className="w-full h-full object-cover" />
+        <img src="/interior.webp" alt="Interior del restaurante" loading="lazy" decoding="async" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="text-center text-white px-4">
             <h3 className="text-3xl md:text-4xl font-black mb-2">Visítanos en Persona</h3>
@@ -287,7 +287,7 @@ export default function Home() {
               { img: '/cliente3.webp', text: '"El lugar favorito de la zona. ¡No hay nada igual!"' },
             ].map((c, i) => (
               <div key={i} className="relative rounded-2xl overflow-hidden shadow-md group">
-                <img src={c.img} alt="Cliente feliz" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src={c.img} alt="Cliente feliz" loading="lazy" decoding="async" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent flex flex-col justify-end p-4">
                   <div className="flex gap-0.5 mb-1">
                     {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />)}
