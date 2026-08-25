@@ -12,6 +12,7 @@ type Promo = {
   id: string; title: string; description: string
   type: string; discount_percent: number
   emoji: string; badge_color: string
+  item_ids: string[]
 }
 
 const CATEGORIES = ['Tortas', 'Hamburguesas', 'Burritos', 'Tacos', 'Quesadillas', 'Flautas y Pollo', 'Menú Kids', 'Bebidas']
@@ -75,7 +76,7 @@ export default function MenuPage() {
     getMenu().then(setMenu).finally(() => setLoading(false))
 
     const loadPromos = () =>
-      supabase.from('promotions').select('id,title,description,type,discount_percent,emoji,badge_color')
+      supabase.from('promotions').select('id,title,description,type,discount_percent,emoji,badge_color,item_ids')
         .eq('active', true).order('created_at', { ascending: false })
         .then(({ data }) => { if (data) setPromos(data) })
 
@@ -290,25 +291,80 @@ export default function MenuPage() {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {promos.map(promo => {
                     const label = promo.type === 'discount' ? `${promo.discount_percent}% OFF`
                       : promo.type === '2x1' ? '2 × 1'
                       : promo.type === 'combo' ? 'Combo' : 'Promo'
+                    const promoItems = (promo.item_ids?.length > 0)
+                      ? menu.filter(m => promo.item_ids.includes(m.id))
+                      : []
                     return (
-                      <div key={promo.id} className="flex items-start gap-4 p-4 rounded-2xl"
-                        style={{ backgroundColor: promo.badge_color + '10', border: `1.5px solid ${promo.badge_color}30` }}>
-                        <span className="text-3xl shrink-0 mt-0.5">{promo.emoji}</span>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 flex-wrap mb-1">
-                            <p className="font-black text-gray-900 text-base">{promo.title}</p>
-                            <span className="text-[11px] font-black px-2.5 py-0.5 rounded-full text-white shrink-0"
-                              style={{ backgroundColor: promo.badge_color }}>{label}</span>
+                      <div key={promo.id} className="rounded-2xl overflow-hidden"
+                        style={{ backgroundColor: promo.badge_color + '08', border: `1.5px solid ${promo.badge_color}25` }}>
+
+                        {/* Encabezado de la promo */}
+                        <div className="flex items-start gap-3 p-4 pb-3">
+                          <span className="text-2xl shrink-0 mt-0.5">{promo.emoji}</span>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                              <p className="font-black text-gray-900 text-base">{promo.title}</p>
+                              <span className="text-[11px] font-black px-2.5 py-0.5 rounded-full text-white shrink-0"
+                                style={{ backgroundColor: promo.badge_color }}>{label}</span>
+                            </div>
+                            {promo.description && (
+                              <p className="text-gray-500 text-sm leading-relaxed">{promo.description}</p>
+                            )}
                           </div>
-                          {promo.description && (
-                            <p className="text-gray-500 text-sm leading-relaxed">{promo.description}</p>
-                          )}
                         </div>
+
+                        {/* Platillos incluidos */}
+                        {promoItems.length > 0 && (
+                          <div className="px-3 pb-3 space-y-2">
+                            {promoItems.map(item => {
+                              const discounted = promo.type === 'discount'
+                                ? item.price * (1 - promo.discount_percent / 100)
+                                : null
+                              return (
+                                <div key={item.id} className="flex items-center gap-3 bg-white rounded-xl p-2.5 shadow-sm">
+                                  <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-gray-100">
+                                    {item.image
+                                      ? <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                      : <div className="w-full h-full flex items-center justify-center text-xl opacity-20">🍽️</div>
+                                    }
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <p className="font-black text-gray-900 text-sm leading-tight truncate">{item.name}</p>
+                                    <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                                      {discounted !== null ? (
+                                        <>
+                                          <span className="text-gray-400 text-xs line-through">${item.price.toFixed(2)}</span>
+                                          <span className="font-black text-sm" style={{ color: promo.badge_color }}>${discounted.toFixed(2)}</span>
+                                        </>
+                                      ) : (
+                                        <span className="font-black text-sm text-gray-700">${item.price.toFixed(2)}</span>
+                                      )}
+                                      {promo.type === '2x1' && (
+                                        <span className="text-[10px] font-black px-1.5 py-0.5 rounded-full text-white" style={{ backgroundColor: promo.badge_color }}>2×1</span>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <button
+                                    onClick={() => { handleAdd(item); setPromoOpen(false) }}
+                                    className="w-9 h-9 rounded-full flex items-center justify-center text-white shrink-0 transition-all active:scale-95 hover:opacity-90"
+                                    style={{ backgroundColor: promo.badge_color }}
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        )}
+
+                        {promoItems.length === 0 && !promo.description && (
+                          <p className="text-gray-400 text-xs px-4 pb-3">Aplica a todo el menú · pregunta en ventanilla</p>
+                        )}
                       </div>
                     )
                   })}
