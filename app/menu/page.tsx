@@ -246,6 +246,23 @@ export default function MenuPage() {
                 </button>
               )
             })}
+
+            {/* Botón Promociones */}
+            <button
+              onClick={() => setPromoOpen(true)}
+              className="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-2xl font-black text-sm transition-all duration-200 whitespace-nowrap relative"
+              style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: 'white' }}
+            >
+              <div className="w-7 h-7 rounded-xl flex items-center justify-center text-base shrink-0" style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}>
+                🔥
+              </div>
+              Promociones
+              {promos.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full text-[9px] font-black flex items-center justify-center text-white" style={{ backgroundColor: '#111' }}>
+                  {promos.length}
+                </span>
+              )}
+            </button>
           </div>
         </div>
       </div>
