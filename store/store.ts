@@ -20,6 +20,7 @@ type CartStore = {
   addToCart: (item: DbMenuItem, options?: { removedIngredients?: string[]; extras?: CartItemExtra[] }) => void
   removeFromCart: (cartKey: string) => void
   updateQty: (cartKey: string, qty: number) => void
+  replaceCartItem: (cartKey: string, item: DbMenuItem, quantity: number, options?: { removedIngredients?: string[]; extras?: CartItemExtra[] }) => void
   clearCart: () => void
 }
 
@@ -43,6 +44,20 @@ export const useCartStore = create<CartStore>()(
           return { cart: [...s.cart, { cartKey: item.id, item, quantity: 1 }] }
         }),
       removeFromCart: (cartKey) => set((s) => ({ cart: s.cart.filter((c) => ck(c) !== cartKey) })),
+      replaceCartItem: (cartKey, item, quantity, options) =>
+        set((s) => ({
+          cart: s.cart.map((c) =>
+            ck(c) === cartKey
+              ? {
+                  cartKey: `${item.id}-${Date.now()}`,
+                  item,
+                  quantity,
+                  removedIngredients: options?.removedIngredients,
+                  extras: options?.extras,
+                }
+              : c
+          ),
+        })),
       updateQty: (cartKey, qty) =>
         set((s) => ({
           cart: qty <= 0
