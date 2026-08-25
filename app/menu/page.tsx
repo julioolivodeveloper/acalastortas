@@ -200,7 +200,7 @@ export default function MenuPage() {
       {/* Category tabs */}
       <div className="sticky top-16 z-10 border-b border-red-900 shadow-md" style={{ backgroundColor: '#C61620' }}>
         <div className="max-w-screen-xl mx-auto px-3">
-          <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar md:justify-center">
+          <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar">
             {(['Todos'] as const).map(() => {
               const active = activeCategory === 'Todos'
               return (
