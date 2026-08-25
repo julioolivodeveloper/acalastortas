@@ -61,6 +61,7 @@ export default function MenuPage() {
   const [menu, setMenu] = useState<DbMenuItem[]>([])
   const [loading, setLoading] = useState(true)
   const [promos, setPromos] = useState<Promo[]>([])
+  const [promoOpen, setPromoOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState('Todos')
   const [cartOpen, setCartOpen] = useState(false)
   const [added, setAdded] = useState<string | null>(null)
@@ -143,6 +144,18 @@ export default function MenuPage() {
           <div>
             <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-lg">Nuestro Menú</h1>
             <p className="text-green-200/90 mt-1.5 text-sm font-semibold">Pickup en ~15 min · El Paso, TX</p>
+            <button
+              onClick={() => setPromoOpen(true)}
+              className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-xl font-black text-sm text-white border border-white/30 hover:bg-white/15 transition-all duration-200 backdrop-blur-sm"
+              style={{ backgroundColor: 'rgba(198,22,32,0.6)' }}
+            >
+              🔥 Promociones
+              {promos.length > 0 && (
+                <span className="bg-white font-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center" style={{ color: '#C61620' }}>
+                  {promos.length}
+                </span>
+              )}
+            </button>
           </div>
           <img src="/logo.png" alt="Aca Las Tortas" className="h-24 md:h-32 drop-shadow-2xl shrink-0" />
         </div>
@@ -201,43 +214,75 @@ export default function MenuPage() {
         </div>
       </div>
 
-      {/* ── Promociones strip ── */}
-      <div className="bg-white border-b border-gray-100 px-4 py-3">
-        <div className="max-w-screen-xl mx-auto">
-          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
-            {promos.length === 0 ? (
-              <div className="flex items-center gap-3 shrink-0 border-2 border-dashed border-gray-200 rounded-2xl px-5 py-3">
-                <span className="text-2xl">🎁</span>
-                <div>
-                  <p className="font-black text-gray-400 text-sm">Promociones</p>
-                  <p className="text-gray-300 text-xs font-semibold">Coming Soon</p>
-                </div>
+      {/* ── Modal de Promociones ── */}
+      {promoOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}
+          onClick={() => setPromoOpen(false)}>
+          <div className="bg-white rounded-3xl w-full max-w-md max-h-[80vh] overflow-hidden shadow-2xl flex flex-col"
+            onClick={e => e.stopPropagation()}>
+
+            {/* Modal header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🔥</span>
+                <h2 className="font-black text-gray-900 text-xl">Promociones</h2>
               </div>
-            ) : promos.map(promo => {
-              const label = promo.type === 'discount' ? `${promo.discount_percent}% OFF`
-                : promo.type === '2x1' ? '2 × 1'
-                : promo.type === 'combo' ? 'Combo' : 'Promo'
-              return (
-                <div key={promo.id}
-                  className="flex items-center gap-3 shrink-0 rounded-2xl px-4 py-3 min-w-[220px]"
-                  style={{ backgroundColor: promo.badge_color + '12', border: `1.5px solid ${promo.badge_color}35` }}>
-                  <span className="text-2xl shrink-0">{promo.emoji}</span>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="font-black text-gray-900 text-sm leading-tight truncate">{promo.title}</p>
-                      <span className="shrink-0 text-[10px] font-black px-2 py-0.5 rounded-full text-white"
-                        style={{ backgroundColor: promo.badge_color }}>{label}</span>
-                    </div>
-                    {promo.description && (
-                      <p className="text-gray-500 text-xs truncate mt-0.5">{promo.description}</p>
-                    )}
+              <button onClick={() => setPromoOpen(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">
+                <X className="w-4 h-4 text-gray-500" />
+              </button>
+            </div>
+
+            {/* Modal body */}
+            <div className="overflow-y-auto flex-1 p-6">
+              {promos.length === 0 ? (
+                <div className="text-center py-10">
+                  <div className="w-20 h-20 rounded-full mx-auto mb-5 flex items-center justify-center text-4xl"
+                    style={{ backgroundColor: '#FFF7ED' }}>
+                    🏷️
+                  </div>
+                  <p className="font-black text-gray-900 text-lg mb-2">No hay promociones disponibles</p>
+                  <p className="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">
+                    Pronto tendremos ofertas especiales para ti.<br />¡Síguenos en redes sociales para no perderte nada!
+                  </p>
+                  <div className="flex justify-center gap-3 mt-5">
+                    <a href="https://www.facebook.com/AcaLasTortasElPaso" target="_blank" rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-base transition hover:scale-110"
+                      style={{ backgroundColor: '#1877F2' }}>f</a>
+                    <a href="https://www.instagram.com/acalastortaselpaso" target="_blank" rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-base transition hover:scale-110"
+                      style={{ background: 'linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)' }}>ig</a>
                   </div>
                 </div>
-              )
-            })}
+              ) : (
+                <div className="space-y-3">
+                  {promos.map(promo => {
+                    const label = promo.type === 'discount' ? `${promo.discount_percent}% OFF`
+                      : promo.type === '2x1' ? '2 × 1'
+                      : promo.type === 'combo' ? 'Combo' : 'Promo'
+                    return (
+                      <div key={promo.id} className="flex items-start gap-4 p-4 rounded-2xl"
+                        style={{ backgroundColor: promo.badge_color + '10', border: `1.5px solid ${promo.badge_color}30` }}>
+                        <span className="text-3xl shrink-0 mt-0.5">{promo.emoji}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap mb-1">
+                            <p className="font-black text-gray-900 text-base">{promo.title}</p>
+                            <span className="text-[11px] font-black px-2.5 py-0.5 rounded-full text-white shrink-0"
+                              style={{ backgroundColor: promo.badge_color }}>{label}</span>
+                          </div>
+                          {promo.description && (
+                            <p className="text-gray-500 text-sm leading-relaxed">{promo.description}</p>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="max-w-screen-xl mx-auto px-4 py-8 pb-32 bg-gray-50">
         {loading ? (
