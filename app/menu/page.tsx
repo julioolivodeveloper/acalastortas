@@ -309,6 +309,26 @@ export default function MenuPage() {
         </div>
       </div>
 
+      {/* ── Aviso pickup-only ── */}
+      <div className="bg-amber-50 border-b border-amber-200">
+        <div className="max-w-screen-xl mx-auto px-4 py-2.5 flex items-center justify-center gap-2 text-sm text-amber-800 font-semibold flex-wrap text-center">
+          <span>🛍️ Las órdenes en este sitio son solo para <strong>Pickup</strong></span>
+          <span className="text-amber-400 hidden sm:inline">·</span>
+          <span className="flex items-center gap-1">
+            Para delivery usa
+            <a
+              href="https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-black underline underline-offset-2"
+              style={{ color: '#FF3008' }}
+            >
+              DoorDash ↗
+            </a>
+          </span>
+        </div>
+      </div>
+
       {/* ── Modal de Promociones ── */}
       {promoOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}
