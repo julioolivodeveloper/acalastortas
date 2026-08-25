@@ -22,10 +22,11 @@ type ScreenConfig = {
   items: number       // max items per category
   intervalSec: number // rotation only
   catCols: number     // static only: columns of categories
+  itemRows: number    // static only: rows of items per category
 }
 
 const DEFAULT: Omit<ScreenConfig, 'id' | 'name'> = {
-  mode: 'rotate', cats: [], items: 8, intervalSec: 10, catCols: 2,
+  mode: 'rotate', cats: [], items: 8, intervalSec: 10, catCols: 2, itemRows: 1,
 }
 
 function buildUrl(origin: string, cfg: ScreenConfig, allCats: string[]) {
@@ -33,7 +34,10 @@ function buildUrl(origin: string, cfg: ScreenConfig, allCats: string[]) {
   p.set('mode', cfg.mode)
   p.set('items', String(cfg.items))
   if (cfg.mode === 'rotate') p.set('interval', String(cfg.intervalSec))
-  if (cfg.mode === 'static') p.set('catcols', String(cfg.catCols))
+  if (cfg.mode === 'static') {
+    p.set('catcols', String(cfg.catCols))
+    if (cfg.itemRows > 1) p.set('itemrows', String(cfg.itemRows))
+  }
   const ordered = allCats.filter(c => cfg.cats.includes(c))
   if (ordered.length < allCats.length && ordered.length > 0) p.set('cats', ordered.join(','))
   return `${origin}/pantalla?${p.toString()}`
@@ -68,7 +72,7 @@ function ScreenCard({ cfg, url, onEdit, onDelete, onCopy, copied }:
       <div className="flex gap-1.5 text-[11px] text-gray-500 font-semibold">
         <span>{cfg.items} productos/categoría</span>
         {cfg.mode === 'rotate' && <span>· {cfg.intervalSec}s por slide</span>}
-        {cfg.mode === 'static' && <span>· {cfg.catCols} columnas</span>}
+        {cfg.mode === 'static' && <span>· {cfg.catCols} col · {cfg.itemRows ?? 1} {(cfg.itemRows ?? 1) === 1 ? 'fila' : 'filas'}</span>}
       </div>
 
       <div className="flex gap-2 pt-1">
@@ -197,23 +201,43 @@ function ConfigForm({ cfg, allCats, onChange, onSave, onCancel, isNew }:
       )}
 
       {cfg.mode === 'static' && (
-        <div>
-          <label className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2 block">Columnas de categorías</label>
-          <div className="flex gap-2">
-            {[1, 2, 3, 4].map(n => (
-              <button key={n} onClick={() => onChange({ ...cfg, catCols: n })}
-                className={`flex-1 py-2 rounded-xl font-black text-sm transition ${cfg.catCols === n ? 'text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}
-                style={cfg.catCols === n ? { backgroundColor: '#006B42' } : {}}>
-                {n} {n === 1 ? 'col' : 'cols'}
-              </button>
-            ))}
+        <div className="space-y-4">
+          <div>
+            <label className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2 block">Columnas de categorías</label>
+            <div className="flex gap-2">
+              {[1, 2, 3, 4].map(n => (
+                <button key={n} onClick={() => onChange({ ...cfg, catCols: n })}
+                  className={`flex-1 py-2 rounded-xl font-black text-sm transition ${cfg.catCols === n ? 'text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}
+                  style={cfg.catCols === n ? { backgroundColor: '#006B42' } : {}}>
+                  {n} {n === 1 ? 'col' : 'cols'}
+                </button>
+              ))}
+            </div>
+            <p className="text-gray-600 text-xs mt-1.5">
+              {cfg.catCols === 1 ? 'Una categoría por fila — usa para pocas categorías' :
+               cfg.catCols === 2 ? 'Dos columnas — lo más común para TV 16:9' :
+               cfg.catCols === 3 ? 'Tres columnas — ideal para muchas categorías' :
+               'Cuatro columnas — pantalla muy ancha o pocas filas'}
+            </p>
           </div>
-          <p className="text-gray-600 text-xs mt-1.5">
-            {cfg.catCols === 1 ? 'Una categoría por fila — usa para pocas categorías' :
-             cfg.catCols === 2 ? 'Dos columnas — lo más común para TV 16:9' :
-             cfg.catCols === 3 ? 'Tres columnas — ideal para muchas categorías' :
-             'Cuatro columnas — pantalla muy ancha o pocas filas'}
-          </p>
+
+          <div>
+            <label className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2 block">Filas de productos</label>
+            <div className="flex gap-2">
+              {[1, 2, 3].map(n => (
+                <button key={n} onClick={() => onChange({ ...cfg, itemRows: n })}
+                  className={`flex-1 py-2 rounded-xl font-black text-sm transition ${cfg.itemRows === n ? 'text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}
+                  style={cfg.itemRows === n ? { backgroundColor: '#006B42' } : {}}>
+                  {n} {n === 1 ? 'fila' : 'filas'}
+                </button>
+              ))}
+            </div>
+            <p className="text-gray-600 text-xs mt-1.5">
+              {cfg.itemRows === 1 ? 'Fotos más grandes — ideal para pocos platillos' :
+               cfg.itemRows === 2 ? '2 filas — más productos visibles por categoría' :
+               '3 filas — menú más completo, fotos más pequeñas'}
+            </p>
+          </div>
         </div>
       )}
 
