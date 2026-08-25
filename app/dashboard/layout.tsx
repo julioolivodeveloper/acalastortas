@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, ShoppingBag, UtensilsCrossed, Users, LogOut, Lock, BarChart3, Eye, EyeOff, Monitor } from 'lucide-react'
+import { LayoutDashboard, ShoppingBag, UtensilsCrossed, Users, LogOut, Lock, BarChart3, Eye, EyeOff, Monitor, CreditCard } from 'lucide-react'
 import { adminSignIn, adminSignOut, getAdminSession } from '@/lib/auth'
 import { supabase } from '@/lib/supabase'
 
@@ -13,6 +13,7 @@ const NAV = [
   { href: '/dashboard/clientes', label: 'Clientes', icon: Users },
   { href: '/dashboard/analiticas', label: 'Analíticas', icon: BarChart3 },
   { href: '/dashboard/pantalla',   label: 'Pantalla TV', icon: Monitor },
+  { href: '/dashboard/stripe',     label: 'Pagos',       icon: CreditCard },
 ]
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

@@ -190,8 +190,8 @@ function RotateMode({ allItems, cats, maxItems, intervalSec, time }:
 }
 
 // ── MODO ESTÁTICO ───────────────────────────────────────────────────────────
-function StaticMode({ allItems, cats, maxItems, catCols, time }:
-  { allItems: DbMenuItem[]; cats: string[]; maxItems: number; catCols: number; time: string }) {
+function StaticMode({ allItems, cats, maxItems, itemRows, catCols, time }:
+  { allItems: DbMenuItem[]; cats: string[]; maxItems: number; itemRows: number; catCols: number; time: string }) {
 
   const effectiveCols = Math.min(catCols, cats.length)
   const catRows = Math.ceil(cats.length / effectiveCols)
@@ -211,8 +211,7 @@ function StaticMode({ allItems, cats, maxItems, catCols, time }:
           const color = CAT_COLOR[cat] ?? '#006B42'
           const emoji = CAT_EMOJI[cat] ?? '🍽️'
           const catItems = allItems.filter(i => i.category === cat).slice(0, maxItems)
-          // Items per row within each category section
-          const itemCols = catItems.length
+          const itemCols = Math.ceil(catItems.length / itemRows)
 
           return (
             <div key={cat} style={{
@@ -230,10 +229,11 @@ function StaticMode({ allItems, cats, maxItems, catCols, time }:
                 <p style={{ color: 'white', fontWeight: 900, fontSize: 15, margin: 0 }}>{cat}</p>
                 <span style={{ color: color, fontSize: 11, fontWeight: 700, marginLeft: 4 }}>{catItems.length} opciones</span>
               </div>
-              {/* Items row */}
+              {/* Items grid — itemRows filas */}
               <div style={{
                 flex: 1, display: 'grid',
                 gridTemplateColumns: `repeat(${itemCols}, 1fr)`,
+                gridTemplateRows: `repeat(${itemRows}, 1fr)`,
                 gap: 8, padding: 8, minHeight: 0,
               }}>
                 {catItems.map(item => (
@@ -255,8 +255,9 @@ function PantallaContent() {
   const params = useSearchParams()
   const mode     = params.get('mode') ?? 'rotate'
   const intervalSec = Math.max(5, parseInt(params.get('interval') ?? '10'))
-  const maxItems = Math.max(1, parseInt(params.get('items') ?? '8'))
-  const catCols  = Math.max(1, parseInt(params.get('catcols') ?? '2'))
+  const maxItems  = Math.max(1, parseInt(params.get('items') ?? '8'))
+  const itemRows  = Math.max(1, parseInt(params.get('itemrows') ?? '1'))
+  const catCols   = Math.max(1, parseInt(params.get('catcols') ?? '2'))
   const catsParam = params.get('cats')
 
   const [allItems, setAllItems] = useState<DbMenuItem[]>([])
@@ -294,7 +295,7 @@ function PantallaContent() {
   }
 
   if (mode === 'static') {
-    return <StaticMode allItems={allItems} cats={displayCats} maxItems={maxItems} catCols={catCols} time={time} />
+    return <StaticMode allItems={allItems} cats={displayCats} maxItems={maxItems} itemRows={itemRows} catCols={catCols} time={time} />
   }
   return <RotateMode allItems={allItems} cats={displayCats} maxItems={maxItems} intervalSec={intervalSec} time={time} />
 }
