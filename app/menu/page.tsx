@@ -51,10 +51,10 @@ const CATEGORY_EMOJI: Record<string, string> = {
 }
 
 const EXTRAS = [
-  { id: 'papitas', name: 'Papitas', price: 3.99, image: '/menu/kids-papitas.jpg' },
-  { id: 'papitas-queso', name: 'Papitas c/Queso', price: 4.99, image: '/menu/kids-papitas-queso.jpg' },
-  { id: 'refresco', name: 'Refresco', price: 2.99, image: '/menu/bebida-refresco-lata.jpg' },
-  { id: 'agua-fresca', name: 'Agua Fresca', price: 2.99, image: '/menu/bebida-aguas-frescas.jpg' },
+  { id: 'papitas', name: 'Papitas', price: 3.99, image: '/menu/kids-papitas.webp' },
+  { id: 'papitas-queso', name: 'Papitas c/Queso', price: 4.99, image: '/menu/kids-papitas-queso.webp' },
+  { id: 'refresco', name: 'Refresco', price: 2.99, image: '/menu/bebida-refresco-lata.webp' },
+  { id: 'agua-fresca', name: 'Agua Fresca', price: 2.99, image: '/menu/bebida-aguas-frescas.webp' },
 ]
 
 export default function MenuPage() {
@@ -168,7 +168,7 @@ export default function MenuPage() {
   return (
     <>
       {/* Header */}
-      <div className="relative overflow-hidden px-4 pt-10 pb-8" style={{ backgroundColor: '#004D2E' }}>
+      <div className="relative overflow-hidden px-4 pt-10 pb-8 md:pt-24 md:pb-20" style={{ backgroundColor: '#004D2E' }}>
         <img
           src="/menu/hamburguesa-combo.webp"
           alt=""
