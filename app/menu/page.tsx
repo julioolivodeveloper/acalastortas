@@ -192,7 +192,7 @@ export default function MenuPage() {
 
       <div className="max-w-screen-xl mx-auto px-4 py-8 pb-32 bg-gray-50">
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="flex items-center rounded-2xl border border-gray-200 bg-white overflow-hidden animate-pulse">
                 <div className="flex-1 p-4 space-y-2">
@@ -234,7 +234,7 @@ export default function MenuPage() {
                     Ver todos <ChevronRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {items.map((item, idx) => (
                     <MenuCard
                       key={item.id}
@@ -264,7 +264,7 @@ export default function MenuPage() {
                 </span>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
               {visible.map((item, idx) => (
                 <MenuCard
                   key={item.id}
@@ -464,7 +464,7 @@ function MenuCard({
 
   return (
     <div
-      className="flex items-stretch rounded-2xl bg-white cursor-pointer transition-all duration-200 active:scale-[0.99] overflow-hidden"
+      className="flex flex-row md:flex-col items-stretch rounded-2xl bg-white cursor-pointer transition-all duration-200 active:scale-[0.99] overflow-hidden"
       style={{
         border: `1.5px solid #e5e7eb`,
         boxShadow: '0 1px 6px rgba(0,0,0,0.07)',
@@ -474,11 +474,27 @@ function MenuCard({
       onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = catColor; (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px rgba(0,0,0,0.1)` }}
       onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = '#e5e7eb'; (e.currentTarget as HTMLElement).style.boxShadow = '0 1px 6px rgba(0,0,0,0.07)' }}
     >
-      {/* Franja de color izquierda */}
-      <div className="w-1 shrink-0 self-stretch" style={{ backgroundColor: catColor }} />
+      {/* Franja de color — solo móvil */}
+      <div className="w-1 md:hidden shrink-0 self-stretch" style={{ backgroundColor: catColor }} />
+
+      {/* Imagen — derecha en móvil, arriba en desktop */}
+      <div className="w-[130px] h-[130px] md:w-full md:h-48 shrink-0 m-2.5 md:m-0 rounded-xl md:rounded-none overflow-hidden bg-gray-100 relative order-last md:order-first">
+        {item.image ? (
+          <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-3xl md:text-5xl opacity-20">🍽️</div>
+        )}
+        {hasIngredients && (
+          <div className="absolute top-1.5 left-1.5">
+            <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full text-white bg-black/50 backdrop-blur-sm">
+              ✏️ editar
+            </span>
+          </div>
+        )}
+      </div>
 
       {/* Texto */}
-      <div className="flex-1 flex flex-col justify-between px-3.5 py-3.5 min-w-0">
+      <div className="flex-1 flex flex-col justify-between px-3.5 py-3.5 md:p-4 min-w-0">
         <div>
           <p
             className="text-[10px] font-black uppercase tracking-widest mb-1"
@@ -512,22 +528,6 @@ function MenuCard({
             {added ? <Check className="w-4 h-4" /> : <Plus className="w-5 h-5" />}
           </button>
         </div>
-      </div>
-
-      {/* Imagen derecha */}
-      <div className="w-[130px] h-[130px] shrink-0 m-2.5 rounded-xl overflow-hidden bg-gray-100 relative">
-        {item.image ? (
-          <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-3xl opacity-20">🍽️</div>
-        )}
-        {hasIngredients && (
-          <div className="absolute top-1.5 left-1.5">
-            <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full text-white bg-black/50 backdrop-blur-sm">
-              ✏️ editar
-            </span>
-          </div>
-        )}
       </div>
     </div>
   )
