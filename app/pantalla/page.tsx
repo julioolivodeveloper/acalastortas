@@ -193,7 +193,8 @@ function RotateMode({ allItems, cats, maxItems, intervalSec, time }:
 function StaticMode({ allItems, cats, maxItems, catCols, time }:
   { allItems: DbMenuItem[]; cats: string[]; maxItems: number; catCols: number; time: string }) {
 
-  const catRows = Math.ceil(cats.length / catCols)
+  const effectiveCols = Math.min(catCols, cats.length)
+  const catRows = Math.ceil(cats.length / effectiveCols)
 
   return (
     <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#0d0d0d' }}>
@@ -202,7 +203,7 @@ function StaticMode({ allItems, cats, maxItems, catCols, time }:
       {/* All categories grid */}
       <div style={{
         flex: 1, display: 'grid',
-        gridTemplateColumns: `repeat(${catCols}, 1fr)`,
+        gridTemplateColumns: `repeat(${effectiveCols}, 1fr)`,
         gridTemplateRows: `repeat(${catRows}, 1fr)`,
         gap: 10, padding: 10, overflow: 'hidden',
       }}>
