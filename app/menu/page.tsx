@@ -5,7 +5,14 @@ import { useCartStore, cartCount, cartItemPrice } from '@/store/store'
 import type { CartItemExtra } from '@/store/store'
 import { getMenu } from '@/lib/db'
 import type { DbMenuItem } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 import CartDrawer from '@/components/CartDrawer'
+
+type Promo = {
+  id: string; title: string; description: string
+  type: string; discount_percent: number
+  emoji: string; badge_color: string
+}
 
 const CATEGORIES = ['Tortas', 'Hamburguesas', 'Burritos', 'Tacos', 'Quesadillas', 'Flautas y Pollo', 'Menú Kids', 'Bebidas']
 
@@ -53,6 +60,7 @@ export default function MenuPage() {
   const { cart, addToCart } = useCartStore()
   const [menu, setMenu] = useState<DbMenuItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [promos, setPromos] = useState<Promo[]>([])
   const [activeCategory, setActiveCategory] = useState('Todos')
   const [cartOpen, setCartOpen] = useState(false)
   const [added, setAdded] = useState<string | null>(null)
@@ -64,6 +72,9 @@ export default function MenuPage() {
 
   useEffect(() => {
     getMenu().then(setMenu).finally(() => setLoading(false))
+    supabase.from('promotions').select('id,title,description,type,discount_percent,emoji,badge_color')
+      .eq('active', true).order('created_at', { ascending: false })
+      .then(({ data }) => { if (data) setPromos(data) })
   }, [])
 
   const openItem = (item: DbMenuItem) => {
@@ -184,6 +195,44 @@ export default function MenuPage() {
                   </div>
                   {cat}
                 </button>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Promociones strip ── */}
+      <div className="bg-white border-b border-gray-100 px-4 py-3">
+        <div className="max-w-screen-xl mx-auto">
+          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
+            {promos.length === 0 ? (
+              <div className="flex items-center gap-3 shrink-0 border-2 border-dashed border-gray-200 rounded-2xl px-5 py-3">
+                <span className="text-2xl">🎁</span>
+                <div>
+                  <p className="font-black text-gray-400 text-sm">Promociones</p>
+                  <p className="text-gray-300 text-xs font-semibold">Coming Soon</p>
+                </div>
+              </div>
+            ) : promos.map(promo => {
+              const label = promo.type === 'discount' ? `${promo.discount_percent}% OFF`
+                : promo.type === '2x1' ? '2 × 1'
+                : promo.type === 'combo' ? 'Combo' : 'Promo'
+              return (
+                <div key={promo.id}
+                  className="flex items-center gap-3 shrink-0 rounded-2xl px-4 py-3 min-w-[220px]"
+                  style={{ backgroundColor: promo.badge_color + '12', border: `1.5px solid ${promo.badge_color}35` }}>
+                  <span className="text-2xl shrink-0">{promo.emoji}</span>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="font-black text-gray-900 text-sm leading-tight truncate">{promo.title}</p>
+                      <span className="shrink-0 text-[10px] font-black px-2 py-0.5 rounded-full text-white"
+                        style={{ backgroundColor: promo.badge_color }}>{label}</span>
+                    </div>
+                    {promo.description && (
+                      <p className="text-gray-500 text-xs truncate mt-0.5">{promo.description}</p>
+                    )}
+                  </div>
+                </div>
               )
             })}
           </div>
