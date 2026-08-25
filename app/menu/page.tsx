@@ -10,14 +10,14 @@ import CartDrawer from '@/components/CartDrawer'
 const CATEGORIES = ['Tortas', 'Hamburguesas', 'Burritos', 'Tacos', 'Quesadillas', 'Flautas y Pollo', 'Menú Kids', 'Bebidas']
 
 const CATEGORY_IMG: Record<string, string> = {
-  Tortas: '/menu/torta-bistec.jpg',
-  Hamburguesas: '/menu/hamburguesa-doble.jpg',
+  Tortas: '/menu/torta-bistec.webp',
+  Hamburguesas: '/menu/hamburguesa-doble.webp',
   Burritos: '/menu/burrito-verde.jpg',
-  Tacos: '/menu/tacos-carnitas.jpg',
-  Quesadillas: '/menu/quesadilla-1.jpg',
-  'Flautas y Pollo': '/menu/flauta-pechuga.jpg',
-  'Menú Kids': '/menu/kids-nuggets.jpg',
-  Bebidas: '/menu/bebida-aguas-frescas.jpg',
+  Tacos: '/menu/tacos-carnitas.webp',
+  Quesadillas: '/menu/quesadilla-sencilla.webp',
+  'Flautas y Pollo': '/menu/flauta-pechuga-marinada.webp',
+  'Menú Kids': '/menu/kids-nuggets.webp',
+  Bebidas: '/menu/bebida-aguas-frescas.webp',
 }
 
 const CATEGORY_COLOR: Record<string, string> = {
