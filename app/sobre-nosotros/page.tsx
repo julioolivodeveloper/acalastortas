@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { MapPin, Phone, Clock, ShoppingBag, MessageCircle, ChevronRight, Star, Users, Heart } from 'lucide-react'
+import { MapPin, Phone, Clock, ShoppingBag, MessageCircle, ChevronRight, Star, Users, Heart, UtensilsCrossed, Zap } from 'lucide-react'
 
 const WHATSAPP = 'https://wa.me/19158588226?text=Hola%2C%20quiero%20ordenar'
 const DOORDASH = 'https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/'
@@ -112,14 +112,48 @@ export default function SobreNosotrosPage() {
         </div>
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { icon: '🌮', title: 'Sabores Auténticos', desc: 'Recetas tradicionales con los mejores ingredientes frescos' },
-            { icon: '🏠', title: 'Ambiente Familiar', desc: 'Un lugar acogedor donde cada cliente se siente como en casa' },
-            { icon: '⚡', title: 'Servicio Rápido', title2: '', desc: 'Ordena en línea y tu comida estará lista cuando llegues' },
-          ].map(({ icon, title, desc }) => (
-            <div key={title} className="bg-white/10 backdrop-blur rounded-2xl p-6 text-center border border-white/20">
-              <div className="text-4xl mb-4">{icon}</div>
-              <h3 className="text-white font-black text-lg mb-2">{title}</h3>
-              <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
+            {
+              Icon: UtensilsCrossed,
+              color: '#C61620',
+              glow: 'rgba(198,22,32,0.35)',
+              title: 'Sabores Auténticos',
+              desc: 'Recetas tradicionales con los mejores ingredientes frescos del mercado.',
+            },
+            {
+              Icon: Heart,
+              color: '#F59E0B',
+              glow: 'rgba(245,158,11,0.35)',
+              title: 'Ambiente Familiar',
+              desc: 'Un lugar acogedor donde cada cliente se siente como en casa.',
+            },
+            {
+              Icon: Zap,
+              color: '#22C55E',
+              glow: 'rgba(34,197,94,0.35)',
+              title: 'Servicio Rápido',
+              desc: 'Ordena en línea y tu comida estará lista cuando llegues.',
+            },
+          ].map(({ Icon, color, glow, title, desc }) => (
+            <div
+              key={title}
+              className="group bg-white/10 backdrop-blur rounded-3xl p-8 text-center border border-white/20 hover:bg-white/15 hover:-translate-y-1 transition-all duration-300"
+            >
+              <div
+                className="w-20 h-20 rounded-2xl mx-auto mb-6 flex items-center justify-center border border-white/20"
+                style={{
+                  backgroundColor: `${color}22`,
+                  boxShadow: `0 0 32px ${glow}, inset 0 1px 0 rgba(255,255,255,0.15)`,
+                }}
+              >
+                <Icon
+                  className="w-9 h-9 transition-transform duration-300 group-hover:scale-110"
+                  style={{ color }}
+                  strokeWidth={1.8}
+                />
+              </div>
+              <h3 className="text-white font-black text-xl mb-3 tracking-tight">{title}</h3>
+              <div className="w-8 h-0.5 rounded-full mx-auto mb-3" style={{ backgroundColor: color }} />
+              <p className="text-white/65 text-sm leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>
