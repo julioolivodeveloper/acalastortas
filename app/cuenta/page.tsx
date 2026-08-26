@@ -122,7 +122,7 @@ export default function CuentaPage() {
         {step === 'landing' && (
           <div>
             <div className="text-center mb-10">
-              <img src="/logo.png" alt="La Fondita de Mamá" className="h-24 mx-auto drop-shadow-xl mb-5" />
+              <img src="/logo.png" alt="La Fondita de Mamá" className="h-36 md:h-44 mx-auto drop-shadow-xl mb-5" />
               <h1 className="text-3xl font-black text-gray-900 mb-2">Mi Cuenta</h1>
               <p className="text-gray-500">Gana puntos con cada pedido y canjéalos por descuentos</p>
             </div>
