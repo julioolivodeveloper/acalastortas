@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { MapPin, Phone, Clock, ExternalLink, Navigation } from 'lucide-react'
 
 const RESTAURANT = {
-  name: '¡Acá Las Tortas! Y Más...',
+  name: 'La Fondita de Mamá',
   address: '10076 N Loop Dr, Socorro, TX 79927',
   phone: '(915) 858-8226',
   phoneLink: 'tel:+19158588226',
@@ -22,7 +22,7 @@ export default function SiteFooter() {
         {/* Mapa */}
         <div className="relative h-72 lg:h-auto min-h-[320px]">
           <iframe
-            title="Ubicación ¡Acá Las Tortas!"
+            title="Ubicación La Fondita de Mamá"
             src={RESTAURANT.embedUrl}
             width="100%"
             height="100%"
@@ -97,7 +97,7 @@ export default function SiteFooter() {
           <div className="flex items-center gap-3">
             <img src="/logo.png" alt="Logo" className="h-9 w-9 rounded-xl object-cover" />
             <div>
-              <p className="text-white font-black text-sm leading-tight">¡Acá Las Tortas!</p>
+              <p className="text-white font-black text-sm leading-tight">La Fondita de Mamá</p>
               <p className="text-gray-500 text-xs">Socorro, TX</p>
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function SiteFooter() {
             </a>
           </nav>
 
-          <p className="text-gray-600 text-xs">© {new Date().getFullYear()} Acá Las Tortas</p>
+          <p className="text-gray-600 text-xs">© {new Date().getFullYear()} La Fondita de Mamá</p>
         </div>
       </div>
     </footer>

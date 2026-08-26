@@ -20,7 +20,7 @@ const STATUS_IDX: Record<string, number> = {
 }
 
 const RESTAURANT = {
-  name: '¡Acá Las Tortas! Y Más...',
+  name: 'La Fondita de Mamá',
   address: '10076 N Loop Dr, Socorro, TX 79927',
   mapsUrl: 'https://maps.google.com/?q=10076+N+Loop+Dr+Socorro+TX+79927',
   phone: '(915) 858-8226',

@@ -23,14 +23,14 @@ export default function SobreNosotrosPage() {
       <section className="relative h-[70vh] min-h-[480px] flex items-center justify-center overflow-hidden">
         <img
           src="/sobre-hero.jpg"
-          alt="Aca Las Tortas El Paso"
+          alt="La Fondita de Mamá"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.85) 100%)' }} />
         <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
-          <img src="/logo.png" alt="Aca Las Tortas" className="h-28 md:h-36 mx-auto mb-6 drop-shadow-2xl" />
+          <img src="/logo.png" alt="La Fondita de Mamá" className="h-28 md:h-36 mx-auto mb-6 drop-shadow-2xl" />
           <h1 className="text-4xl md:text-6xl font-black text-white leading-tight mb-4 drop-shadow-lg">
-            Acá Las Tortas<br />
+            La Fondita de Mamá<br />
             <span style={{ color: '#C61620', textShadow: '0 0 30px rgba(198,22,32,0.5)' }}>El Paso</span>
           </h1>
           <p className="text-white/90 text-lg md:text-xl font-semibold mb-8">

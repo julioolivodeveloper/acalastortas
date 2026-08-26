@@ -35,7 +35,7 @@ function Header({ time }: { time: string }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
         <img src="/logo.png" alt="" style={{ height: 48, width: 48, borderRadius: 12, objectFit: 'cover' }} />
         <div>
-          <p style={{ color: 'white', fontWeight: 900, fontSize: 20, lineHeight: 1.1, margin: 0 }}>¡Acá Las Tortas! Y Más...</p>
+          <p style={{ color: 'white', fontWeight: 900, fontSize: 20, lineHeight: 1.1, margin: 0 }}>La Fondita de Mamá</p>
           <p style={{ color: '#6b7280', fontSize: 12, fontWeight: 600, margin: 0 }}>Socorro, TX · Menú Digital</p>
         </div>
       </div>

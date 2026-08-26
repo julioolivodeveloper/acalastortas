@@ -235,7 +235,7 @@ export default function MenuPage() {
             </a>
           </div>
 
-          <img src="/logo.png" alt="Aca Las Tortas" className="h-24 md:h-32 drop-shadow-2xl shrink-0" />
+          <img src="/logo.png" alt="La Fondita de Mamá" className="h-24 md:h-32 drop-shadow-2xl shrink-0" />
         </div>
       </div>
 

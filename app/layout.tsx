@@ -5,15 +5,15 @@ import ConditionalFooter from '@/components/ConditionalFooter'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://acalastortas-lake.vercel.app'),
-  title: '¡Acá Las Tortas! El Paso — Pedidos Online',
-  description: 'Las mejores tortas de El Paso. Ordena en línea para pickup o delivery vía DoorDash.',
+  title: 'La Fondita de Mamá — Pedidos Online',
+  description: 'La Fondita de Mamá en El Paso. Ordena en línea para pickup o delivery vía DoorDash.',
   icons: {
     icon: '/logo.png',
     apple: '/logo.png',
   },
   openGraph: {
-    title: '¡Acá Las Tortas! El Paso',
-    description: 'Las mejores tortas de El Paso. Ordena en línea para pickup o delivery vía DoorDash.',
+    title: 'La Fondita de Mamá',
+    description: 'La Fondita de Mamá en El Paso. Ordena en línea para pickup o delivery vía DoorDash.',
     images: [{ url: '/logo.png' }],
   },
 }

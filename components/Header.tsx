@@ -44,7 +44,7 @@ export default function Header() {
           <Link href="/" className="shrink-0">
             <img
               src="/logo.png"
-              alt="Acá Las Tortas"
+              alt="La Fondita de Mamá"
               className="h-11 drop-shadow-lg transition-opacity hover:opacity-90"
             />
           </Link>

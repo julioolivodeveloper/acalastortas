@@ -82,7 +82,7 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 max-w-3xl">
-          <img src="/logo.png" alt="Aca Las Tortas" className="h-36 md:h-44 mx-auto mb-6 drop-shadow-2xl" />
+          <img src="/logo.png" alt="La Fondita de Mamá" className="h-36 md:h-44 mx-auto mb-6 drop-shadow-2xl" />
           <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-2 drop-shadow-lg">
             Las Mejores<br />
             <TypewriterSpan />
@@ -304,7 +304,7 @@ export default function Home() {
       <section className="py-0">
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="relative h-72 lg:h-auto">
-            <img src="/ubicacion.webp" alt="Aca Las Tortas El Paso" className="w-full h-full object-cover" />
+            <img src="/ubicacion.webp" alt="La Fondita de Mamá" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col justify-center px-8 py-16 lg:px-16 bg-white">
             <p className="text-[#006B42] font-black text-sm uppercase tracking-widest mb-3">Encuéntranos</p>
@@ -362,8 +362,8 @@ export default function Home() {
       <footer className="bg-[#111] text-white py-12 px-4">
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
           <div>
-            <img src="/logo.png" alt="Aca Las Tortas" className="h-20 mb-3" />
-            <p className="text-gray-400 text-sm">Las mejores tortas de El Paso, TX</p>
+            <img src="/logo.png" alt="La Fondita de Mamá" className="h-20 mb-3" />
+            <p className="text-gray-400 text-sm">La mejor comida de El Paso, TX</p>
           </div>
           <div>
             <h4 className="font-black text-sm uppercase tracking-wider mb-4" style={{ color: '#C61620' }}>Navegación</h4>
@@ -384,7 +384,7 @@ export default function Home() {
           </div>
         </div>
         <div className="border-t border-white/10 pt-6 text-center text-gray-600 text-xs">
-          © {new Date().getFullYear()} ¡Acá Las Tortas! El Paso — Todos los derechos reservados
+          © {new Date().getFullYear()} La Fondita de Mamá — Todos los derechos reservados
         </div>
       </footer>
     </main>
