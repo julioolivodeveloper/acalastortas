@@ -303,8 +303,8 @@ export default function Home() {
       {/* ── UBICACIÓN ── */}
       <section className="py-0">
         <div className="grid grid-cols-1 lg:grid-cols-2">
-          <div className="relative h-72 lg:h-auto">
-            <img src="/ubicacion.webp" alt="La Fondita de Mamá" className="w-full h-full object-cover" />
+          <div className="relative h-72 lg:h-auto flex items-center justify-center" style={{ backgroundColor: '#006B42' }}>
+            <img src="/logo.png" alt="La Fondita de Mamá" className="w-56 md:w-72 lg:w-80 drop-shadow-2xl" />
           </div>
           <div className="flex flex-col justify-center px-8 py-16 lg:px-16 bg-white">
             <p className="text-[#006B42] font-black text-sm uppercase tracking-widest mb-3">Encuéntranos</p>
