@@ -77,7 +77,7 @@ export default function Home() {
       <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 py-24 overflow-hidden">
         {/* Background food photo */}
         <div className="absolute inset-0">
-          <img src="/hamburguesa-combo.jpg" alt="" className="w-full h-full object-cover" />
+          <img src="/ordena-y-recoge2.webp" alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.38) 50%, rgba(0,0,0,0.68) 100%)' }} />
         </div>
 
