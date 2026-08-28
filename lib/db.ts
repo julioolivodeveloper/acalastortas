@@ -117,10 +117,14 @@ export async function placeOrder(data: {
   if (error) throw error
 
   // atomic points increment — avoids race condition on concurrent orders
-  await supabase.rpc('increment_customer_points', {
+  const { error: rpcError } = await supabase.rpc('increment_customer_points', {
     customer_id: customer.id,
     pts: pointsEarned,
   })
+  if (rpcError) {
+    // Order is already saved — don't fail the request, but log for debugging
+    console.error('increment_customer_points failed:', rpcError.message)
+  }
 
   return order
 }

@@ -7,7 +7,7 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4 text-center">
-      <img src="/logo.png" alt="La Fondita de Mamá" className="h-20 mb-6 drop-shadow-xl" />
+      <img src="/logo.png" alt="Aca Las Tortas El Paso" className="h-20 mb-6 drop-shadow-xl" />
       <h1 className="text-3xl font-black text-gray-900 mb-2">Algo salió mal</h1>
       <p className="text-gray-400 mb-8 max-w-sm">Ocurrió un error inesperado. Por favor intenta de nuevo.</p>
       <div className="flex gap-3">
