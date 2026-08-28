@@ -57,7 +57,7 @@ function Footer() {
       padding: '0 36px', backgroundColor: '#000', borderTop: '1px solid rgba(255,255,255,0.06)', flexShrink: 0,
     }}>
       <p style={{ color: '#4b5563', fontSize: 12, fontWeight: 600, margin: 0 }}>📍 10076 N Loop Dr, Socorro TX 79927</p>
-      <p style={{ color: '#4b5563', fontSize: 12, fontWeight: 600, margin: 0 }}>☎ (915) 858-8226  ·  Lun–Dom 8:00am – 10:00pm</p>
+      <p style={{ color: '#4b5563', fontSize: 12, fontWeight: 600, margin: 0 }}>☎ (915) 343-8467  ·  Lun–Dom 8:00am – 10:00pm</p>
       <p style={{ color: '#4b5563', fontSize: 12, fontWeight: 600, margin: 0 }}>Ordena Online · Pickup · Sin Esperar</p>
     </footer>
   )

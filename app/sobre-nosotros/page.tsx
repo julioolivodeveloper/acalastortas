@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { MapPin, Phone, Clock, ShoppingBag, MessageCircle, ChevronRight, Star, Users, Heart, UtensilsCrossed, Zap } from 'lucide-react'
 
-const WHATSAPP = 'https://wa.me/19158588226?text=Hola%2C%20quiero%20ordenar'
+const WHATSAPP = 'https://wa.me/19153438467?text=Hola%2C%20quiero%20ordenar'
 const DOORDASH = 'https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/'
 const MAPS = 'https://maps.google.com/?q=10076+N+Loop+Dr,+Socorro,+TX+79927'
 
@@ -74,7 +74,7 @@ export default function SobreNosotrosPage() {
               Nuestro objetivo es crear un ambiente acogedor donde cada cliente se sienta como en casa. A través de la dedicación a nuestro oficio y nuestra comunidad, nos esforzamos por ofrecer una experiencia gastronómica que haga que nuestros clientes regresen por más.
             </p>
             <a
-              href={`tel:+19158588226`}
+              href={`tel:+19153438467`}
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl font-black text-white text-base hover:opacity-90 transition"
               style={{ backgroundColor: '#006B42' }}
             >
@@ -249,13 +249,13 @@ export default function SobreNosotrosPage() {
                   <p className="text-gray-600 text-sm">Dom: 9:00 AM – 7:00 PM</p>
                 </div>
               </div>
-              <a href="tel:+19158588226" className="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-green-50 transition group">
+              <a href="tel:+19153438467" className="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-green-50 transition group">
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition" style={{ backgroundColor: '#006B42' }}>
                   <Phone className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p className="font-black text-gray-900 text-sm">Teléfono</p>
-                  <p className="text-gray-600 text-sm mt-0.5">(915) 858-8226</p>
+                  <p className="text-gray-600 text-sm mt-0.5">(915) 343-8467</p>
                 </div>
               </a>
             </div>

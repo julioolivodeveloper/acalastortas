@@ -44,7 +44,7 @@ function CardForm({ total, validate, onSuccess }: {
     try {
       await onSuccess()
     } catch {
-      setCardError('Pago exitoso pero hubo un error al guardar la orden. Llámanos al (915) 858-8226.')
+      setCardError('Pago exitoso pero hubo un error al guardar la orden. Llámanos al (915) 343-8467.')
       setPaying(false)
     }
   }

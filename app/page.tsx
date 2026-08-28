@@ -117,7 +117,7 @@ export default function Home() {
           {[
             { icon: MapPin, label: 'Dirección', value: '10076 N Loop Dr, Socorro, TX' },
             { icon: Clock, label: 'Horario', value: 'Lun–Sáb: 8am – 9pm' },
-            { icon: Phone, label: 'Teléfono', value: '(915) 858-8226' },
+            { icon: Phone, label: 'Teléfono', value: '(915) 343-8467' },
           ].map(({ icon: Icon, label, value }) => (
             <div key={label} className="flex items-center gap-3 py-3 sm:py-0 sm:px-6 first:sm:pl-0">
               <Icon className="w-5 h-5 shrink-0" style={{ color: '#C61620' }} />
@@ -316,7 +316,7 @@ export default function Home() {
               {[
                 { icon: MapPin, title: 'Dirección', value: '10076 N Loop Dr, Socorro, TX 79927' },
                 { icon: Clock, title: 'Horario', value: 'Lunes a Sábado: 8:00am – 9:00pm' },
-                { icon: Phone, title: 'Teléfono', value: '(915) 858-8226' },
+                { icon: Phone, title: 'Teléfono', value: '(915) 343-8467' },
               ].map(({ icon: Icon, title, value }) => (
                 <div key={title} className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#006B4215' }}>
@@ -378,7 +378,7 @@ export default function Home() {
             <h4 className="font-black text-sm uppercase tracking-wider mb-4" style={{ color: '#C61620' }}>Contacto</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#C61620' }} /> 10076 N Loop Dr, Socorro, TX</li>
-              <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" style={{ color: '#C61620' }} /> (915) 858-8226</li>
+              <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" style={{ color: '#C61620' }} /> (915) 343-8467</li>
               <li className="flex items-center gap-2"><Clock className="w-4 h-4 shrink-0" style={{ color: '#C61620' }} /> Lun–Sáb: 8am – 9pm</li>
             </ul>
           </div>

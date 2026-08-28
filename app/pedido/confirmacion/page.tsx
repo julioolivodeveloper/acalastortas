@@ -23,8 +23,8 @@ const RESTAURANT = {
   name: 'Aca Las Tortas El Paso',
   address: '10076 N Loop Dr, Socorro, TX 79927',
   mapsUrl: 'https://maps.google.com/?q=10076+N+Loop+Dr+Socorro+TX+79927',
-  phone: '(915) 858-8226',
-  phoneLink: 'tel:+19158588226',
+  phone: '(915) 343-8467',
+  phoneLink: 'tel:+19153438467',
   hours: 'Lun–Dom · 8:00am – 10:00pm',
 }
 

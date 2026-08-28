@@ -5,8 +5,8 @@ import { MapPin, Phone, Clock, ExternalLink, Navigation } from 'lucide-react'
 const RESTAURANT = {
   name: 'La Fondita de Mamá',
   address: '10076 N Loop Dr, Socorro, TX 79927',
-  phone: '(915) 858-8226',
-  phoneLink: 'tel:+19158588226',
+  phone: '(915) 343-8467',
+  phoneLink: 'tel:+19153438467',
   hours: 'Lun – Dom · 8:00 am – 10:00 pm',
   mapsUrl: 'https://maps.google.com/?q=10076+N+Loop+Dr,+Socorro,+TX+79927',
   embedUrl: 'https://maps.google.com/maps?q=10076+N+Loop+Dr,+Socorro,+TX+79927&output=embed&z=15',

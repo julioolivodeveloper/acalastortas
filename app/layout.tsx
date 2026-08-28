@@ -12,7 +12,7 @@ const jsonLd = {
   name: 'La Fondita de Mamá',
   image: `${DOMAIN}/logo.png`,
   url: DOMAIN,
-  telephone: '+19158588226',
+  telephone: '+19153438467',
   address: {
     '@type': 'PostalAddress',
     streetAddress: '10076 N Loop Dr',

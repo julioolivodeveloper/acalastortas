@@ -51,7 +51,7 @@ const RESPONSES: { pattern: RegExp; response: BotResponse }[] = [
   {
     pattern: /orden|ordenar|pedir|pedido|pickup|recoger|como.*ord|cómo.*ord/,
     response: {
-      text: 'Puedes ordenar de 3 formas:\n1️⃣ Online para pickup en nuestro sitio\n2️⃣ Por WhatsApp al (915) 858-8226\n3️⃣ En persona en el local',
+      text: 'Puedes ordenar de 3 formas:\n1️⃣ Online para pickup en nuestro sitio\n2️⃣ Por WhatsApp al (915) 343-8467\n3️⃣ En persona en el local',
       cta: { label: '🛒 Ordenar Online', href: '/menu' },
       chips: MENU_CHIPS,
     },
@@ -60,7 +60,7 @@ const RESPONSES: { pattern: RegExp; response: BotResponse }[] = [
     pattern: /whatsapp|mensaje|msj|chat|escribir|escribeme|escríbeme/,
     response: {
       text: 'Escríbenos directo por WhatsApp y te atendemos al momento 💬',
-      cta: { label: '💬 Abrir WhatsApp', href: 'https://wa.me/19158588226?text=Hola%2C%20quiero%20ordenar', external: true },
+      cta: { label: '💬 Abrir WhatsApp', href: 'https://wa.me/19153438467?text=Hola%2C%20quiero%20ordenar', external: true },
       chips: MENU_CHIPS,
     },
   },
@@ -89,8 +89,8 @@ const RESPONSES: { pattern: RegExp; response: BotResponse }[] = [
   {
     pattern: /telefono|teléfono|número|numero|llamar|llama|contacto|contact/,
     response: {
-      text: 'Nuestro número es (915) 858-8226 ☎️\nPuedes llamarnos o escribirnos por WhatsApp.',
-      cta: { label: '💬 WhatsApp', href: 'https://wa.me/19158588226', external: true },
+      text: 'Nuestro número es (915) 343-8467 ☎️\nPuedes llamarnos o escribirnos por WhatsApp.',
+      cta: { label: '💬 WhatsApp', href: 'https://wa.me/19153438467', external: true },
       chips: MENU_CHIPS,
     },
   },
