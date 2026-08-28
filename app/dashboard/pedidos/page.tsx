@@ -8,22 +8,41 @@ import type { DbOrder, OrderStatus } from '@/lib/supabase'
 
 const STATUS_ORDER: OrderStatus[] = ['nuevo', 'preparando', 'listo', 'entregado', 'cancelado']
 
+// Shared AudioContext — created once on user interaction, reused for every beep
+let sharedAudioCtx: AudioContext | null = null
+
+function getAudioCtx(): AudioContext {
+  if (!sharedAudioCtx) {
+    sharedAudioCtx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)()
+  }
+  return sharedAudioCtx
+}
+
+function doBeep(ctx: AudioContext) {
+  const times = [0, 0.18, 0.36]
+  times.forEach((t) => {
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+    osc.frequency.value = 880
+    osc.type = 'sine'
+    gain.gain.setValueAtTime(0.5, ctx.currentTime + t)
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.15)
+    osc.start(ctx.currentTime + t)
+    osc.stop(ctx.currentTime + t + 0.15)
+  })
+}
+
 function playBeep() {
   try {
-    const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)()
-    const times = [0, 0.18, 0.36]
-    times.forEach((t) => {
-      const osc = ctx.createOscillator()
-      const gain = ctx.createGain()
-      osc.connect(gain)
-      gain.connect(ctx.destination)
-      osc.frequency.value = 880
-      osc.type = 'sine'
-      gain.gain.setValueAtTime(0.5, ctx.currentTime + t)
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.15)
-      osc.start(ctx.currentTime + t)
-      osc.stop(ctx.currentTime + t + 0.15)
-    })
+    const ctx = getAudioCtx()
+    // Resume first (browser may have suspended it between interactions)
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(() => doBeep(ctx)).catch(() => {})
+    } else {
+      doBeep(ctx)
+    }
   } catch {}
 }
 
@@ -45,6 +64,13 @@ export default function PedidosPage() {
   }, [])
 
   const requestNotifPermission = async () => {
+    // Unlock AudioContext with this user gesture so future beeps funcionen
+    try {
+      const ctx = getAudioCtx()
+      await ctx.resume()
+      doBeep(ctx) // beep de prueba para confirmar que el audio está activo
+    } catch {}
+
     if (!('Notification' in window)) return
     const result = await Notification.requestPermission()
     setNotifAllowed(result === 'granted')
