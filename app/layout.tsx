@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import ConditionalHeader from '@/components/ConditionalHeader'
 import ConditionalFooter from '@/components/ConditionalFooter'
+import ConditionalChat from '@/components/ConditionalChat'
 
 const DOMAIN = 'https://lafonditademama.com'
 
@@ -85,6 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ConditionalHeader />
         {children}
         <ConditionalFooter />
+        <ConditionalChat />
       </body>
     </html>
   )
