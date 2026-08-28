@@ -50,3 +50,7 @@ BEGIN
   END IF;
 END
 $$;
+
+-- 6. Puntos nunca pueden ser negativos
+ALTER TABLE customers
+  ADD CONSTRAINT customers_points_nonneg CHECK (points >= 0);
