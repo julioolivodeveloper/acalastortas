@@ -73,7 +73,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#006B42' }}>
               <Lock className="w-7 h-7 text-white" />
             </div>
-            <img src="/logo.png" alt="Aca Las Tortas El Paso" className="h-12 mx-auto mb-4" />
+            <img src="/logo.png" alt="La Fondita de Mamá" className="h-12 mx-auto mb-4" />
             <h1 className="text-white font-black text-xl">Panel de Administración</h1>
             <p className="text-gray-500 text-sm mt-1">Inicia sesión para continuar</p>
           </div>

@@ -28,8 +28,8 @@ export default function DashboardHome() {
     { label: 'Ventas Hoy', value: `$${stats.todayRevenue.toFixed(2)}`, icon: DollarSign, color: '#16A34A' },
     { label: 'Pendientes', value: stats.pending.toString(), icon: Clock, color: '#F59E0B' },
     { label: 'Clientes', value: stats.totalCustomers.toString(), icon: Users, color: '#6366F1' },
-    { label: 'Últ. 6 Órdenes', value: recent.length.toString(), icon: TrendingUp, color: '#8B5CF6' },
-    { label: 'Actualización', value: 'Cada 10s', icon: UtensilsCrossed, color: '#14B8A6' },
+    { label: 'Total Órdenes', value: recent.length > 0 ? '—' : '0', icon: TrendingUp, color: '#8B5CF6' },
+    { label: 'Actualización', value: 'Auto', icon: UtensilsCrossed, color: '#14B8A6' },
   ]
 
   return (
