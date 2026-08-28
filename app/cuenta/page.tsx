@@ -1,10 +1,11 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Eye, EyeOff, ShoppingBag, Phone, User, Gift, LogIn, UserPlus, ChevronLeft, ExternalLink } from 'lucide-react'
 import { STATUS_LABELS, STATUS_COLORS } from '@/store/store'
 import { useCustomerStore } from '@/store/customer-store'
-import { findCustomerByPhone, createCustomer, getCustomerOrders } from '@/lib/db'
+import { customerSignIn, customerSignUp, customerSignOut, getLoggedInCustomer } from '@/lib/customer-auth'
+import { getCustomerOrders } from '@/lib/db'
 import type { DbCustomer, DbOrder } from '@/lib/supabase'
 
 const DOORDASH_URL = 'https://www.doordash.com/store/aca-las-tortas-el-paso-10076-n-loop-dr-socorro-34404153/'
@@ -15,22 +16,37 @@ const tier = (pts: number) => {
   return { name: 'Bronce', color: '#CD7F32', emoji: '🥉' }
 }
 
-type Step = 'landing' | 'login' | 'register' | 'profile' | 'set-password'
+type Step = 'loading' | 'landing' | 'login' | 'register' | 'profile'
 
 export default function CuentaPage() {
-  const { customer: storedCustomer, setCustomer, savePassword, checkPassword, hasPassword, clearCustomer } = useCustomerStore()
+  const { setCustomer, clearCustomer } = useCustomerStore()
 
   const [phone, setPhone] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [showPw, setShowPw] = useState(false)
-  const [step, setStep] = useState<Step>(storedCustomer ? 'profile' : 'landing')
-  const [customer, setLocalCustomer] = useState<DbCustomer | null>(storedCustomer)
+  const [step, setStep] = useState<Step>('loading')
+  const [customer, setLocalCustomer] = useState<DbCustomer | null>(null)
   const [customerOrders, setCustomerOrders] = useState<DbOrder[]>([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   const reset = () => { setPhone(''); setName(''); setPassword(''); setError('') }
+
+  // Check for existing Supabase session on mount
+  useEffect(() => {
+    getLoggedInCustomer().then(async (c) => {
+      if (c) {
+        const orders = await getCustomerOrders(c.id)
+        setCustomer(c)
+        setLocalCustomer(c)
+        setCustomerOrders(orders)
+        setStep('profile')
+      } else {
+        setStep('landing')
+      }
+    })
+  }, [setCustomer])
 
   const login = async () => {
     const digits = phone.replace(/\D/g, '')
@@ -38,53 +54,41 @@ export default function CuentaPage() {
     if (!password) { setError('Ingresa tu contraseña'); return }
     setError(''); setLoading(true)
     try {
-      const found = await findCustomerByPhone(digits)
-      if (!found) {
-        setError('No encontramos una cuenta con ese número')
-        return
-      }
-      // Si tiene contraseña guardada, verificar
-      if (hasPassword(digits)) {
-        if (!checkPassword(digits, password)) {
-          setError('Contraseña incorrecta')
-          return
-        }
-      } else {
-        // Cuenta antigua sin contraseña — guardar la que ingresó
-        savePassword(digits, password)
-      }
+      const found = await customerSignIn(digits, password)
+      if (!found) { setError('No encontramos una cuenta con ese número'); return }
       const orders = await getCustomerOrders(found.id)
       setCustomer(found)
       setLocalCustomer(found)
       setCustomerOrders(orders)
       setStep('profile')
-    } catch { setError('Error al buscar. Intenta de nuevo.') }
-    finally { setLoading(false) }
+    } catch (e: unknown) {
+      const msg = (e as Error).message ?? ''
+      if (msg.includes('Invalid login credentials')) setError('Número o contraseña incorrectos')
+      else setError('Error al iniciar sesión. Intenta de nuevo.')
+    } finally { setLoading(false) }
   }
 
   const register = async () => {
     if (!name.trim()) { setError('Ingresa tu nombre'); return }
     const digits = phone.replace(/\D/g, '')
     if (digits.length < 10) { setError('Ingresa un número válido de 10 dígitos'); return }
-    if (password.length < 4) { setError('La contraseña debe tener al menos 4 caracteres'); return }
+    if (password.length < 6) { setError('La contraseña debe tener al menos 6 caracteres'); return }
     setError(''); setLoading(true)
     try {
-      const existing = await findCustomerByPhone(digits)
-      if (existing) {
-        setError('Ya existe una cuenta con ese número. Inicia sesión.')
-        return
-      }
-      const newCustomer = await createCustomer(name.trim(), digits)
-      savePassword(digits, password)
+      const newCustomer = await customerSignUp(name.trim(), digits, password)
       setCustomer(newCustomer)
       setLocalCustomer(newCustomer)
       setCustomerOrders([])
       setStep('profile')
-    } catch { setError('Error al registrar. Intenta de nuevo.') }
-    finally { setLoading(false) }
+    } catch (e: unknown) {
+      const msg = (e as Error).message ?? ''
+      if (msg.includes('already registered')) setError('Ya existe una cuenta con ese número. Inicia sesión.')
+      else setError('Error al registrar. Intenta de nuevo.')
+    } finally { setLoading(false) }
   }
 
-  const logout = () => {
+  const logout = async () => {
+    await customerSignOut()
     clearCustomer()
     setLocalCustomer(null)
     setCustomerOrders([])
@@ -113,6 +117,14 @@ export default function CuentaPage() {
       </button>
     </div>
   )
+
+  if (step === 'loading') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#006B42', borderTopColor: 'transparent' }} />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -269,7 +281,7 @@ export default function CuentaPage() {
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1">Contraseña</label>
                   <PasswordField
-                    placeholder="Mínimo 4 caracteres"
+                    placeholder="Mínimo 6 caracteres"
                     value={password}
                     onChange={setPassword}
                     onEnter={register}

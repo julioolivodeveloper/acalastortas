@@ -49,5 +49,6 @@ export type DbCustomer = {
   phone: string
   points: number
   order_count: number
+  auth_id: string | null
   created_at: string
 }

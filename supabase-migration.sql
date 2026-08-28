@@ -54,3 +54,9 @@ $$;
 -- 6. Puntos nunca pueden ser negativos
 ALTER TABLE customers
   ADD CONSTRAINT customers_points_nonneg CHECK (points >= 0);
+
+-- 7. Columna auth_id para vincular clientes con Supabase Auth
+ALTER TABLE customers
+  ADD COLUMN IF NOT EXISTS auth_id UUID REFERENCES auth.users(id);
+CREATE UNIQUE INDEX IF NOT EXISTS customers_auth_id_idx
+  ON customers(auth_id) WHERE auth_id IS NOT NULL;
