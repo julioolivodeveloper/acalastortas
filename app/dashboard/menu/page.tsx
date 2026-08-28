@@ -61,14 +61,24 @@ function ImageUpload({
 }) {
   const [uploading, setUploading] = useState(false)
   const [imageUrl, setImageUrl] = useState(currentImage || '')
+  const [uploadError, setUploadError] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
+
+  // Sync when the parent switches to a different item
+  useEffect(() => {
+    setImageUrl(currentImage || '')
+    setUploadError('')
+  }, [currentImage])
 
   const upload = async (file: File) => {
     setUploading(true)
+    setUploadError('')
     const ext = file.name.split('.').pop()
     const path = `menu/${Date.now()}.${ext}`
     const { error } = await supabase.storage.from('menu-images').upload(path, file, { upsert: true })
-    if (!error) {
+    if (error) {
+      setUploadError(`Error al subir: ${error.message}`)
+    } else {
       const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/menu-images/${path}`
       setImageUrl(publicUrl)
       onUploaded(publicUrl)
@@ -102,6 +112,9 @@ function ImageUpload({
         )}
         <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f) }} />
       </div>
+      {uploadError && (
+        <p className="text-red-400 text-xs font-semibold px-1">{uploadError}</p>
+      )}
       <input
         value={imageUrl}
         onChange={(e) => { setImageUrl(e.target.value); onUploaded(e.target.value) }}
@@ -202,7 +215,7 @@ export default function MenuEditorPage() {
               <label className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-1.5 block">Imagen</label>
               <ImageUpload
                 currentImage={newItem.image || null}
-                onUploaded={(url) => setNewItem({ ...newItem, image: url })}
+                onUploaded={(url) => setNewItem(prev => ({ ...prev, image: url }))}
               />
             </div>
             <div className="space-y-3">
@@ -279,7 +292,7 @@ export default function MenuEditorPage() {
                       <label className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-1.5 block">Imagen</label>
                       <ImageUpload
                         currentImage={editing.image || null}
-                        onUploaded={(url) => setEditing({ ...editing, image: url })}
+                        onUploaded={(url) => setEditing(prev => prev ? { ...prev, image: url } : null)}
                       />
                     </div>
                     <div className="space-y-3">
