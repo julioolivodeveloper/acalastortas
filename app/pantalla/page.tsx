@@ -40,7 +40,7 @@ function Header({ time }: { time: string }) {
         </div>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
-        <p style={{ color: '#006B42', fontWeight: 700, fontSize: 13, margin: 0 }}>🌐 acalastortas-lake.vercel.app</p>
+        <p style={{ color: '#006B42', fontWeight: 700, fontSize: 13, margin: 0 }}>🌐 lafonditademama.com</p>
         <div style={{ textAlign: 'right' }}>
           <p style={{ color: 'white', fontWeight: 900, fontSize: 34, lineHeight: 1, margin: 0 }}>{time}</p>
           <p style={{ color: '#6b7280', fontSize: 11, margin: 0 }}>Precios en USD</p>
