@@ -1,5 +1,12 @@
 import { supabase } from './supabase'
 
+// Format a Date or ISO string as YYYY-MM-DD in El Paso (Mountain Time)
+function toElPasoDate(d: Date | string): string {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Denver' }).format(
+    typeof d === 'string' ? new Date(d) : d
+  )
+}
+
 export async function getAnalytics() {
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
@@ -23,7 +30,7 @@ export async function getAnalytics() {
   const customers = customersRes.data || []
   const completedOrders = allOrdersRes.data || []
 
-  // Revenue by day (last 30 days)
+  // Revenue by day (last 30 days) — keyed by El Paso local date
   const revenueMap: Record<string, number> = {}
   const ordersMap: Record<string, number> = {}
 
@@ -31,14 +38,14 @@ export async function getAnalytics() {
   for (let i = 29; i >= 0; i--) {
     const d = new Date()
     d.setDate(d.getDate() - i)
-    const key = d.toISOString().split('T')[0]
+    const key = toElPasoDate(d)
     days.push(key)
     revenueMap[key] = 0
     ordersMap[key] = 0
   }
 
   orders.forEach((o) => {
-    const day = o.created_at.split('T')[0]
+    const day = toElPasoDate(o.created_at) // use El Paso date, not UTC
     if (revenueMap[day] !== undefined) {
       revenueMap[day] = (revenueMap[day] || 0) + Number(o.total)
       ordersMap[day] = (ordersMap[day] || 0) + 1
@@ -70,7 +77,7 @@ export async function getAnalytics() {
 
   // Summary stats
   const totalRevenue = completedOrders.reduce((s, o) => s + Number(o.total), 0)
-  const today = new Date().toISOString().split('T')[0]
+  const today = toElPasoDate(new Date())
   const todayRevenue = revenueMap[today] || 0
   const todayOrders = ordersMap[today] || 0
   const totalOrders30 = orders.length
@@ -83,8 +90,9 @@ export async function getAnalytics() {
   const statusData = Object.entries(statusMap).map(([name, value]) => ({ name, value }))
 
   // New customers last 30 days
+  const thirtyDaysAgoKey = toElPasoDate(thirtyDaysAgo)
   const newCustomers = customers.filter(
-    (c) => new Date(c.created_at) >= thirtyDaysAgo
+    (c) => toElPasoDate(c.created_at) >= thirtyDaysAgoKey
   ).length
 
   return {

@@ -75,12 +75,28 @@ export async function placeOrder(data: {
   total: number
   customerId?: string
 }) {
+  if (!data.customerName.trim()) throw new Error('Nombre requerido')
+  if (!data.customerPhone || data.customerPhone.length < 10) throw new Error('Teléfono inválido')
+  if (!data.items.length) throw new Error('El carrito está vacío')
+  if (data.total <= 0) throw new Error('Total inválido')
+
   const pointsEarned = Math.floor(data.total)
 
-  // find or create customer
+  // find or create customer — handle race condition on concurrent orders
   let customer = await findCustomerByPhone(data.customerPhone)
   if (!customer) {
-    customer = await createCustomer(data.customerName, data.customerPhone)
+    try {
+      customer = await createCustomer(data.customerName, data.customerPhone)
+    } catch (err: unknown) {
+      // Unique violation (23505): another concurrent request created the customer first
+      if ((err as { code?: string })?.code === '23505') {
+        const found = await findCustomerByPhone(data.customerPhone)
+        if (!found) throw err
+        customer = found
+      } else {
+        throw err
+      }
+    }
   }
 
   const { data: order, error } = await supabase
@@ -100,14 +116,11 @@ export async function placeOrder(data: {
 
   if (error) throw error
 
-  // update customer points + order count
-  await supabase
-    .from('customers')
-    .update({
-      points: (customer.points ?? 0) + pointsEarned,
-      order_count: (customer.order_count ?? 0) + 1,
-    })
-    .eq('id', customer.id)
+  // atomic points increment — avoids race condition on concurrent orders
+  await supabase.rpc('increment_customer_points', {
+    customer_id: customer.id,
+    pts: pointsEarned,
+  })
 
   return order
 }
@@ -156,9 +169,20 @@ export async function getCustomerOrders(customerId: string) {
 }
 
 // ── STATS ─────────────────────────────────────────────────────────────────
+// Returns midnight of today in El Paso (Mountain Time = UTC-6 MDT / UTC-7 MST)
+function getElPasoMidnightUTC(): Date {
+  const now = new Date()
+  // Interpret El Paso local time numerically (server is UTC, so this preserves the local numbers)
+  const elPasoNow = new Date(now.toLocaleString('en-US', { timeZone: 'America/Denver' }))
+  // Offset = how many ms ahead UTC is of El Paso local (6h MDT / 7h MST)
+  const offset = now.getTime() - elPasoNow.getTime()
+  const midnightLocal = new Date(elPasoNow)
+  midnightLocal.setHours(0, 0, 0, 0)
+  return new Date(midnightLocal.getTime() + offset)
+}
+
 export async function getDashboardStats() {
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
+  const today = getElPasoMidnightUTC()
 
   const [ordersToday, allOrders, customers] = await Promise.all([
     supabase.from('orders').select('total,status').gte('created_at', today.toISOString()),
