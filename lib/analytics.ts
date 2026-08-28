@@ -62,11 +62,11 @@ export async function getAnalytics() {
   const itemMap: Record<string, { qty: number; revenue: number }> = {}
   orders.forEach((o) => {
     if (!Array.isArray(o.items)) return
-    o.items.forEach((ci: { item: { name: string }; quantity: number; item_price?: number }) => {
+    o.items.forEach((ci: { item: { name: string; price?: number }; quantity: number }) => {
       const name = ci.item?.name || 'Desconocido'
       if (!itemMap[name]) itemMap[name] = { qty: 0, revenue: 0 }
       itemMap[name].qty += ci.quantity || 1
-      itemMap[name].revenue += (ci.item_price || 0) * (ci.quantity || 1)
+      itemMap[name].revenue += (ci.item?.price || 0) * (ci.quantity || 1)
     })
   })
 

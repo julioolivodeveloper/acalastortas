@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react'
 import { Upload, ImageIcon } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
 
 type Props = {
   currentImage: string | null
@@ -32,7 +31,7 @@ export default function ImageUpload({ currentImage, bucket = 'menu-images', fold
     if (error) {
       setUploadError(`Error al subir: ${error.message}`)
     } else {
-      const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`
+      const { data: { publicUrl } } = supabase.storage.from(bucket).getPublicUrl(path)
       setImageUrl(publicUrl)
       onUploaded(publicUrl)
     }

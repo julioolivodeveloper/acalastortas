@@ -145,6 +145,9 @@ export default function ChatWidget() {
   const [typing, setTyping] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const typingTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => () => { if (typingTimer.current) clearTimeout(typingTimer.current) }, [])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -159,7 +162,7 @@ export default function ChatWidget() {
     setInput('')
     setMessages(prev => [...prev, { from: 'user', text }])
     setTyping(true)
-    setTimeout(() => {
+    typingTimer.current = setTimeout(() => {
       const response = getResponse(text)
       setMessages(prev => [...prev, { from: 'bot', response }])
       setTyping(false)
