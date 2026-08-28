@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { Tag, Plus, Pencil, Trash2, Power, Check } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
+import ImageUpload from '@/components/ImageUpload'
 
 type PromoType = 'discount' | '2x1' | 'combo' | 'custom'
 
@@ -15,6 +16,7 @@ type Promo = {
   active: boolean
   emoji: string
   badge_color: string
+  image: string | null
   created_at: string
 }
 
@@ -23,7 +25,7 @@ type MenuItem = { id: string; name: string; category: string; price: number }
 const EMPTY: Omit<Promo, 'id' | 'created_at'> = {
   title: '', description: '', type: 'discount',
   discount_percent: 10, item_ids: [], active: true,
-  emoji: '🔥', badge_color: '#C61620',
+  emoji: '🔥', badge_color: '#C61620', image: null,
 }
 
 const TYPES: { key: PromoType; label: string; desc: string }[] = [
@@ -137,8 +139,13 @@ export default function PromocionesPage() {
 
           {promos.map(promo => (
             <div key={promo.id}
-              className={`bg-gray-900 border border-gray-800 rounded-2xl p-4 transition ${!promo.active ? 'opacity-50' : ''}`}>
-              <div className="flex items-start gap-3">
+              className={`bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden transition ${!promo.active ? 'opacity-50' : ''}`}>
+              {promo.image && (
+                <div className="h-28 w-full overflow-hidden">
+                  <img src={promo.image} alt={promo.title} className="w-full h-full object-cover" />
+                </div>
+              )}
+              <div className="flex items-start gap-3 p-4">
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0"
                   style={{ backgroundColor: promo.badge_color + '20' }}>
                   {promo.emoji}
@@ -187,6 +194,18 @@ export default function PromocionesPage() {
         {editing && (
           <div className="bg-gray-900 border border-gray-700 rounded-2xl p-5 space-y-5 h-fit">
             <h3 className="text-white font-black text-base">{isNew ? 'Nueva Promoción' : 'Editar Promoción'}</h3>
+
+            {/* Imagen */}
+            <div>
+              <label className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1.5 block">
+                Imagen de la promoción <span className="text-gray-600 normal-case font-normal">(opcional)</span>
+              </label>
+              <ImageUpload
+                currentImage={editing.image ?? null}
+                folder="promos"
+                onUploaded={(url) => setEditing(prev => prev ? { ...prev, image: url } : null)}
+              />
+            </div>
 
             {/* Tipo */}
             <div>
@@ -339,8 +358,12 @@ export default function PromocionesPage() {
             <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-3">Vista previa en el menú</p>
             <div className="space-y-2">
               {promos.filter(p => p.active).slice(0, 4).map(promo => (
-                <div key={promo.id} className="flex items-center gap-3 p-3 rounded-xl"
+                <div key={promo.id} className="rounded-xl overflow-hidden"
                   style={{ backgroundColor: promo.badge_color + '15', border: `1px solid ${promo.badge_color}30` }}>
+                  {promo.image && (
+                    <img src={promo.image} alt={promo.title} className="w-full h-20 object-cover" />
+                  )}
+                  <div className="flex items-center gap-3 p-3">
                   <span className="text-2xl shrink-0">{promo.emoji}</span>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
@@ -351,6 +374,7 @@ export default function PromocionesPage() {
                       </span>
                     </div>
                     {promo.description && <p className="text-gray-400 text-xs truncate">{promo.description}</p>}
+                  </div>
                   </div>
                 </div>
               ))}
